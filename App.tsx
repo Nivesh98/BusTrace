@@ -1,6 +1,5 @@
 import React from 'react';
-import {StatusBar} from 'react-native';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View, SafeAreaView} from 'react-native';
 import {ButtonGroup} from './components/ButtonGroup';
 
 const App = () => {
@@ -8,15 +7,23 @@ const App = () => {
     console.log(item);
   };
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      {/* <Text>Hello, world!</Text> */}
-      <ButtonGroup
-        buttons={['One', 'Two', 'Three']}
-        doSomthingAfterClick={printButtonLabel}
-      />
-    </View>
+    <SafeAreaView style={{flex:1}}>
+      <View style={styles.container}>
+        <ButtonGroup
+          buttons={['One', 'Two']}
+          doSomthingAfterClick={printButtonLabel}
+        />
+      </View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+});
 
 export default App;
 
