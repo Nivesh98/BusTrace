@@ -1,15 +1,15 @@
 import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {StyleSheet, View, SafeAreaView, Text} from 'react-native';
 import {ButtonGroup} from './components/ButtonGroup';
-import { MainNavigator } from './components/MainNavigator';
+import {MainNavigator} from './components/MainNavigator';
 
 const App = () => {
   // const printButtonLabel = item => {
   //   console.log(item);
   // };
 
-  const getNumber = (num: number): number => num
+  const getNumber = (num: number): number => num;
 
   const printNumber = (): number => {
     return 1;
@@ -22,7 +22,7 @@ const App = () => {
           doSomthingAfterClick={printNumber}
         />
         <Text>{getNumber(14)}</Text> */}
-        <MainNavigator/>
+        <MainNavigator />
       </View>
     </SafeAreaView>
   );
@@ -31,7 +31,6 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
   },
   container1: {
     flex: 1,
