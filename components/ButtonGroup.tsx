@@ -1,10 +1,15 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 
+// type Props = {
+//   buttons: string[];
+//   doSomethingAfterClick: () => number;
+// };
+
 export const ButtonGroup = ({buttons, doSomthingAfterClick}) => {
   const [clickedId, setClickedId] = useState(0);
 
-  const handleClick = (item, id) => {
+  const handleClick = (item: any, id: any) => {
     setClickedId(id), doSomthingAfterClick(item);
   };
   return (
@@ -43,7 +48,7 @@ const styles = StyleSheet.create({
     height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'green',
+    backgroundColor: '#ff8c00',
     borderWidth: 0.5,
     borderColor: 'black',
   },
@@ -52,7 +57,7 @@ const styles = StyleSheet.create({
     height: 30,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'lightgreen',
+    backgroundColor: '#8b0000',
     borderWidth: 0.5,
     borderColor: 'black',
   },

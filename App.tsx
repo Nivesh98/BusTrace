@@ -1,27 +1,13 @@
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {StyleSheet, View, SafeAreaView, Text} from 'react-native';
-import {ButtonGroup} from './components/ButtonGroup';
+
+import {StyleSheet, View, SafeAreaView} from 'react-native';
+
 import {MainNavigator} from './components/MainNavigator';
 
 const App = () => {
-  // const printButtonLabel = item => {
-  //   console.log(item);
-  // };
-
-  const getNumber = (num: number): number => num;
-
-  const printNumber = (): number => {
-    return 1;
-  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.container}>
-        {/* <ButtonGroup
-          buttons={['One', 'Two']}
-          doSomthingAfterClick={printNumber}
-        />
-        <Text>{getNumber(14)}</Text> */}
         <MainNavigator />
       </View>
     </SafeAreaView>
