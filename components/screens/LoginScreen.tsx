@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {ButtonGroup} from '../ButtonGroup';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -54,6 +55,10 @@ export const LoginScreen = () => {
       <TouchableOpacity>
         <Text style={styles.register_button}>Not Login? Register Here</Text>
       </TouchableOpacity>
+      <TouchableOpacity style={styles.guestTouchable}>
+        <Text style={styles.guestText}>Let's as a Guest.</Text>
+        <Icon name="comments" size={30} color="#fff" />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -69,13 +74,13 @@ const styles = StyleSheet.create({
   image: {
     width: 75,
     height: 75,
-    marginBottom: 40,
+    marginBottom: 20,
   },
   inputView: {
     backgroundColor: '#d2691e',
     borderRadius: 30,
     width: '95%',
-    height: 45,
+    height: 35,
     marginBottom: 20,
     alignItems: 'center',
   },
@@ -87,15 +92,13 @@ const styles = StyleSheet.create({
   },
   forgot_button: {
     height: 30,
-    marginBottom: 30,
   },
   loginBtn: {
-    width: '95%',
+    width: '85%',
     borderRadius: 25,
-    height: 50,
+    height: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
     backgroundColor: '#800000',
     marginBottom: 10,
   },
@@ -114,89 +117,21 @@ const styles = StyleSheet.create({
   },
   register_button: {
     height: 30,
-    marginBottom: 10,
+    marginBottom: 90,
+  },
+  guestTouchable: {
+    backgroundColor: '#800000',
+    padding: 7,
+    width: '95%',
+    height: 40,
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 20,
+  },
+  guestText: {
+    fontWeight: 'bold',
+    fontSize: 18,
+    color: '#fff',
   },
 });
-
-// const styles = StyleSheet.create({
-//   root: {
-//     flex: 1,
-//     alignItems: 'center',
-//     padding: 10,
-//     justifyContent: 'center',
-//     //backgroundColor: 'yellow',
-//   },
-// });
-
-// <View style={styles.container}>
-{
-  /* <ButtonGroup
-        buttons={['Passenger', 'Driver']}
-        doSomthingAfterClick={printNumber}
-      /> */
-}
-//   <Image style={styles.image} source={require('./assets/log2.png')} />
-//   <StatusBar style="auto" />
-//   <View style={styles.inputView}>
-//     <TextInput
-//       style={styles.TextInput}
-//       placeholder="Email."
-//       placeholderTextColor="#003f5c"
-//       onChangeText={email => setEmail(email)}
-//     />
-//   </View>
-// <View style={styles.inputView}>
-//   <TextInput
-//     style={styles.TextInput}
-//     placeholder="Password."
-//     placeholderTextColor="#003f5c"
-//     secureTextEntry={true}
-//     onChangeText={password => setPassword(password)}
-//   />
-// </View>
-// <TouchableOpacity>
-//   <Text style={styles.forgot_button}>Forgot Password?</Text>
-// </TouchableOpacity>
-// <TouchableOpacity style={styles.loginBtn}>
-//   <Text style={styles.loginText}>LOGIN</Text>
-// </TouchableOpacity>
-// </View>
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-//   image: {
-//     marginBottom: 40,
-//   },
-//   inputView: {
-//     backgroundColor: '#FFC0CB',
-//     borderRadius: 30,
-//     width: '70%',
-//     height: 45,
-//     marginBottom: 20,
-//     alignItems: 'center',
-//   },
-//   TextInput: {
-//     height: 50,
-//     flex: 1,
-//     padding: 10,
-//     marginLeft: 20,
-//   },
-//   forgot_button: {
-//     height: 30,
-//     marginBottom: 30,
-//   },
-//   loginBtn: {
-//     width: '80%',
-//     borderRadius: 25,
-//     height: 50,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     marginTop: 40,
-//     backgroundColor: '#FF1493',
-//   },
-// });
