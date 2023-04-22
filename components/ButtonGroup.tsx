@@ -1,11 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
 
-// type Props = {
-//   buttons: string[];
-//   doSomethingAfterClick: () => number;
-// };
-
 export const ButtonGroup = ({buttons, doSomthingAfterClick}) => {
   const [clickedId, setClickedId] = useState(0);
 

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import LottieView from 'lottie-react-native';
 
 export const SplashScreen = props => {
@@ -23,13 +23,13 @@ export const SplashScreen = props => {
   return (
     <View style={styles.root}>
       <LottieView
-        source={require('../assests/splash2.json')}
+        source={require('../assets/splash2.json')}
         autoPlay
         loop={false}
         onAnimationFinish={onAnimationFinish}
       />
       <LottieView
-        source={require('../assests/splash.json')}
+        source={require('../assets/splash.json')}
         autoPlay
         loop={false}
         onAnimationFinish={onAnimationFinish}

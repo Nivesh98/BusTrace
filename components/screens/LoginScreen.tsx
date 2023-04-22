@@ -1,4 +1,3 @@
-import {StatusBar} from 'react-native/Libraries/Components/StatusBar/StatusBar';
 import React, {useState} from 'react';
 import {
   StyleSheet,
@@ -6,11 +5,10 @@ import {
   View,
   Image,
   TextInput,
-  Button,
   TouchableOpacity,
 } from 'react-native';
 import {ButtonGroup} from '../ButtonGroup';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export const LoginScreen = () => {
   const [email, setEmail] = useState('');
@@ -27,20 +25,23 @@ export const LoginScreen = () => {
           doSomthingAfterClick={printNumber}
         />
       </View>
-      <Image style={styles.image} source={require('../assests/bus.png')} />
-      <View style={styles.inputView}>
+      {/* <Image style={styles.image} source={require('../assets/bus.png')} /> */}
+      <View style={styles.inputViewEmail}>
+        <Icon name="email" size={20} color="#fff" />
         <TextInput
-          style={styles.TextInput}
-          placeholder="Email."
+          style={styles.TextInputEmail}
+          keyboardType="email-address"
+          placeholder="Email"
           textAlign="left"
           placeholderTextColor="#003f5c"
           onChangeText={email => setEmail(email)}
         />
       </View>
-      <View style={styles.inputView}>
+      <View style={styles.inputViewPassword}>
+        <Icon name="lock" size={20} color="#fff" />
         <TextInput
-          style={styles.TextInput}
-          placeholder="Password."
+          style={styles.TextInputPassword}
+          placeholder="Password"
           placeholderTextColor="#003f5c"
           secureTextEntry={true}
           onChangeText={password => setPassword(password)}
@@ -52,12 +53,24 @@ export const LoginScreen = () => {
       <TouchableOpacity style={styles.loginBtn}>
         <Text style={styles.loginText}>LOGIN</Text>
       </TouchableOpacity>
-      <TouchableOpacity>
-        <Text style={styles.register_button}>Not Login? Register Here</Text>
+      <Text style={styles.forgot_button}>Or, login with ...</Text>
+      <TouchableOpacity onPress={() => {}} style={styles.loginLogo}>
+        <Image
+          source={require('../assets/images/facebook.png')}
+          style={styles.facebookLogo}
+        />
+        <Image
+          source={require('../assets/images/google.png')}
+          style={styles.googleLogo}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity style={{flexDirection: 'row'}}>
+        <Text style={styles.register_button}>Not Login? </Text>
+        <Text style={{fontWeight: 'bold'}}>Register Here</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.guestTouchable}>
         <Text style={styles.guestText}>Let's as a Guest.</Text>
-        <Icon name="comments" size={30} color="#fff" />
+        <Icon name="arrow-right" size={30} color="#fff" />
       </TouchableOpacity>
     </View>
   );
@@ -76,19 +89,39 @@ const styles = StyleSheet.create({
     height: 75,
     marginBottom: 20,
   },
-  inputView: {
+  inputViewEmail: {
     backgroundColor: '#d2691e',
-    borderRadius: 30,
+    flexDirection: 'row',
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    paddingLeft: 8,
+    marginBottom: 20,
     width: '95%',
     height: 35,
-    marginBottom: 20,
+    borderRadius: 30,
+    alignSelf: 'center',
     alignItems: 'center',
   },
-  TextInput: {
+  inputViewPassword: {
+    backgroundColor: '#d2691e',
+    flexDirection: 'row',
+    borderBottomColor: '#ccc',
+    borderBottomWidth: 1,
+    paddingLeft: 8,
+    marginBottom: 4,
+    width: '95%',
+    height: 35,
+    borderRadius: 30,
+    alignSelf: 'center',
+    alignItems: 'center',
+  },
+  TextInputEmail: {
     height: 50,
     flex: 1,
-    padding: 10,
-    marginLeft: 20,
+  },
+  TextInputPassword: {
+    height: 50,
+    flex: 1,
   },
   forgot_button: {
     height: 30,
@@ -112,20 +145,20 @@ const styles = StyleSheet.create({
   },
   buttonGroup: {
     flex: 1,
-    marginBottom: 20,
     alignItems: 'center',
   },
   register_button: {
     height: 30,
-    marginBottom: 90,
+    marginBottom: 40,
   },
   guestTouchable: {
     backgroundColor: '#800000',
-    padding: 7,
+    padding: 5,
     width: '95%',
     height: 40,
     borderRadius: 10,
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: 20,
   },
@@ -133,5 +166,25 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 18,
     color: '#fff',
+    fontFamily: 'Roboto-Italic',
+  },
+  loginLogo: {
+    flexDirection: 'row',
+    borderColor: '#ddd',
+    borderWidth: 2,
+    borderRadius: 10,
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    width: '95%',
+    justifyContent: 'center',
+  },
+  facebookLogo: {
+    width: 30,
+    height: 30,
+    marginRight: 10,
+  },
+  googleLogo: {
+    width: 30,
+    height: 30,
   },
 });
