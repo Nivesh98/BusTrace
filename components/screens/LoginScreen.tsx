@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -11,8 +11,10 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {CustomButton} from '../CustomButton';
 import {InputField} from '../InputField';
+import {AuthContext} from '../context/AuthContext';
 
 export const LoginScreen = ({navigation}) => {
+  const {userToken} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -22,37 +24,10 @@ export const LoginScreen = ({navigation}) => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
-        {/* <View style={styles.buttonGroup}>
-        <ButtonGroup
-          buttons={['Passenger', 'Driver']}
-          doSomthingAfterClick={printNumber}
-        />
-      </View> */}
-        {/* <Image style={styles.image} source={require('../assets/bus.png')} /> */}
-        {/* <View style={styles.inputViewEmail}>
-        <Icon name="email" size={20} color="#fff" />
-        <TextInput
-          style={styles.TextInputEmail}
-          keyboardType="email-address"
-          placeholder="Email"
-          textAlign="left"
-          placeholderTextColor="#003f5c"
-          onChangeText={email => setEmail(email)}
-        />
-      </View>
-      <View style={styles.inputViewPassword}>
-        <Icon name="lock" size={20} color="#fff" />
-        <TextInput
-          style={styles.TextInputPassword}
-          placeholder="Password"
-          placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          onChangeText={password => setPassword(password)}
-        />
-      </View> */}
         <View>
           <Text style={styles.loginTextText}>Login</Text>
         </View>
+        <Text>{userToken}</Text>
         <InputField
           label={'Email'}
           icon={<Icon name="email" size={20} color="#fff" />}
@@ -74,9 +49,7 @@ export const LoginScreen = ({navigation}) => {
           label={'Login'}
           onPress={() => navigation.navigate('Home')}
         />
-        {/* <TouchableOpacity style={styles.loginBtn}>
-        <Text style={styles.loginText}>LOGIN</Text>
-      </TouchableOpacity> */}
+
         <Text style={styles.forgot_button}>Or, login with ...</Text>
         <View style={styles.loginLogo}>
           <TouchableOpacity onPress={() => {}}>

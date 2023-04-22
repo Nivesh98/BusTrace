@@ -23,6 +23,7 @@ export const RegisterScreen = ({navigation}) => {
 
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
+  const [dobLabel, setDobLabel] = useState('Date of Birth');
 
   const printNumber = (item): number => {
     return 1;
@@ -83,12 +84,6 @@ export const RegisterScreen = ({navigation}) => {
             inputType={'Password'}
             onChangeFunction={confirmPassword => setConfirmPassword(password)}
           />
-          {/* <InputField
-            label={'Date of Birth'}
-            icon={<Icon name="calendar-today" size={20} color="#fff" />}
-            textColor={'#003f5c'}
-            onChangeFunction={dateOfBirth => setDateOfBirth(dateOfBirth)}
-          /> */}
           <View
             style={{
               backgroundColor: '#d2691e',
@@ -110,53 +105,31 @@ export const RegisterScreen = ({navigation}) => {
               style={{marginRight: 5}}
             />
             <TouchableOpacity style={{flex: 1}} onPress={() => setOpen(true)}>
-              <Text style={{color: '#003f5c'}}>Date of Birth</Text>
+              <Text style={{color: '#003f5c'}}>{dobLabel}</Text>
             </TouchableOpacity>
           </View>
-          
+
           <DatePicker
             modal
             open={open}
             date={date}
+            mode={'date'}
+            minimumDate={new Date('1950-01-01')}
+            maximumDate={new Date('2005-01-01')}
             onConfirm={date => {
               setOpen(false);
               setDate(date);
+              setDobLabel(date.toDateString());
             }}
             onCancel={() => {
               setOpen(false);
             }}
           />
         </View>
-
-        {/* <View style={styles.inputViewEmail}>
-        <Icon name="email" size={20} color="#fff" />
-        <TextInput
-          style={styles.TextInputEmail}
-          keyboardType="email-address"
-          placeholder="Email"
-          textAlign="left"
-          placeholderTextColor="#003f5c"
-          onChangeText={email => setEmail(email)}
-        />
-      </View>
-
-      <View style={styles.inputViewPassword}>
-        <Icon name="lock" size={20} color="#fff" />
-        <TextInput
-          style={styles.TextInputPassword}
-          placeholder="Password"
-          placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          onChangeText={password => setPassword(password)}
-        />
-      </View> */}
         <CustomButton
           label={'Register'}
           onPress={() => navigation.navigate('Home')}
         />
-        {/* <TouchableOpacity style={styles.loginBtn}>
-        <Text style={styles.loginText}>Register</Text>
-      </TouchableOpacity> */}
         <View style={{flexDirection: 'row'}}>
           <Text style={styles.register_button}>Already registered? </Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -173,7 +146,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    // justifyContent: 'center',
     padding: 5,
   },
   image: {
