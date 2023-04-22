@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
 import {
   StyleSheet,
+  ScrollView,
   Text,
   View,
   Image,
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import {ButtonGroup} from '../ButtonGroup';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {CustomButton} from '../CustomButton';
+import {InputField} from '../InputField';
 
-export const LoginScreen = () => {
+export const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -18,15 +20,16 @@ export const LoginScreen = () => {
     return 1;
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.buttonGroup}>
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <View style={styles.container}>
+        {/* <View style={styles.buttonGroup}>
         <ButtonGroup
           buttons={['Passenger', 'Driver']}
           doSomthingAfterClick={printNumber}
         />
-      </View>
-      {/* <Image style={styles.image} source={require('../assets/bus.png')} /> */}
-      <View style={styles.inputViewEmail}>
+      </View> */}
+        {/* <Image style={styles.image} source={require('../assets/bus.png')} /> */}
+        {/* <View style={styles.inputViewEmail}>
         <Icon name="email" size={20} color="#fff" />
         <TextInput
           style={styles.TextInputEmail}
@@ -46,33 +49,64 @@ export const LoginScreen = () => {
           secureTextEntry={true}
           onChangeText={password => setPassword(password)}
         />
-      </View>
-      <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.loginBtn}>
+      </View> */}
+        <View>
+          <Text style={styles.loginTextText}>Login</Text>
+        </View>
+        <InputField
+          label={'Email'}
+          icon={<Icon name="email" size={20} color="#fff" />}
+          textColor={'#003f5c'}
+          keyboardType={'email-address'}
+          onChangeFunction={email => setFullName(email)}
+        />
+        <InputField
+          label={'Password'}
+          icon={<Icon name="lock" size={20} color="#fff" />}
+          textColor={'#003f5c'}
+          inputType={'Password'}
+          onChangeFunction={password => setFullName(password)}
+        />
+        <TouchableOpacity>
+          <Text style={styles.forgot_button}>Forgot Password?</Text>
+        </TouchableOpacity>
+        <CustomButton
+          label={'Login'}
+          onPress={() => navigation.navigate('Home')}
+        />
+        {/* <TouchableOpacity style={styles.loginBtn}>
         <Text style={styles.loginText}>LOGIN</Text>
-      </TouchableOpacity>
-      <Text style={styles.forgot_button}>Or, login with ...</Text>
-      <TouchableOpacity onPress={() => {}} style={styles.loginLogo}>
-        <Image
-          source={require('../assets/images/facebook.png')}
-          style={styles.facebookLogo}
-        />
-        <Image
-          source={require('../assets/images/google.png')}
-          style={styles.googleLogo}
-        />
-      </TouchableOpacity>
-      <TouchableOpacity style={{flexDirection: 'row'}}>
-        <Text style={styles.register_button}>Not Login? </Text>
-        <Text style={{fontWeight: 'bold'}}>Register Here</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.guestTouchable}>
-        <Text style={styles.guestText}>Let's as a Guest.</Text>
-        <Icon name="arrow-right" size={30} color="#fff" />
-      </TouchableOpacity>
-    </View>
+      </TouchableOpacity> */}
+        <Text style={styles.forgot_button}>Or, login with ...</Text>
+        <View style={styles.loginLogo}>
+          <TouchableOpacity onPress={() => {}}>
+            <Image
+              source={require('../assets/images/facebook.png')}
+              style={styles.facebookLogo}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => {}}>
+            <Image
+              source={require('../assets/images/google.png')}
+              style={styles.googleLogo}
+            />
+          </TouchableOpacity>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <Text style={styles.register_button}>New to the app? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
+            <Text style={{fontWeight: 'bold'}}>Register Here</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={styles.guestTouchable}
+          onPress={() => navigation.navigate('Home')}>
+          <Text style={styles.guestText}>Let's as a Guest.</Text>
+          <Icon name="arrow-right" size={30} color="#fff" />
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -186,5 +220,12 @@ const styles = StyleSheet.create({
   googleLogo: {
     width: 30,
     height: 30,
+  },
+  loginTextText: {
+    fontFamily: 'Roboto-Medium',
+    fontSize: 28,
+    fontWeight: '500',
+    color: '#333',
+    marginBottom: 20,
   },
 });
