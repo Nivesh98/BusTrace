@@ -1,17 +1,33 @@
 import React from 'react';
 import {StyleSheet, Text, View, ScrollView} from 'react-native';
-
+import Icon from 'react-native-vector-icons/MaterialIcons';
 export const HomeScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.container}>
-        <Text>Home Screen</Text>
+      <View style={styles.menu}>
+        <View>
+          <Icon name="menu" size={24} color={'#fff'} />
+        </View>
+        <View style={styles.homeScreen}>
+          <Text style={styles.homeScreenText}>Home Screen</Text>
+        </View>
       </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  homeScreen: {
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#fff',
+    borderRadius: 5,
+  },
+  homeScreenText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -128,5 +144,11 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#333',
     marginBottom: 20,
+  },
+  menu: {
+    flex: 1,
+    backgroundColor: '#dc143c',
+    padding: 5,
+    flexDirection: 'row',
   },
 });
