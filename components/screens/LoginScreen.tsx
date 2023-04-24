@@ -12,9 +12,23 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {CustomButton} from '../CustomButton';
 import {InputField} from '../InputField';
 import {AuthContext} from '../context/AuthContext';
+// import {signInWithEmailAndPassword} from 'firebase/auth';
+// import {auth} from '../config/firebase';
+
+// const auth = getAuth();
+// signInWithEmailAndPassword(auth, email, password)
+//   .then(userCredential => {
+//     // Signed in
+//     const user = userCredential.user;
+//     // ...
+//   })
+//   .catch(error => {
+//     const errorCode = error.code;
+//     const errorMessage = error.message;
+//   });
 
 export const LoginScreen = ({navigation}) => {
-  const {login} = useContext(AuthContext);
+  const {login, guestCeck} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -77,7 +91,9 @@ export const LoginScreen = ({navigation}) => {
 
         <TouchableOpacity
           style={styles.guestTouchable}
-          onPress={() => navigation.navigate('Home')}>
+          onPress={() => {
+            guestCeck();
+          }}>
           <Text style={styles.guestText}>Let's as a Guest.</Text>
           <Icon name="arrow-right" size={30} color="#fff" />
         </TouchableOpacity>

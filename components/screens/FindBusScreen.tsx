@@ -1,34 +1,20 @@
-import React, {useContext} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import * as React from 'react';
+import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {AuthContext} from '../context/AuthContext';
-export const HomeScreen = () => {
-  const {logout} = useContext(AuthContext);
-  const {userToken, isLoading} = useContext(AuthContext);
-  console.log('user token inside home ', {userToken}, {isLoading});
+
+export const FindBusScreen = () => {
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.menu}>
-        <View>
-          <Icon name="menu" size={24} color={'#fff'} />
+      <SafeAreaView>
+        <View style={styles.menu}>
+          <View>
+            <Icon name="menu" size={24} color={'#fff'} />
+          </View>
+          <View style={styles.homeScreen}>
+            <Text style={styles.homeScreenText}>Find Bus</Text>
+          </View>
         </View>
-        <View style={styles.homeScreen}>
-          <Text style={styles.homeScreenText}>Home</Text>
-        </View>
-      </View>
-      <Text>{userToken}</Text>
-      <TouchableOpacity
-        onPress={() => {
-          logout();
-        }}>
-        <Text>SignOut</Text>
-      </TouchableOpacity>
+      </SafeAreaView>
     </ScrollView>
   );
 };
