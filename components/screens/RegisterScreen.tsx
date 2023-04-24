@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -7,23 +7,47 @@ import {
   ScrollView,
   TouchableOpacity,
   Button,
+  Alert,
 } from 'react-native';
 import {ButtonGroup} from '../ButtonGroup';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {InputField} from '../InputField';
 import {CustomButton} from '../CustomButton';
 import DatePicker from 'react-native-date-picker';
+import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
+import {AuthContext} from '../context/AuthContext';
 
 export const RegisterScreen = ({navigation}) => {
+  const {login} = useContext(AuthContext);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
-
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [dobLabel, setDobLabel] = useState('Date of Birth');
+
+  const createUser = () => {
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        // Signed in
+        //const user = userCredential.user;
+        login();
+        Alert.alert('User Logged in sucessfully!');
+        console.log('Register Successfully!');
+        // ...
+      })
+      .catch(error => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert(errorMessage);
+        console.log('Register fail!');
+        // ..
+      });
+  };
 
   const printNumber = (item): number => {
     return 1;
@@ -67,14 +91,14 @@ export const RegisterScreen = ({navigation}) => {
           icon={<Icon name="email" size={20} color="#fff" />}
           textColor={'#003f5c'}
           keyboardType={'email-address'}
-          onChangeFunction={email => setFullName(email)}
+          onChangeFunction={email => setEmail(email)}
         />
         <InputField
           label={'Password'}
           icon={<Icon name="lock" size={20} color="#fff" />}
           textColor={'#003f5c'}
           inputType={'Password'}
-          onChangeFunction={password => setFullName(password)}
+          onChangeFunction={password => setPassword(password)}
         />
         <View style={{marginBottom: 20}}>
           <InputField
@@ -126,10 +150,7 @@ export const RegisterScreen = ({navigation}) => {
             }}
           />
         </View>
-        <CustomButton
-          label={'Register'}
-          onPress={() => navigation.navigate('Home')}
-        />
+        <CustomButton label={'Register'} onPress={() => createUser()} />
         <View style={{flexDirection: 'row'}}>
           <Text style={styles.register_button}>Already registered? </Text>
           <TouchableOpacity onPress={() => navigation.goBack()}>

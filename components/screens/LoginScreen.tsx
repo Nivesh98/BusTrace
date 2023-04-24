@@ -28,13 +28,16 @@ export const LoginScreen = ({navigation}) => {
         // Signed in
         // const user = userCredential.user;
         // ...
-        //Alert('User Logged in sucessfully!');
+        Alert.alert('User Logged in sucessfully!');
+
+        console.log('Login Successfully!');
         login();
       })
       .catch(error => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        //Alert(errorMessage);
+        console.log('Login fail!');
+        Alert.alert(errorMessage);
       });
   };
 
