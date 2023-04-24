@@ -7,30 +7,36 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {CustomButton} from '../CustomButton';
 import {InputField} from '../InputField';
 import {AuthContext} from '../context/AuthContext';
-// import {signInWithEmailAndPassword} from 'firebase/auth';
-// import {auth} from '../config/firebase';
-
-// const auth = getAuth();
-// signInWithEmailAndPassword(auth, email, password)
-//   .then(userCredential => {
-//     // Signed in
-//     const user = userCredential.user;
-//     // ...
-//   })
-//   .catch(error => {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//   });
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import {auth} from '../config/firebase';
 
 export const LoginScreen = ({navigation}) => {
   const {login, guestCeck} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const signin = () => {
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        // Signed in
+        // const user = userCredential.user;
+        // ...
+        //Alert('User Logged in sucessfully!');
+        login();
+      })
+      .catch(error => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        //Alert(errorMessage);
+      });
+  };
 
   const printNumber = (item): number => {
     return 1;
@@ -47,14 +53,14 @@ export const LoginScreen = ({navigation}) => {
           icon={<Icon name="email" size={20} color="#fff" />}
           textColor={'#003f5c'}
           keyboardType={'email-address'}
-          onChangeFunction={email => setFullName(email)}
+          onChangeFunction={email => setEmail(email)}
         />
         <InputField
           label={'Password'}
           icon={<Icon name="lock" size={20} color="#fff" />}
           textColor={'#003f5c'}
           inputType={'Password'}
-          onChangeFunction={password => setFullName(password)}
+          onChangeFunction={password => setPassword(password)}
         />
         <TouchableOpacity>
           <Text style={styles.forgot_button}>Forgot Password?</Text>
@@ -63,7 +69,7 @@ export const LoginScreen = ({navigation}) => {
           label={'Login'}
           //navigation.navigate('Home')
           onPress={() => {
-            login();
+            signin();
           }}
         />
 

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,10 +8,36 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {AuthContext} from '../context/AuthContext';
+import {getAuth} from 'firebase/auth';
+
 export const HomeScreen = () => {
   const {logout} = useContext(AuthContext);
   const {userToken, isLoading} = useContext(AuthContext);
   console.log('user token inside home ', {userToken}, {isLoading});
+
+  useEffect(() => {
+    // Check if user is already signed in
+    const subscriber = getAuth().onAuthStateChanged(user => {
+      if (user) {
+        console.log('User is signed in');
+      } else {
+        console.log('User is signed out');
+      }
+    });
+    // Unsubscribe when component unmounts
+    return subscriber;
+  }, []);
+
+  const handleSignOut = async () => {
+    try {
+      await getAuth().signOut();
+      console.log('User signed out successfully');
+      logout();
+    } catch (error) {
+      console.error(error);
+      console.log('User signed out error occur');
+    }
+  };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.menu}>
@@ -25,7 +51,7 @@ export const HomeScreen = () => {
       <Text>{userToken}</Text>
       <TouchableOpacity
         onPress={() => {
-          logout();
+          handleSignOut();
         }}>
         <Text>SignOut</Text>
       </TouchableOpacity>
