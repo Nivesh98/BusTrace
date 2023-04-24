@@ -15,7 +15,22 @@ import {InputField} from '../InputField';
 import {CustomButton} from '../CustomButton';
 import DatePicker from 'react-native-date-picker';
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
+import {initializeApp} from 'firebase/app';
+import {getFirestore} from 'firebase/firestore';
 import {AuthContext} from '../context/AuthContext';
+
+const firebaseConfig = {
+  apiKey: 'AIzaSyALcJMKkPavZfvi6dOqvxfiJoTU17_m35g',
+  authDomain: 'bustrace-f6f3a.firebaseapp.com',
+  projectId: 'bustrace-f6f3a',
+  storageBucket: 'bustrace-f6f3a.appspot.com',
+  messagingSenderId: '632304619930',
+  appId: '1:632304619930:web:6933dffc0268ad889aea23',
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
 
 export const RegisterScreen = ({navigation}) => {
   const {login} = useContext(AuthContext);
@@ -79,7 +94,7 @@ export const RegisterScreen = ({navigation}) => {
 
   const createUser = () => {
     if (isValidForm()) {
-      const auth = getAuth();
+      //const auth = getAuth();
       createUserWithEmailAndPassword(auth, email, password)
         .then(userCredential => {
           // Signed in
