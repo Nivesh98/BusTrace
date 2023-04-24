@@ -28,25 +28,75 @@ export const RegisterScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [dobLabel, setDobLabel] = useState('Date of Birth');
+  const [error, setError] = useState('');
+
+  const isValidValue = () => {
+    if (fullName.trim()) {
+      if (email.trim()) {
+        if (password.trim()) {
+          if (confirmPassword.trim()) {
+            if (dobLabel !== 'Date of Birth') {
+              return true;
+            }
+          }
+        }
+      }
+    }
+  };
+
+  const updateError = (error, updateErro) => {
+    updateErro(error);
+    setTimeout(() => {
+      updateErro('');
+    }, 2500);
+  };
+
+  const isValidEmail = value => {
+    const regx = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    return regx.test(value);
+  };
+
+  const isValidForm = () => {
+    if (!isValidValue()) {
+      return updateError('Required all fields', setError);
+    }
+    if (!fullName.trim() || fullName.length < 3) {
+      return updateError('Invalid name!', setError);
+    }
+    if (!isValidEmail(email)) {
+      console.log('email vlaid ', isValidEmail(email));
+      return updateError('Invalid email!', setError);
+    }
+    if (!password.trim() || password.length < 8) {
+      return updateError('Password is less than 8 characters!', setError);
+    }
+    if (password !== confirmPassword) {
+      return updateError('Password is not matched!', setError);
+    }
+
+    return true;
+  };
 
   const createUser = () => {
-    const auth = getAuth();
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        // Signed in
-        //const user = userCredential.user;
-        login();
-        Alert.alert('User Logged in sucessfully!');
-        console.log('Register Successfully!');
-        // ...
-      })
-      .catch(error => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        Alert.alert(errorMessage);
-        console.log('Register fail!');
-        // ..
-      });
+    if (isValidForm()) {
+      const auth = getAuth();
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          // Signed in
+          //const user = userCredential.user;
+          login();
+          Alert.alert('User Logged in sucessfully!');
+          console.log('Register Successfully!');
+          // ...
+        })
+        .catch(error => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          Alert.alert(errorMessage);
+          console.log('Register fail!');
+          // ..
+        });
+    }
   };
 
   const printNumber = (item): number => {
@@ -79,6 +129,11 @@ export const RegisterScreen = ({navigation}) => {
           </TouchableOpacity>
         </View>
         <Text style={styles.forgot_button}>Or, register with email ...</Text>
+        {error ? (
+          <Text style={{color: 'red', textAlign: 'center'}}>{error}</Text>
+        ) : (
+          <Text>{null}</Text>
+        )}
         <InputField
           label={'Full name'}
           icon={<Icon name="person" size={20} color="#fff" />}

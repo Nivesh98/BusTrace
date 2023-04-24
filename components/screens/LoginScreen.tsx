@@ -5,7 +5,6 @@ import {
   Text,
   View,
   Image,
-  TextInput,
   TouchableOpacity,
   Alert,
 } from 'react-native';
@@ -14,31 +13,69 @@ import {CustomButton} from '../CustomButton';
 import {InputField} from '../InputField';
 import {AuthContext} from '../context/AuthContext';
 import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
-import {auth} from '../config/firebase';
 
 export const LoginScreen = ({navigation}) => {
   const {login, guestCeck} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const signin = () => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        // Signed in
-        // const user = userCredential.user;
-        // ...
-        Alert.alert('User Logged in sucessfully!');
+  const [error, setError] = useState('');
 
-        console.log('Login Successfully!');
-        login();
-      })
-      .catch(error => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('Login fail!');
-        Alert.alert(errorMessage);
-      });
+  const isValidValue = () => {
+    if (email.trim()) {
+      if (password.trim()) {
+        return true;
+      }
+    }
+  };
+
+  const updateError = (error, updateErro) => {
+    updateErro(error);
+    setTimeout(() => {
+      updateErro('');
+    }, 2500);
+  };
+
+  const isValidEmail = value => {
+    const regx = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+    return regx.test(value);
+  };
+
+  const isValidForm = () => {
+    if (!isValidValue()) {
+      return updateError('Required all fields', setError);
+    }
+    if (!isValidEmail(email)) {
+      console.log('email vlaid ', isValidEmail(email));
+      return updateError('Invalid email!', setError);
+    }
+    if (!password.trim() || password.length < 8) {
+      return updateError('Password is less than 8 characters!', setError);
+    }
+
+    return true;
+  };
+
+  const signin = () => {
+    if (isValidForm()) {
+      const auth = getAuth();
+      signInWithEmailAndPassword(auth, email, password)
+        .then(userCredential => {
+          // Signed in
+          // const user = userCredential.user;
+          // ...
+          Alert.alert('User Logged in sucessfully!');
+
+          console.log('Login Successfully!');
+          login();
+        })
+        .catch(error => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log('Login fail!');
+          Alert.alert(errorMessage);
+        });
+    }
   };
 
   const printNumber = (item): number => {
@@ -50,7 +87,11 @@ export const LoginScreen = ({navigation}) => {
         <View>
           <Text style={styles.loginTextText}>Login</Text>
         </View>
-        {/* <Text>{userToken}</Text> */}
+        {error ? (
+          <Text style={{color: 'red', textAlign: 'center'}}>{error}</Text>
+        ) : (
+          <Text>{null}</Text>
+        )}
         <InputField
           label={'Email'}
           icon={<Icon name="email" size={20} color="#fff" />}
