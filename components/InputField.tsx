@@ -17,16 +17,18 @@ export const InputField = ({
           style={styles.TextInputPassword}
           placeholder={label}
           keyboardType={keyboardType}
-          placeholderTextColor={textColor}
+          // placeholderTextColor={textColor}
           secureTextEntry={true}
+          autoCapitalize={'none'}
           onChangeText={onChangeFunction}
         />
       ) : (
         <TextInput
           style={styles.TextInputPassword}
           placeholder={label}
-          placeholderTextColor={textColor}
+          // placeholderTextColor={textColor}
           keyboardType={keyboardType}
+          autoCapitalize={'none'}
           onChangeText={onChangeFunction}
         />
       )}

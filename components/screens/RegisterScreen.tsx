@@ -87,14 +87,14 @@ export const RegisterScreen = ({navigation}) => {
           onChangeFunction={fullName => setFullName(fullName)}
         />
         <InputField
-          label={'Email'}
+          label={'example@gmail.com'}
           icon={<Icon name="email" size={20} color="#fff" />}
           textColor={'#003f5c'}
           keyboardType={'email-address'}
           onChangeFunction={email => setEmail(email)}
         />
         <InputField
-          label={'Password'}
+          label={'********'}
           icon={<Icon name="lock" size={20} color="#fff" />}
           textColor={'#003f5c'}
           inputType={'Password'}
@@ -102,7 +102,7 @@ export const RegisterScreen = ({navigation}) => {
         />
         <View style={{marginBottom: 20}}>
           <InputField
-            label={'Confirm Password'}
+            label={'********'}
             icon={<Icon name="lock" size={20} color="#fff" />}
             textColor={'#003f5c'}
             inputType={'Password'}
