@@ -14,7 +14,7 @@ import {InputField} from '../InputField';
 import {AuthContext} from '../context/AuthContext';
 
 export const LoginScreen = ({navigation}) => {
-  const {userToken} = useContext(AuthContext);
+  const {login} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -27,7 +27,7 @@ export const LoginScreen = ({navigation}) => {
         <View>
           <Text style={styles.loginTextText}>Login</Text>
         </View>
-        <Text>{userToken}</Text>
+        {/* <Text>{userToken}</Text> */}
         <InputField
           label={'Email'}
           icon={<Icon name="email" size={20} color="#fff" />}
@@ -47,7 +47,10 @@ export const LoginScreen = ({navigation}) => {
         </TouchableOpacity>
         <CustomButton
           label={'Login'}
-          onPress={() => navigation.navigate('Home')}
+          //navigation.navigate('Home')
+          onPress={() => {
+            login();
+          }}
         />
 
         <Text style={styles.forgot_button}>Or, login with ...</Text>

@@ -1,7 +1,17 @@
-import React from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import React, {useContext} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {AuthContext} from '../context/AuthContext';
 export const HomeScreen = () => {
+  const {logout} = useContext(AuthContext);
+  const {userToken} = useContext(AuthContext);
+  console.log('user token inside home', {userToken});
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.menu}>
@@ -12,6 +22,12 @@ export const HomeScreen = () => {
           <Text style={styles.homeScreenText}>Home Screen</Text>
         </View>
       </View>
+      <TouchableOpacity
+        onPress={() => {
+          logout();
+        }}>
+        <Text>SignOut</Text>
+      </TouchableOpacity>
     </ScrollView>
   );
 };
