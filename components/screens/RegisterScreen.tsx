@@ -6,7 +6,6 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  Button,
   Alert,
 } from 'react-native';
 import {ButtonGroup} from '../ButtonGroup';
@@ -16,7 +15,6 @@ import {CustomButton} from '../CustomButton';
 import DatePicker from 'react-native-date-picker';
 import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
 import {initializeApp} from 'firebase/app';
-import {getFirestore} from 'firebase/firestore';
 import {AuthContext} from '../context/AuthContext';
 
 const firebaseConfig = {
@@ -31,7 +29,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-
 export const RegisterScreen = ({navigation}) => {
   const {login} = useContext(AuthContext);
 
@@ -39,7 +36,6 @@ export const RegisterScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const [dateOfBirth, setDateOfBirth] = useState('');
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [dobLabel, setDobLabel] = useState('Date of Birth');

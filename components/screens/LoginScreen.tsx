@@ -155,7 +155,7 @@ export const LoginScreen = ({navigation}) => {
         <TouchableOpacity
           style={styles.guestTouchable}
           onPress={() => {
-            guestCeck();
+            // guestCeck();
           }}>
           <Text style={styles.guestText}>Let's as a Guest.</Text>
           <Icon name="arrow-right" size={30} color="#fff" />
