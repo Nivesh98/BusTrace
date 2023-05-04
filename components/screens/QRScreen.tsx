@@ -21,7 +21,7 @@ export const QRScreen = () => {
               <Text style={styles.homeScreenText}>QR Scan</Text>
             </View>
           </View>
-          <View style={{flex: 1, height: '60%'}}>
+          <View style={{}}>
             <QRCodeScanner
               onRead={({data}) => SetData(data)}
               flashMode={RNCamera.Constants.FlashMode.off}
@@ -34,7 +34,7 @@ export const QRScreen = () => {
               }
               showMarker={true}
               containerStyle={{flex: 1}}
-              cameraContainerStyle={{flex: 1, padding: 50, height: '60%'}}
+              cameraContainerStyle={{flex: 1, padding: 50,}}
             />
           </View>
         </View>
@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#dc143c',
     flexDirection: 'row',
     width: '100%',
-    marginBottom: 30,
     padding: 5,
   },
 });
