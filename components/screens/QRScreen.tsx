@@ -1,7 +1,10 @@
 import * as React from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+
+import QRCodeScanner from 'react-native-qrcode-scanner';
+import {RNCamera} from 'react-native-camera';
 
 export const QRScreen = () => {
   return (
@@ -15,9 +18,10 @@ export const QRScreen = () => {
             <Text style={styles.homeScreenText}>QR Scan</Text>
           </View>
         </View>
-        {/* <View style={{justifyContent: 'center', alignItems: 'center'}}>
-        <Text>QR Screen</Text>
-      </View> */}
+        <QRCodeScanner
+          onRead={({data}) => Alert.alert(data)}
+          flashMode={RNCamera.Constants.FlashMode.torch}
+        />
       </SafeAreaView>
     </ScrollView>
   );
