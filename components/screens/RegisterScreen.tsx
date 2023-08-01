@@ -1,21 +1,25 @@
-import React, {useContext, useState} from 'react';
+import {initializeApp} from 'firebase/app';
+import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth';
+import React, {FC, useContext, useState} from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
+  Alert,
   Image,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-  Alert,
+  View,
 } from 'react-native';
-import {ButtonGroup} from '../ButtonGroup';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {InputField} from '../InputField';
-import {CustomButton} from '../CustomButton';
 import DatePicker from 'react-native-date-picker';
-import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
-import {initializeApp} from 'firebase/app';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {ButtonGroup} from '../ButtonGroup';
+import {CustomButton} from '../CustomButton';
+import {InputField} from '../InputField';
 import {AuthContext} from '../context/AuthContext';
+
+interface RegisterScreenProps {
+  navigation: any; // Replace 'any' with the appropriate type for the 'navigation' prop
+}
 
 const firebaseConfig = {
   apiKey: 'AIzaSyALcJMKkPavZfvi6dOqvxfiJoTU17_m35g',
@@ -29,7 +33,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export const RegisterScreen = ({navigation}) => {
+export const RegisterScreen: FC<RegisterScreenProps> = ({navigation}) => {
   const {login} = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
@@ -55,14 +59,14 @@ export const RegisterScreen = ({navigation}) => {
     }
   };
 
-  const updateError = (error, updateErro) => {
+  const updateError = (error: string, updateErro: (error: string) => void) => {
     updateErro(error);
     setTimeout(() => {
       updateErro('');
     }, 2500);
   };
 
-  const isValidEmail = value => {
+  const isValidEmail = (value: string) => {
     const regx = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     return regx.test(value);
   };
@@ -110,7 +114,7 @@ export const RegisterScreen = ({navigation}) => {
     }
   };
 
-  const printNumber = (item): number => {
+  const printNumber = (item: any): number => {
     return 1;
   };
   return (
@@ -150,12 +154,14 @@ export const RegisterScreen = ({navigation}) => {
           icon={<Icon name="person" size={20} color="#fff" />}
           textColor={'#003f5c'}
           keyboardType={'ascii-capable'}
+          inputType={undefined}
           onChangeFunction={fullName => setFullName(fullName)}
         />
         <InputField
           label={'example@gmail.com'}
           icon={<Icon name="email" size={20} color="#fff" />}
           textColor={'#003f5c'}
+          inputType={undefined}
           keyboardType={'email-address'}
           onChangeFunction={email => setEmail(email)}
         />

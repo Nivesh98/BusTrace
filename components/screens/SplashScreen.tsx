@@ -1,10 +1,21 @@
+import {StackNavigationProp} from '@react-navigation/stack';
+import LottieView from 'lottie-react-native';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
-import LottieView from 'lottie-react-native';
 
-export const SplashScreen = props => {
-  const [authLoaded, setAuthLoaded] = useState<Boolean>(false);
-  const [animationLoaded, setAnimationAuthLoaded] = useState<Boolean>(false);
+type RootStackParamList = {
+  SplashScreen: undefined;
+  Login: undefined;
+  // Add other screens if needed
+};
+
+type SplashScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'SplashScreen'>;
+};
+
+export const SplashScreen: React.FC<SplashScreenProps> = ({navigation}) => {
+  const [authLoaded, setAuthLoaded] = useState<boolean>(false);
+  const [animationLoaded, setAnimationAuthLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     setTimeout(() => {
@@ -14,9 +25,9 @@ export const SplashScreen = props => {
 
   useEffect(() => {
     if (authLoaded && animationLoaded) {
-      props.navigation.replace('Login');
+      navigation.replace('Login');
     }
-  }, [animationLoaded, authLoaded, props.navigation]);
+  }, [animationLoaded, authLoaded, navigation]);
 
   const onAnimationFinish = () => setAnimationAuthLoaded(true);
 

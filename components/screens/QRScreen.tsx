@@ -1,11 +1,10 @@
 import * as React from 'react';
-import {Alert, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
-import {Padding} from '@mui/icons-material';
+import QRCodeScanner from 'react-native-qrcode-scanner';
 
 export const QRScreen = () => {
   const [data, SetData] = React.useState('scan something');
@@ -34,7 +33,7 @@ export const QRScreen = () => {
               }
               showMarker={true}
               containerStyle={{flex: 1}}
-              cameraContainerStyle={{flex: 1, padding: 50,}}
+              cameraContainerStyle={{flex: 1, padding: 50}}
             />
           </View>
         </View>

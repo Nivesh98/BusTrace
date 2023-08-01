@@ -1,27 +1,33 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-export const ButtonGroup = ({buttons, doSomthingAfterClick}) => {
+interface ButtonGroupProps {
+  buttons: Array<string>; // Replace 'string' with the appropriate type for your buttons
+  doSomthingAfterClick: (item: string) => void; // Replace '() => void' with the appropriate function type
+}
+
+export const ButtonGroup: React.FC<ButtonGroupProps> = ({
+  buttons,
+  doSomthingAfterClick,
+}) => {
   const [clickedId, setClickedId] = useState(0);
 
-  const handleClick = (item: any, id: any) => {
-    setClickedId(id), doSomthingAfterClick(item);
+  const handleClick = (item: string, id: number) => {
+    setClickedId(id);
+    doSomthingAfterClick(item);
   };
+
   return (
     <View style={styles.container}>
       {buttons.map((buttonLabel, index) => {
         return (
           <TouchableOpacity
-            onPress={item => handleClick(item, index)}
+            onPress={() => handleClick(buttonLabel, index)}
             key={index}
             style={[
               index === clickedId ? styles.buttonActive : styles.button,
-              index === 0
-                ? {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}
-                : '',
-              index === 1
-                ? {borderTopRightRadius: 10, borderBottomRightRadius: 10}
-                : '',
+              index === 0 ? styles.customStyleLeft : null,
+              index === 1 ? styles.customStyleRight : null,
             ]}>
             <Text style={index === clickedId ? styles.textActive : styles.text}>
               {buttonLabel}
@@ -61,5 +67,14 @@ const styles = StyleSheet.create({
   },
   textActive: {
     color: 'white',
+  },
+
+  customStyleLeft: {
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+  },
+  customStyleRight: {
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
   },
 });
