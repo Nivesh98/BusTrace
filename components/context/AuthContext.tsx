@@ -21,11 +21,7 @@ export const AuthContext = createContext<UserContextType>({
   setUserToken: () => {},
 });
 
-interface AuthProviderProps {
-  children: React.ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
+export const AuthProvider = ({children}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userToken, setUserToken] = useState<string>('');
 

@@ -1,23 +1,19 @@
-import {initializeApp} from 'firebase/app';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
-import React, {FC, useContext, useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
-  Alert,
-  Image,
-  ScrollView,
   StyleSheet,
+  ScrollView,
   Text,
-  TouchableOpacity,
   View,
+  Image,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {CustomButton} from '../CustomButton';
 import {InputField} from '../InputField';
 import {AuthContext} from '../context/AuthContext';
-
-interface LoginScreenProps {
-  navigation: any; // Replace 'any' with the appropriate type for the 'navigation' prop
-}
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import {initializeApp} from 'firebase/app';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyALcJMKkPavZfvi6dOqvxfiJoTU17_m35g',
@@ -31,7 +27,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export const LoginScreen: FC<LoginScreenProps> = ({navigation}) => {
+export const LoginScreen = ({navigation}) => {
   const {login, guestCeck} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -39,17 +35,21 @@ export const LoginScreen: FC<LoginScreenProps> = ({navigation}) => {
   const [error, setError] = useState('');
 
   const isValidValue = () => {
-    return email.trim() && password.trim();
+    if (email.trim()) {
+      if (password.trim()) {
+        return true;
+      }
+    }
   };
 
-  const updateError = (error: string, updateErro: (error: string) => void) => {
+  const updateError = (error, updateErro) => {
     updateErro(error);
     setTimeout(() => {
       updateErro('');
     }, 2500);
   };
 
-  const isValidEmail = (value: string) => {
+  const isValidEmail = value => {
     const regx = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     return regx.test(value);
   };
@@ -91,7 +91,7 @@ export const LoginScreen: FC<LoginScreenProps> = ({navigation}) => {
     }
   };
 
-  const printNumber = (item: any): number => {
+  const printNumber = (item): number => {
     return 1;
   };
   return (
@@ -102,17 +102,16 @@ export const LoginScreen: FC<LoginScreenProps> = ({navigation}) => {
         </View>
         {error ? (
           <Text style={{color: 'red', textAlign: 'center'}}>{error}</Text>
-        ) : null}
-
+        ) : (
+          <Text>{null}</Text>
+        )}
         <InputField
           label={'Email'}
           icon={<Icon name="email" size={20} color="#fff" />}
           textColor={'#003f5c'}
           keyboardType={'email-address'}
-          inputType={undefined} // Add the inputType prop here
           onChangeFunction={email => setEmail(email)}
         />
-
         <InputField
           label={'Password'}
           icon={<Icon name="lock" size={20} color="#fff" />}
