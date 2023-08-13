@@ -1,8 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
 import LottieView from 'lottie-react-native';
+import React, {useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native'; // Import your RootStackParamList or equivalent
 
-export const SplashScreen = props => {
+type SplashScreenProps = {
+  navigation: any;
+};
+
+export const SplashScreen: React.FC<SplashScreenProps> = ({navigation}) => {
   const [authLoaded, setAuthLoaded] = useState<Boolean>(false);
   const [animationLoaded, setAnimationAuthLoaded] = useState<Boolean>(false);
 
@@ -14,9 +18,9 @@ export const SplashScreen = props => {
 
   useEffect(() => {
     if (authLoaded && animationLoaded) {
-      props.navigation.replace('Login');
+      navigation.replace('Login');
     }
-  }, [animationLoaded, authLoaded, props.navigation]);
+  }, [animationLoaded, authLoaded, navigation]);
 
   const onAnimationFinish = () => setAnimationAuthLoaded(true);
 

@@ -1,20 +1,20 @@
-import React, {useContext, useState} from 'react';
+import {initializeApp} from 'firebase/app';
+import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth';
+import React, {useContext, useEffect, useState} from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
+  Alert,
   Image,
   ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
-  Alert,
+  View,
 } from 'react-native';
-import {ButtonGroup} from '../ButtonGroup';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import {InputField} from '../InputField';
-import {CustomButton} from '../CustomButton';
 import DatePicker from 'react-native-date-picker';
-import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
-import {initializeApp} from 'firebase/app';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import {ButtonGroup} from '../ButtonGroup';
+import {CustomButton} from '../CustomButton';
+import {InputField} from '../InputField';
 import {AuthContext} from '../context/AuthContext';
 
 const firebaseConfig = {
@@ -29,7 +29,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-export const RegisterScreen = ({navigation}) => {
+interface RegisterScreenProps {
+  navigation: any;
+}
+
+export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
+  let a: string = '';
   const {login} = useContext(AuthContext);
 
   const [email, setEmail] = useState('');
@@ -39,50 +44,60 @@ export const RegisterScreen = ({navigation}) => {
   const [date, setDate] = useState(new Date());
   const [open, setOpen] = useState(false);
   const [dobLabel, setDobLabel] = useState('Date of Birth');
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
 
-  const isValidValue = () => {
-    if (fullName.trim()) {
-      if (email.trim()) {
-        if (password.trim()) {
-          if (confirmPassword.trim()) {
-            if (dobLabel !== 'Date of Birth') {
-              return true;
-            }
-          }
-        }
-      }
+  const [userType, setUserType] = useState('');
+
+  const isValidValue = (): boolean => {
+    if (
+      fullName.trim() &&
+      email.trim() &&
+      password.trim() &&
+      confirmPassword.trim() &&
+      dobLabel !== 'Date of Birth'
+    ) {
+      return true;
     }
+    return false;
   };
 
-  const updateError = (error, updateErro) => {
-    updateErro(error);
+  const updateError = (
+    errorMessage: string,
+    updateErrorFn: (error: string) => void,
+  ) => {
+    updateErrorFn(errorMessage);
     setTimeout(() => {
-      updateErro('');
+      updateErrorFn('');
     }, 2500);
   };
 
-  const isValidEmail = value => {
+  const isValidEmail = (value: string): boolean => {
     const regx = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     return regx.test(value);
   };
 
-  const isValidForm = () => {
+  const isValidForm = (): boolean => {
     if (!isValidValue()) {
-      return updateError('Required all fields', setError);
+      updateError('Required all fields', setError);
+      return false;
     }
+
     if (!fullName.trim() || fullName.length < 3) {
-      return updateError('Invalid name!', setError);
+      updateError('Invalid name!', setError);
+      return false;
     }
     if (!isValidEmail(email)) {
       console.log('email vlaid ', isValidEmail(email));
-      return updateError('Invalid email!', setError);
+      updateError('Invalid email!', setError);
+      return false;
     }
     if (!password.trim() || password.length < 8) {
-      return updateError('Password is less than 8 characters!', setError);
+      updateError('Password is less than 8 characters!', setError);
+      return false;
     }
     if (password !== confirmPassword) {
-      return updateError('Password is not matched!', setError);
+      updateError('Password is not matched!', setError);
+      return false;
     }
 
     return true;
@@ -109,10 +124,18 @@ export const RegisterScreen = ({navigation}) => {
         });
     }
   };
-
-  const printNumber = (item): number => {
-    return 1;
+  const printNumber = (item: string) => {
+    console.log(`Clicked: Item: ${item}`);
+    a = item;
+    setUserType(item);
+    //console.log('userType', userType);
+    console.log(a);
   };
+
+  useEffect(() => {
+    console.log('userType', userType);
+  }, [userType]);
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -149,6 +172,7 @@ export const RegisterScreen = ({navigation}) => {
           label={'Full name'}
           icon={<Icon name="person" size={20} color="#fff" />}
           textColor={'#003f5c'}
+          inputType={'Text'}
           keyboardType={'ascii-capable'}
           onChangeFunction={fullName => setFullName(fullName)}
         />
@@ -157,6 +181,7 @@ export const RegisterScreen = ({navigation}) => {
           icon={<Icon name="email" size={20} color="#fff" />}
           textColor={'#003f5c'}
           keyboardType={'email-address'}
+          inputType={'Text'}
           onChangeFunction={email => setEmail(email)}
         />
         <InputField

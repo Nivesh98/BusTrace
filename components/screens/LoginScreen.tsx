@@ -1,19 +1,19 @@
-import React, {useState, useContext} from 'react';
+import {initializeApp} from 'firebase/app';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import React, {useContext, useState} from 'react';
 import {
-  StyleSheet,
-  ScrollView,
-  Text,
-  View,
-  Image,
-  TouchableOpacity,
   Alert,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {CustomButton} from '../CustomButton';
 import {InputField} from '../InputField';
 import {AuthContext} from '../context/AuthContext';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
-import {initializeApp} from 'firebase/app';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyALcJMKkPavZfvi6dOqvxfiJoTU17_m35g',
@@ -25,45 +25,56 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+//const auth = getAuth(app);
 
-export const LoginScreen = ({navigation}) => {
+interface LoginScreenProps {
+  navigation: any;
+}
+
+export const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   const {login, guestCeck} = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState<string>('');
 
-  const isValidValue = () => {
-    if (email.trim()) {
-      if (password.trim()) {
-        return true;
-      }
+  console.log('email, password', email, password);
+
+  const isValidValue = (): boolean => {
+    if (email.trim() && password.trim()) {
+      return true;
     }
+    return false;
   };
 
-  const updateError = (error, updateErro) => {
-    updateErro(error);
+  const updateError = (
+    errorMessage: string,
+    updateErrorFn: (error: string) => void,
+  ) => {
+    updateErrorFn(errorMessage);
     setTimeout(() => {
-      updateErro('');
+      updateErrorFn('');
     }, 2500);
   };
 
-  const isValidEmail = value => {
+  const isValidEmail = (value: string): boolean => {
     const regx = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
     return regx.test(value);
   };
 
-  const isValidForm = () => {
+  const isValidForm = (): boolean => {
     if (!isValidValue()) {
-      return updateError('Required all fields', setError);
+      updateError('Required all fields', setError);
+      return false;
     }
     if (!isValidEmail(email)) {
       console.log('email vlaid ', isValidEmail(email));
-      return updateError('Invalid email!', setError);
+      updateError('Invalid email!', setError);
+      return false;
     }
     if (!password.trim() || password.length < 8) {
-      return updateError('Password is less than 8 characters!', setError);
+      updateError('Password is less than 8 characters!', setError);
+      return false;
     }
 
     return true;
@@ -71,19 +82,16 @@ export const LoginScreen = ({navigation}) => {
 
   const signin = () => {
     if (isValidForm()) {
-      const auth = getAuth();
-      signInWithEmailAndPassword(auth, email, password)
+      const authInstance = getAuth();
+      signInWithEmailAndPassword(authInstance, email, password)
         .then(userCredential => {
-          // Signed in
-          // const user = userCredential.user;
-          // ...
           Alert.alert('User Logged in sucessfully!');
 
           console.log('Login Successfully!');
           login();
         })
         .catch(error => {
-          const errorCode = error.code;
+          //const errorCode = error.code;
           const errorMessage = error.message;
           console.log('Login fail!');
           Alert.alert(errorMessage);
@@ -91,9 +99,9 @@ export const LoginScreen = ({navigation}) => {
     }
   };
 
-  const printNumber = (item): number => {
-    return 1;
-  };
+  // const printNumber = (item: any): number => {
+  //   return 1;
+  // };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
@@ -110,14 +118,17 @@ export const LoginScreen = ({navigation}) => {
           icon={<Icon name="email" size={20} color="#fff" />}
           textColor={'#003f5c'}
           keyboardType={'email-address'}
-          onChangeFunction={email => setEmail(email)}
+          inputType={'Text'}
+          onChangeFunction={(inputEmail: string) => setEmail(inputEmail)}
         />
         <InputField
           label={'Password'}
           icon={<Icon name="lock" size={20} color="#fff" />}
           textColor={'#003f5c'}
           inputType={'Password'}
-          onChangeFunction={password => setPassword(password)}
+          onChangeFunction={(inputPassword: string) =>
+            setPassword(inputPassword)
+          }
         />
         <TouchableOpacity>
           <Text style={styles.forgot_button}>Forgot Password?</Text>

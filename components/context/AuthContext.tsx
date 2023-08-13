@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {createContext, useEffect, useState} from 'react';
+import React, {ReactNode, createContext, useEffect, useState} from 'react';
 
 interface UserContextType {
   isLoading: boolean;
@@ -21,7 +21,7 @@ export const AuthContext = createContext<UserContextType>({
   setUserToken: () => {},
 });
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({children}: {children: ReactNode}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userToken, setUserToken] = useState<string>('');
 

@@ -1,7 +1,15 @@
-import {StyleSheet, TextInput, View} from 'react-native';
 import React from 'react';
+import {StyleSheet, TextInput, TextInputProps, View} from 'react-native';
 
-export const InputField = ({
+interface InputFieldProps extends TextInputProps {
+  label: string;
+  icon: React.ReactNode;
+  inputType: 'Password' | 'Text';
+  textColor: string;
+  onChangeFunction: (text: string) => void;
+}
+
+export const InputField: React.FC<InputFieldProps> = ({
   label,
   icon,
   inputType,
@@ -17,7 +25,7 @@ export const InputField = ({
           style={styles.TextInputPassword}
           placeholder={label}
           keyboardType={keyboardType}
-          // placeholderTextColor={textColor}
+          placeholderTextColor={textColor}
           secureTextEntry={true}
           autoCapitalize={'none'}
           onChangeText={onChangeFunction}
@@ -26,7 +34,7 @@ export const InputField = ({
         <TextInput
           style={styles.TextInputPassword}
           placeholder={label}
-          // placeholderTextColor={textColor}
+          placeholderTextColor={textColor}
           keyboardType={keyboardType}
           autoCapitalize={'none'}
           onChangeText={onChangeFunction}

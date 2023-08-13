@@ -1,27 +1,35 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, TouchableOpacity, Text} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-export const ButtonGroup = ({buttons, doSomthingAfterClick}) => {
-  const [clickedId, setClickedId] = useState(0);
+interface ButtonGroupProps {
+  buttons: string[];
+  doSomthingAfterClick: (item: string) => void;
+}
 
-  const handleClick = (item: any, id: any) => {
+export const ButtonGroup: React.FC<ButtonGroupProps> = ({
+  buttons,
+  doSomthingAfterClick,
+}) => {
+  const [clickedId, setClickedId] = useState<number>(0);
+
+  const handleClick = (item: string, id: number) => {
     setClickedId(id), doSomthingAfterClick(item);
   };
   return (
     <View style={styles.container}>
-      {buttons.map((buttonLabel, index) => {
+      {buttons.map((buttonLabel: string, index: number) => {
         return (
           <TouchableOpacity
-            onPress={item => handleClick(item, index)}
+            onPress={() => handleClick(buttonLabel, index)}
             key={index}
             style={[
               index === clickedId ? styles.buttonActive : styles.button,
               index === 0
                 ? {borderTopLeftRadius: 10, borderBottomLeftRadius: 10}
-                : '',
+                : {},
               index === 1
                 ? {borderTopRightRadius: 10, borderBottomRightRadius: 10}
-                : '',
+                : {},
             ]}>
             <Text style={index === clickedId ? styles.textActive : styles.text}>
               {buttonLabel}
