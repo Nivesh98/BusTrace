@@ -29,7 +29,6 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-// Initialize Cloud Firestore and get a reference to the service
 const db = getFirestore(app);
 
 interface RegisterScreenProps {
@@ -41,6 +40,7 @@ const yourAsyncFunction = async (
   email: string,
   DoB: string,
   userType: string,
+  userUid: string,
 ): Promise<void> => {
   try {
     console.log('inside yourAsyncFunction', name, email, DoB, userType);
@@ -49,6 +49,7 @@ const yourAsyncFunction = async (
       email: email,
       DoB: DoB,
       userType: userType,
+      userUid: userUid,
     });
     console.log('Document written with ID: ', docRef.id);
     console.log('Document written with ID: ');
@@ -135,7 +136,8 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
           // Signed in
           //const user = userCredential.user;
           //console.log(userCredential);
-          yourAsyncFunction(fullName, email, dobLabel, userType);
+          const userUid = userCredential.user.uid; // Get the user's UID
+          yourAsyncFunction(fullName, email, dobLabel, userType, userUid);
           login();
           Alert.alert('User Logged in sucessfully!');
           console.log('Register Successfully!');

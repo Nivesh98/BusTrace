@@ -1,35 +1,103 @@
-import React, {useContext, useEffect} from 'react';
+import Geolocation from '@react-native-community/geolocation';
+import React, {useContext, useEffect, useState} from 'react';
 import {
+  Image,
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  ScrollView,
   TouchableOpacity,
+  View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {AuthContext} from '../context/AuthContext';
 
-export const HomeScreen = () => {
+export const HomeScreen: React.FC = () => {
   const {logout} = useContext(AuthContext);
   const {userToken, isLoading} = useContext(AuthContext);
   console.log('user token inside home ', {userToken}, {isLoading});
 
+  const [currentLocation, setCurrentLocation] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
+  const [currentDeltas, setCurrentDeltas] = useState({
+    latitudeDelta: 0.01,
+    longitudeDelta: 0.01,
+  });
+
+  useEffect(() => {
+    getCurrentLocation();
+    const interval = setInterval(() => {
+      getCurrentLocation();
+    }, 5000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  const getCurrentLocation = () => {
+    Geolocation.getCurrentPosition(
+      position => {
+        const {latitude, longitude} = position.coords;
+        setCurrentLocation({
+          latitude,
+          longitude,
+        });
+      },
+      error => console.log('Error getting location:', error),
+      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
+    );
+  };
+
+  const onRegionChange = (region: any) => {
+    setCurrentDeltas({
+      latitudeDelta: region.latitudeDelta,
+      longitudeDelta: region.longitudeDelta,
+    });
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={styles.menu}>
-        <View>
-          <Icon name="menu" size={24} color={'#fff'} />
+      <View>
+        <View style={styles.menu}>
+          <View>
+            <Icon name="menu" size={24} color={'#fff'} />
+          </View>
+          <View style={styles.homeScreen}>
+            <Text style={styles.homeScreenText}>Home</Text>
+          </View>
         </View>
-        <View style={styles.homeScreen}>
-          <Text style={styles.homeScreenText}>Home</Text>
+
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() => {
+              logout();
+            }}
+            style={styles.shutdownButton}>
+            <Image
+              source={require('../assets/images/shutdown.png')}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          logout();
-        }}>
-        <Text style={styles.signOutBtn}>SignOut</Text>
-      </TouchableOpacity>
+      {/* <View style={styles.containermap}>
+        <MapView
+          style={styles.map}
+          region={{
+            latitude: currentLocation.latitude,
+            longitude: currentLocation.longitude,
+            ...currentDeltas,
+          }}
+          onRegionChange={onRegionChange}>
+          <Marker
+            coordinate={currentLocation}
+            title="Current Location"
+            description="here"
+          />
+        </MapView>
+      </View> */}
     </ScrollView>
   );
 };
@@ -57,6 +125,9 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
     marginBottom: 20,
+  },
+  map: {
+    flex: 1,
   },
   inputViewEmail: {
     backgroundColor: '#d2691e',
@@ -173,5 +244,19 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     color: 'red',
+  },
+  icon: {
+    bottom: 10, // Adjust this value to control the distance from the bottom
+    right: 10, // Adjust this value to control the distance from the right
+    width: 30,
+    height: 30,
+  },
+  shutdownButton: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+  },
+  containermap: {
+    flex: 1,
   },
 });
