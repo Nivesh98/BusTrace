@@ -1,5 +1,6 @@
 import {initializeApp} from 'firebase/app';
 import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth';
+import {addDoc, collection, getFirestore} from 'firebase/firestore';
 import React, {useContext, useEffect, useState} from 'react';
 import {
   Alert,
@@ -28,10 +29,33 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
 
 interface RegisterScreenProps {
   navigation: any;
 }
+
+const yourAsyncFunction = async (
+  name: string,
+  email: string,
+  DoB: string,
+  userType: string,
+): Promise<void> => {
+  try {
+    console.log('inside yourAsyncFunction', name, email, DoB, userType);
+    const docRef = await addDoc(collection(db, 'users'), {
+      name: name,
+      email: email,
+      DoB: DoB,
+      userType: userType,
+    });
+    console.log('Document written with ID: ', docRef.id);
+    console.log('Document written with ID: ');
+  } catch (e) {
+    console.error('Error adding document: ', e);
+  }
+};
 
 export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   let a: string = '';
@@ -41,7 +65,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(new Date('2005-01-01'));
   const [open, setOpen] = useState(false);
   const [dobLabel, setDobLabel] = useState('Date of Birth');
   const [error, setError] = useState<string>('');
@@ -110,6 +134,8 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
         .then(userCredential => {
           // Signed in
           //const user = userCredential.user;
+          //console.log(userCredential);
+          yourAsyncFunction(fullName, email, dobLabel, userType);
           login();
           Alert.alert('User Logged in sucessfully!');
           console.log('Register Successfully!');
@@ -131,6 +157,7 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
     //console.log('userType', userType);
     console.log(a);
   };
+  console.log(dobLabel);
 
   useEffect(() => {
     console.log('userType', userType);
@@ -231,10 +258,10 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
             mode={'date'}
             minimumDate={new Date('1950-01-01')}
             maximumDate={new Date('2005-01-01')}
-            onConfirm={date => {
+            onConfirm={selectedDate => {
               setOpen(false);
-              setDate(date);
-              setDobLabel(date.toDateString());
+              setDate(selectedDate);
+              setDobLabel(selectedDate.toDateString());
             }}
             onCancel={() => {
               setOpen(false);
