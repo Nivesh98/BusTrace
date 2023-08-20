@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {AuthContext} from '../context/AuthContext';
 
@@ -82,12 +83,12 @@ export const HomeScreen: React.FC = () => {
           </TouchableOpacity>
         </View>
       </View>
-      {/* <View style={styles.containermap}>
+      <View style={styles.containermap}>
         <MapView
           style={styles.map}
           region={{
-            latitude: currentLocation.latitude,
-            longitude: currentLocation.longitude,
+            latitude: 6,
+            longitude: 80,
             ...currentDeltas,
           }}
           onRegionChange={onRegionChange}>
@@ -97,7 +98,7 @@ export const HomeScreen: React.FC = () => {
             description="here"
           />
         </MapView>
-      </View> */}
+      </View>
     </ScrollView>
   );
 };
