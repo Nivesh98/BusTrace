@@ -1,6 +1,3 @@
-import {initializeApp} from 'firebase/app';
-import {createUserWithEmailAndPassword, getAuth} from 'firebase/auth';
-import {addDoc, collection, getFirestore} from 'firebase/firestore';
 import React, {useContext, useEffect, useState} from 'react';
 import {
   Alert,
@@ -16,39 +13,14 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {ButtonGroup} from '../ButtonGroup';
 import {CustomButton} from '../CustomButton';
 import {InputField} from '../InputField';
+import FirebaseAuthService from '../Services/FirebaseAuthService';
 import firebaseConfig from '../Services/firebaseConfig';
 import {AuthContext} from '../context/AuthContext';
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
 
 interface RegisterScreenProps {
   navigation: any;
 }
-
-const yourAsyncFunction = async (
-  name: string,
-  email: string,
-  DoB: string,
-  userType: string,
-  userUid: string,
-): Promise<void> => {
-  try {
-    console.log('inside yourAsyncFunction', name, email, DoB, userType);
-    const docRef = await addDoc(collection(db, 'users'), {
-      name: name,
-      email: email,
-      DoB: DoB,
-      userType: userType,
-      userUid: userUid,
-    });
-    console.log('Document written with ID: ', docRef.id);
-    console.log('Document written with ID: ');
-  } catch (e) {
-    console.error('Error adding document: ', e);
-  }
-};
+const firebaseService = new FirebaseAuthService(firebaseConfig);
 
 export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
   let a: string = '';
@@ -122,33 +94,27 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
 
   const createUser = () => {
     if (isValidForm()) {
-      //const auth = getAuth();
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(userCredential => {
-          // Signed in
-          //const user = userCredential.user;
-          //console.log(userCredential);
-          const userUid = userCredential.user.uid; // Get the user's UID
-          yourAsyncFunction(fullName, email, dobLabel, userType, userUid);
-          login();
-          Alert.alert('User Logged in sucessfully!');
-          console.log('Register Successfully!');
-          // ...
-        })
-        .catch(error => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          Alert.alert(errorMessage);
-          console.log('Register fail!');
-          // ..
-        });
+      try {
+        firebaseService.registerUser(
+          fullName,
+          email,
+          password,
+          dobLabel,
+          userType,
+        );
+        login();
+        Alert.alert('User registered successfully!');
+        console.log('Register Successfully!');
+      } catch (error) {
+        Alert.alert(error.message);
+        console.log('Registration failed!', error);
+      }
     }
   };
   const printNumber = (item: string) => {
     console.log(`Clicked: Item: ${item}`);
     a = item;
     setUserType(item);
-    //console.log('userType', userType);
     console.log(a);
   };
   console.log(dobLabel);

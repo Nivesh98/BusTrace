@@ -1,5 +1,3 @@
-import {initializeApp} from 'firebase/app';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 import React, {useContext, useState} from 'react';
 import {
   Alert,
@@ -13,15 +11,15 @@ import {
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {CustomButton} from '../CustomButton';
 import {InputField} from '../InputField';
+import FirebaseAuthService from '../Services/FirebaseAuthService';
 import firebaseConfig from '../Services/firebaseConfig';
 import {AuthContext} from '../context/AuthContext';
-
-const app = initializeApp(firebaseConfig);
-//const auth = getAuth(app);
 
 interface LoginScreenProps {
   navigation: any;
 }
+
+const authService = new FirebaseAuthService(firebaseConfig);
 
 export const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   const {login, guestCheck} = useContext(AuthContext);
@@ -74,8 +72,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
 
   const signin = () => {
     if (isValidForm()) {
-      const authInstance = getAuth();
-      signInWithEmailAndPassword(authInstance, email, password)
+      authService
+        .signInWithEmailAndPassword(email, password)
         .then(userCredential => {
           Alert.alert('User Logged in sucessfully!');
 
@@ -91,9 +89,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
     }
   };
 
-  // const printNumber = (item: any): number => {
-  //   return 1;
-  // };
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={styles.container}>
