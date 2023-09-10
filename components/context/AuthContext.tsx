@@ -6,7 +6,7 @@ interface UserContextType {
   userToken: string;
   login: () => void;
   logout: () => void;
-  guestCeck: () => void;
+  guestCheck: () => void;
   setIsLoading: (isLoading: boolean) => void;
   setUserToken: (userToken: string) => void;
 }
@@ -16,34 +16,32 @@ export const AuthContext = createContext<UserContextType>({
   userToken: '',
   login: () => {},
   logout: () => {},
-  guestCeck: () => {},
+  guestCheck: () => {},
   setIsLoading: () => {},
   setUserToken: () => {},
 });
 
-export const AuthProvider = ({children}: {children: ReactNode}) => {
+export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userToken, setUserToken] = useState<string>('');
 
   const login = () => {
-    if (userToken === null) {
+    if (userToken === '') {
       console.log('if login ', userToken);
     }
     setIsLoading(true);
-    setUserToken('ioiokfjdk');
+    setUserToken('1');
     console.log('Login', {isLoading}, {userToken});
-    AsyncStorage.setItem('userToken', 'ioiokfjdk');
-    setIsLoading(false);
+    AsyncStorage.setItem('userToken', '1').finally(() => setIsLoading(false));
   };
 
   const logout = () => {
-    if (userToken === null) {
+    if (userToken === '') {
       console.log('if logout ', userToken);
     }
     setIsLoading(true);
     setUserToken('');
-    AsyncStorage.removeItem('userToken');
-    setIsLoading(false);
+    AsyncStorage.removeItem('userToken').finally(() => setIsLoading(false));
     console.log('logout', {isLoading}, {userToken});
   };
 
@@ -57,14 +55,15 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
       }
       console.log(userTokenLogged);
       setUserToken(userTokenLogged);
-      setIsLoading(false);
     } catch (e) {
-      console.log('isLogged in error ${e}');
+      console.log(`isLoggedIn error ${e}`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const guestCeck = () => {
-    setUserToken('ioiokfjdk');
+  const guestCheck = () => {
+    setUserToken('1');
     setIsLoading(true);
     setIsLoading(false);
   };
@@ -80,7 +79,7 @@ export const AuthProvider = ({children}: {children: ReactNode}) => {
     setUserToken,
     login,
     logout,
-    guestCeck,
+    guestCheck,
   };
 
   return (

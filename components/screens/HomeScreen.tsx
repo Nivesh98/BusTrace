@@ -1,15 +1,8 @@
 import Geolocation from '@react-native-community/geolocation';
+import {debounce} from 'lodash';
 import React, {useContext, useEffect, useState} from 'react';
-import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Region} from 'react-native-maps';
 import {AuthContext} from '../context/AuthContext';
 
 export const HomeScreen: React.FC = () => {
@@ -51,55 +44,26 @@ export const HomeScreen: React.FC = () => {
     );
   };
 
-  const onRegionChange = (region: any) => {
+  const onRegionChange = debounce((region: Region) => {
     setCurrentDeltas({
       latitudeDelta: region.latitudeDelta,
       longitudeDelta: region.longitudeDelta,
     });
-  };
+  }, 300); // Adjust the debounce delay
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <View>
-        <View style={styles.menu}>
-          <View>
-            <Icon name="menu" size={24} color={'#fff'} />
-          </View>
-          <View style={styles.homeScreen}>
-            <Text style={styles.homeScreenText}>Home</Text>
-          </View>
-        </View>
-
-        <View style={styles.container}>
-          <TouchableOpacity
-            onPress={() => {
-              logout();
-            }}
-            style={styles.shutdownButton}>
-            <Image
-              source={require('../assets/images/shutdown.png')}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.containermap}>
-        <MapView
-          style={styles.map}
-          region={{
-            latitude: 6,
-            longitude: 80,
-            ...currentDeltas,
-          }}
-          onRegionChange={onRegionChange}>
-          <Marker
-            coordinate={currentLocation}
-            title="Current Location"
-            description="here"
-          />
-        </MapView>
-      </View>
-    </ScrollView>
+    <View style={styles.container}>
+      <TouchableOpacity
+        onPress={() => {
+          logout();
+        }}
+        style={styles.shutdownButton}>
+        <Image
+          source={require('../assets/images/shutdown.png')}
+          style={styles.icon}
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
 

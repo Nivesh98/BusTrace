@@ -1,11 +1,10 @@
-import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {HomeScreen} from '../screens/HomeScreen';
-import {SeatReservationScreen} from '../screens/SeatReservationScreen';
-import {FindBusScreen} from '../screens/FindBusScreen';
-import {QRScreen} from '../screens/QRScreen';
+import React from 'react';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
+import {FindBusScreen} from '../screens/FindBusScreen';
+import {HomeScreen} from '../screens/HomeScreen';
+import {QRScreen} from '../screens/QRScreen';
+import {SeatReservationScreen} from '../screens/SeatReservationScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -13,8 +12,15 @@ export const TabNavigator = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        tabBarShowLabel: false,
-        headerShown: false,
+        tabBarShowLabel: true,
+        headerShown: true,
+        headerStyle: {
+          backgroundColor: '#dc143c',
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          color: '#fff',
+        },
         tabBarStyle: {backgroundColor: '#dc143c'},
         tabBarInactiveTintColor: '#fff',
         tabBarActiveTintColor: 'yellow',
@@ -26,10 +32,11 @@ export const TabNavigator = () => {
           tabBarIcon: ({color, size}) => (
             <Ionicons name="home" color={color} size={size} />
           ),
+          headerTitle: 'Home',
         }}
       />
       <Tab.Screen
-        name="Seat"
+        name="Reservation"
         component={SeatReservationScreen}
         options={{
           tabBarIcon: ({color, size}) => (
@@ -38,7 +45,7 @@ export const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="FindBus"
+        name="Find Bus"
         component={FindBusScreen}
         options={{
           tabBarIcon: ({color, size}) => (
