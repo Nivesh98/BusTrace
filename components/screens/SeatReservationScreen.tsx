@@ -1,22 +1,8 @@
 import * as React from 'react';
-import {SafeAreaView, ScrollView, StyleSheet, Text, View} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import {StyleSheet, View} from 'react-native';
 
 export const SeatReservationScreen = () => {
-  return (
-    <ScrollView showsVerticalScrollIndicator={false}>
-      <SafeAreaView>
-        <View style={styles.menu}>
-          <View>
-            <Icon name="menu" size={24} color={'#fff'} />
-          </View>
-          <View style={styles.homeScreen}>
-            <Text style={styles.homeScreenText}>Reservation</Text>
-          </View>
-        </View>
-      </SafeAreaView>
-    </ScrollView>
-  );
+  return <View style={styles.container} />;
 };
 
 const styles = StyleSheet.create({

@@ -1,55 +1,11 @@
-import Geolocation from '@react-native-community/geolocation';
-import {debounce} from 'lodash';
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {Region} from 'react-native-maps';
 import {AuthContext} from '../context/AuthContext';
 
 export const HomeScreen: React.FC = () => {
   const {logout} = useContext(AuthContext);
   const {userToken, isLoading} = useContext(AuthContext);
   console.log('user token inside home ', {userToken}, {isLoading});
-
-  const [currentLocation, setCurrentLocation] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
-  const [currentDeltas, setCurrentDeltas] = useState({
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
-  });
-
-  useEffect(() => {
-    getCurrentLocation();
-    const interval = setInterval(() => {
-      getCurrentLocation();
-    }, 5000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  const getCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        setCurrentLocation({
-          latitude,
-          longitude,
-        });
-      },
-      error => console.log('Error getting location:', error),
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
-  };
-
-  const onRegionChange = debounce((region: Region) => {
-    setCurrentDeltas({
-      latitudeDelta: region.latitudeDelta,
-      longitudeDelta: region.longitudeDelta,
-    });
-  }, 300); // Adjust the debounce delay
 
   return (
     <View style={styles.container}>

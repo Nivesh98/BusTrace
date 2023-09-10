@@ -16,16 +16,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {ButtonGroup} from '../ButtonGroup';
 import {CustomButton} from '../CustomButton';
 import {InputField} from '../InputField';
+import firebaseConfig from '../Services/firebaseConfig';
 import {AuthContext} from '../context/AuthContext';
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyALcJMKkPavZfvi6dOqvxfiJoTU17_m35g',
-  authDomain: 'bustrace-f6f3a.firebaseapp.com',
-  projectId: 'bustrace-f6f3a',
-  storageBucket: 'bustrace-f6f3a.appspot.com',
-  messagingSenderId: '632304619930',
-  appId: '1:632304619930:web:6933dffc0268ad889aea23',
-};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
