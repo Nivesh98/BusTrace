@@ -4,8 +4,16 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword as signInWithEmailAndPasswordFirebase,
+  signOut as signOutFirebase,
 } from 'firebase/auth';
-import {Firestore, addDoc, collection, getFirestore} from 'firebase/firestore';
+import {
+  DocumentData,
+  Firestore,
+  addDoc,
+  collection,
+  getDocs,
+  getFirestore,
+} from 'firebase/firestore';
 
 interface FirebaseConfig {
   apiKey: string;
@@ -75,12 +83,42 @@ class FirebaseAuthService {
   }
   /******************************************************************************************/
 
-  // Add more authentication methods or Firebase services as needed
+  async signOut() {
+    try {
+      await signOutFirebase(this.auth); // Call the signOut method from Firebase Auth
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  // Example:
-  // async signOut() {
-  //   await signOut(this.auth);
-  // }
+  /***************************************Get Data******************************************************/
+
+  async getUserData() {
+    try {
+      const querySnapshot = await getDocs(collection(this.db, 'users'));
+      const userData: {id: string; data: DocumentData}[] = [];
+
+      querySnapshot.forEach(doc => {
+        userData.push({id: doc.id, data: doc.data()});
+      });
+
+      return userData;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /*****************************************************************************************************/
+
+  getCurrentUserId() {
+    const user = this.auth.currentUser;
+    if (user) {
+      return user.uid;
+    } else {
+      // User is not authenticated
+      return null;
+    }
+  }
 }
 
 export default FirebaseAuthService;

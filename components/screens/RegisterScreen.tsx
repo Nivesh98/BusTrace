@@ -106,7 +106,6 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
         Alert.alert('User registered successfully!');
         console.log('Register Successfully!');
       } catch (error) {
-        Alert.alert(error.message);
         console.log('Registration failed!', error);
       }
     }

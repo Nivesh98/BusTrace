@@ -1,5 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {ReactNode, createContext, useEffect, useState} from 'react';
+import FirebaseAuthService from '../Services/FirebaseAuthService';
+import firebaseConfig from '../Services/firebaseConfig';
+
+const firebaseService = new FirebaseAuthService(firebaseConfig);
 
 interface UserContextType {
   isLoading: boolean;
@@ -25,7 +29,7 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userToken, setUserToken] = useState<string>('');
 
-  const login = () => {
+  const login = async () => {
     if (userToken === '') {
       console.log('if login ', userToken);
     }
@@ -35,14 +39,21 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
     AsyncStorage.setItem('userToken', '1').finally(() => setIsLoading(false));
   };
 
-  const logout = () => {
-    if (userToken === '') {
-      console.log('if logout ', userToken);
+  const logout = async () => {
+    try {
+      await firebaseService.signOut();
+      console.log('User signed out successfully.');
+      //Alert.alert('User signed out!');
+      if (userToken === '') {
+        console.log('if logout ', userToken);
+      }
+      setIsLoading(true);
+      setUserToken('');
+      AsyncStorage.removeItem('userToken').finally(() => setIsLoading(false));
+      console.log('logout', {isLoading}, {userToken});
+    } catch (error) {
+      console.error('Error signing out:', error);
     }
-    setIsLoading(true);
-    setUserToken('');
-    AsyncStorage.removeItem('userToken').finally(() => setIsLoading(false));
-    console.log('logout', {isLoading}, {userToken});
   };
 
   const isLoggedIn = async () => {

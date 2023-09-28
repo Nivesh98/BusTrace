@@ -70,22 +70,27 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
     return true;
   };
 
-  const signin = () => {
+  const signin = async () => {
     if (isValidForm()) {
-      authService
-        .signInWithEmailAndPassword(email, password)
-        .then(userCredential => {
-          Alert.alert('User Logged in sucessfully!');
+      try {
+        await authService.signInWithEmailAndPassword(email, password);
 
-          console.log('Login Successfully!');
-          login();
-        })
-        .catch(error => {
-          //const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log('Login fail!');
-          Alert.alert(errorMessage);
-        });
+        Alert.alert('User Logged in successfully!');
+        console.log('Login Successfully!');
+
+        login();
+      } catch (error) {
+        // Handle the sign-in error
+        //const errorMessage = error.message;
+        console.log('Login fail!');
+        // Handle the sign-in error
+        console.log('Login fail!', error);
+        if (typeof error === 'string') {
+          Alert.alert(error); // Ensure 'error' is a string before passing it to Alert.alert
+        } else {
+          Alert.alert('An error occurred while signing in.');
+        }
+      }
     }
   };
 
