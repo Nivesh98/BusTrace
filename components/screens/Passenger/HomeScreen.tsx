@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {AuthContext} from '../context/AuthContext';
+import {AuthContext} from '../../context/AuthContext';
 
 export const HomeScreen: React.FC = () => {
   const {logout} = useContext(AuthContext);
@@ -15,7 +15,7 @@ export const HomeScreen: React.FC = () => {
         }}
         style={styles.shutdownButton}>
         <Image
-          source={require('../assets/images/shutdown.png')}
+          source={require('../../assets/images/shutdown.png')}
           style={styles.icon}
         />
       </TouchableOpacity>

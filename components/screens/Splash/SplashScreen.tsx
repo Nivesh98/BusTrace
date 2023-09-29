@@ -27,13 +27,13 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({navigation}) => {
   return (
     <View style={styles.root}>
       <LottieView
-        source={require('../assets/splash2.json')}
+        source={require('../../assets/splash2.json')}
         autoPlay
         loop={false}
         onAnimationFinish={onAnimationFinish}
       />
       <LottieView
-        source={require('../assets/splash.json')}
+        source={require('../../assets/splash.json')}
         autoPlay
         loop={false}
         onAnimationFinish={onAnimationFinish}

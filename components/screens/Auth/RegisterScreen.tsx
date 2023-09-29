@@ -10,12 +10,12 @@ import {
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {ButtonGroup} from '../ButtonGroup';
-import {CustomButton} from '../CustomButton';
-import {InputField} from '../InputField';
-import FirebaseAuthService from '../Services/FirebaseAuthService';
-import firebaseConfig from '../Services/firebaseConfig';
-import {AuthContext} from '../context/AuthContext';
+import {ButtonGroup} from '../../ButtonGroup';
+import {CustomButton} from '../../CustomButton';
+import {InputField} from '../../InputField';
+import FirebaseAuthService from '../../Services/FirebaseAuthService';
+import firebaseConfig from '../../Services/firebaseConfig';
+import {AuthContext} from '../../context/AuthContext';
 
 interface RegisterScreenProps {
   navigation: any;
@@ -137,13 +137,13 @@ export const RegisterScreen: React.FC<RegisterScreenProps> = ({navigation}) => {
         <View style={styles.loginLogo}>
           <TouchableOpacity onPress={() => {}}>
             <Image
-              source={require('../assets/images/facebook.png')}
+              source={require('../../assets/images/facebook.png')}
               style={styles.facebookLogo}
             />
           </TouchableOpacity>
           <TouchableOpacity onPress={() => {}}>
             <Image
-              source={require('../assets/images/google.png')}
+              source={require('../../assets/images/google.png')}
               style={styles.googleLogo}
             />
           </TouchableOpacity>

@@ -4,8 +4,8 @@ import * as React from 'react';
 import {useState} from 'react';
 import FirebaseAuthService from '../Services/FirebaseAuthService';
 import firebaseConfig from '../Services/firebaseConfig';
-import {HomeScreenDriver} from '../screens/HomeScreenDriver';
 import {TabNavigator} from './TabNavigator';
+import {TabNavigatorDriver} from './TabNavigatorDriver';
 
 const firebaseService = new FirebaseAuthService(firebaseConfig);
 
@@ -40,7 +40,7 @@ export const AppStack = () => {
       {currentUserX === 'Passenger' ? (
         <Stack.Screen name="Home" component={TabNavigator} />
       ) : (
-        <Stack.Screen name="DriverHome" component={HomeScreenDriver} />
+        <Stack.Screen name="DriverHome" component={TabNavigatorDriver} />
       )}
     </Stack.Navigator>
   );

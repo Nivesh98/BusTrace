@@ -7,7 +7,7 @@ import {
   View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {AuthContext} from '../context/AuthContext';
+import {AuthContext} from '../../context/AuthContext';
 
 export const HomeScreenDriver = () => {
   const {logout} = useContext(AuthContext);

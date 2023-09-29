@@ -1,14 +1,14 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
-import {FindBusScreen} from '../screens/Passenger/FindBusScreen';
-import {HomeScreen} from '../screens/Passenger/HomeScreen';
-import {QRScreen} from '../screens/Passenger/QRScreen';
-import {SeatReservationScreen} from '../screens/Passenger/SeatReservationScreen';
+import {ChargeDriver} from '../screens/Driver/ChargeDriver';
+import {HomeScreenDriver} from '../screens/Driver/HomeScreenDriver';
+import {MapDriver} from '../screens/Driver/MapDriver';
+import {QRScanerDriver} from '../screens/Driver/QRScanerDriver';
 
 const Tab = createBottomTabNavigator();
 
-export const TabNavigator = () => {
+export const TabNavigatorDriver = () => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -26,8 +26,8 @@ export const TabNavigator = () => {
         tabBarActiveTintColor: 'yellow',
       }}>
       <Tab.Screen
-        name="Home2"
-        component={HomeScreen}
+        name="DriverHome"
+        component={HomeScreenDriver}
         options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name="home" color={color} size={size} />
@@ -37,8 +37,8 @@ export const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Reservation"
-        component={SeatReservationScreen}
+        name="Charge"
+        component={ChargeDriver}
         options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name="book-online" color={color} size={size} />
@@ -46,21 +46,25 @@ export const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Find Bus"
-        component={FindBusScreen}
+        name="UpdateBus"
+        component={MapDriver}
         options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name="location-searching" color={color} size={size} />
           ),
+          headerTitle: 'Map',
+          title: 'Map',
         }}
       />
       <Tab.Screen
-        name="QR"
-        component={QRScreen}
+        name="QRScan"
+        component={QRScanerDriver}
         options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name="qr-code-scanner" color={color} size={size} />
           ),
+          headerTitle: 'QR',
+          title: 'QR',
         }}
       />
     </Tab.Navigator>

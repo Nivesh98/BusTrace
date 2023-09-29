@@ -1,10 +1,10 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
-import {HomeScreenDriver} from '../screens/HomeScreenDriver';
-import {LoginScreen} from '../screens/LoginScreen';
-import {RegisterScreen} from '../screens/RegisterScreen';
-import {SplashScreen} from '../screens/SplashScreen';
+import {LoginScreen} from '../screens/Auth/LoginScreen';
+import {RegisterScreen} from '../screens/Auth/RegisterScreen';
+import {SplashScreen} from '../screens/Splash/SplashScreen';
 import {TabNavigator} from './TabNavigator';
+import {TabNavigatorDriver} from './TabNavigatorDriver';
 
 import FirebaseAuthService from '../Services/FirebaseAuthService';
 import firebaseConfig from '../Services/firebaseConfig';
@@ -30,7 +30,7 @@ export const AuthStack = () => {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
       <Stack.Screen name="Home" component={TabNavigator} />
-      <Stack.Screen name="DriverHome" component={HomeScreenDriver} />
+      <Stack.Screen name="DriverHome" component={TabNavigatorDriver} />
     </Stack.Navigator>
   );
 };
