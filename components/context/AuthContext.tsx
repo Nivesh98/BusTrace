@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {getAuth} from 'firebase/auth';
 import React, {ReactNode, createContext, useEffect, useState} from 'react';
 import FirebaseAuthService from '../Services/FirebaseAuthService';
+import firebaseAuthCheck from '../Services/firebaseAuthCheck';
 import firebaseConfig from '../Services/firebaseConfig';
 
 const firebaseService = new FirebaseAuthService(firebaseConfig);
@@ -41,6 +43,10 @@ export const AuthProvider: React.FC<{children: ReactNode}> = ({children}) => {
 
   const logout = async () => {
     try {
+      console.log(
+        'auth context getAuth(firebaseAuthCheck).currentUser?.uid',
+        getAuth(firebaseAuthCheck).currentUser?.uid,
+      );
       await firebaseService.signOut();
       console.log('User signed out successfully.');
       //Alert.alert('User signed out!');

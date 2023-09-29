@@ -1,24 +1,32 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
 
-import {HomeScreenDriver} from '../screens/HomeScreenDriver';
-import {TabNavigator} from './TabNavigator';
-
+import {useState} from 'react';
 import FirebaseAuthService from '../Services/FirebaseAuthService';
 import firebaseConfig from '../Services/firebaseConfig';
+import {HomeScreenDriver} from '../screens/HomeScreenDriver';
+import {TabNavigator} from './TabNavigator';
 
 const firebaseService = new FirebaseAuthService(firebaseConfig);
 
 const Stack = createNativeStackNavigator();
 
 export const AppStack = () => {
+  const [currentUserX, setCurrentUser] = useState(null);
+
+  firebaseService.initAuthStateListener().then(() => {
+    fetchData();
+  });
+
   const fetchData = async () => {
     const currentUser = await firebaseService.getCurrentUserId();
+
     console.log('appstack currentUser', currentUser);
     if (currentUser !== null) {
       const userData = await firebaseService.getUserData();
       if (userData !== null) {
         const user = userData.find(user => user.data.userUid === currentUser);
+        setCurrentUser(user?.data.userType);
         console.log('appstack userData', user?.data.userType);
         console.log('appstack user available');
       }
@@ -27,11 +35,13 @@ export const AppStack = () => {
     }
   };
 
-  fetchData();
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      <Stack.Screen name="Home" component={TabNavigator} />
-      <Stack.Screen name="DriverHome" component={HomeScreenDriver} />
+      {currentUserX === 'Passenger' ? (
+        <Stack.Screen name="Home" component={TabNavigator} />
+      ) : (
+        <Stack.Screen name="DriverHome" component={HomeScreenDriver} />
+      )}
     </Stack.Navigator>
   );
 };

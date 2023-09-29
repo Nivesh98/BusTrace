@@ -73,12 +73,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
   const signin = async () => {
     if (isValidForm()) {
       try {
-        await authService.signInWithEmailAndPassword(email, password);
+        await authService
+          .signInWithEmailAndPassword(email, password)
+          .then(() => {
+            Alert.alert('User Logged in successfully!');
+            console.log('Login Successfully!');
 
-        Alert.alert('User Logged in successfully!');
-        console.log('Login Successfully!');
-
-        login();
+            login();
+          });
       } catch (error) {
         // Handle the sign-in error
         //const errorMessage = error.message;

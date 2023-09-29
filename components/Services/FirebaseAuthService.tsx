@@ -1,8 +1,11 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {FirebaseApp, initializeApp} from 'firebase/app';
 import {
   Auth,
+  User,
   createUserWithEmailAndPassword,
   getAuth,
+  onAuthStateChanged,
   signInWithEmailAndPassword as signInWithEmailAndPasswordFirebase,
   signOut as signOutFirebase,
 } from 'firebase/auth';
@@ -14,6 +17,7 @@ import {
   getDocs,
   getFirestore,
 } from 'firebase/firestore';
+import {useEffect} from 'react';
 
 interface FirebaseConfig {
   apiKey: string;
@@ -28,11 +32,36 @@ class FirebaseAuthService {
   private app: FirebaseApp;
   private auth: Auth;
   private db: Firestore;
+  // private persistance: Persistence;
 
   constructor(config: FirebaseConfig) {
     this.app = initializeApp(config);
     this.auth = getAuth(this.app);
     this.db = getFirestore(this.app);
+    this.initAuthStateListener();
+  }
+
+  async initAuthStateListener() {
+    onAuthStateChanged(this.auth, (user: User | null) => {
+      if (user) {
+        console.log('User is logged in:', user.uid);
+        // User is logged in, you can store user information or take action here
+      } else {
+        console.log('No user is logged in');
+        // No user is logged in
+      }
+    });
+  }
+
+  async checkUser() {
+    useEffect(() => {
+      onAuthStateChanged(this.auth, data => {
+        console.log(
+          'dataffffffffffffffffffffffffffffffffffffffffffffffffffff',
+          data,
+        );
+      });
+    }, []);
   }
 
   /************************************Register User****************************************/
@@ -76,7 +105,11 @@ class FirebaseAuthService {
         email,
         password,
       );
-      return userCredential.user;
+
+      const user = userCredential.user;
+
+      console.log('User signed in with UID:', user.uid);
+      return user;
     } catch (error) {
       throw error;
     }
@@ -85,7 +118,9 @@ class FirebaseAuthService {
 
   async signOut() {
     try {
-      await signOutFirebase(this.auth); // Call the signOut method from Firebase Auth
+      console.log('this.auth', this.auth.currentUser?.uid);
+      await signOutFirebase(this.auth);
+      console.log('FirebaseAuthService user signout'); // Call the signOut method from Firebase Auth
     } catch (error) {
       throw error;
     }
@@ -113,9 +148,23 @@ class FirebaseAuthService {
   getCurrentUserId() {
     const user = this.auth.currentUser;
     if (user) {
+      console.log('FirebaseAuthService user.uid', user.uid);
       return user.uid;
     } else {
       // User is not authenticated
+      console.log('FirebaseAuthService user.uid nullllllllllllllll');
+      return null;
+    }
+  }
+
+  getCurrentUser() {
+    const user = this.auth.currentUser;
+    if (user) {
+      console.log('FirebaseAuthService user.uid', user);
+      return user;
+    } else {
+      // User is not authenticated
+      console.log('FirebaseAuthService user.uid nullllllllllllllll');
       return null;
     }
   }
