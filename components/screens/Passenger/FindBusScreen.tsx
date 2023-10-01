@@ -1,64 +1,40 @@
-import Geolocation from '@react-native-community/geolocation';
-import {debounce} from 'lodash';
-import * as React from 'react';
-import {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, View} from 'react-native';
-import MapView, {Marker, Region} from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
+import {useLocation} from '../../context/LocationContext';
 
-export const FindBusScreen = () => {
-  const [currentLocation, setCurrentLocation] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
-  const [currentDeltas, setCurrentDeltas] = useState({
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
-  });
+const FindBusScreen = () => {
+  const {currentLocation, currentDeltas, onRegionChange, locationPermission} =
+    useLocation() || {};
 
   useEffect(() => {
-    getCurrentLocation();
-    const interval = setInterval(() => {
-      getCurrentLocation();
-    }, 5000);
+    if (locationPermission) {
+      // Access granted, you can use the location data here
+      console.log('Location permission granted');
+    } else {
+      // Handle the case when permission is not granted
+      console.log('Location permission denied');
+    }
+  }, [locationPermission]);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  const getCurrentLocation = () => {
-    Geolocation.getCurrentPosition(
-      position => {
-        const {latitude, longitude} = position.coords;
-        setCurrentLocation({
-          latitude,
-          longitude,
-        });
-      },
-      error => console.log('Error getting location:', error),
-      {enableHighAccuracy: true, timeout: 15000, maximumAge: 10000},
-    );
+  const markerCoordinate = {
+    latitude: currentLocation?.latitude || 0,
+    longitude: currentLocation?.longitude || 0,
   };
-
-  const onRegionChange = debounce((region: Region) => {
-    setCurrentDeltas({
-      latitudeDelta: region.latitudeDelta,
-      longitudeDelta: region.longitudeDelta,
-    });
-  }, 300); // Adjust the debounce delay
 
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
         region={{
-          latitude: currentLocation.latitude,
-          longitude: currentLocation.longitude,
-          ...currentDeltas,
+          latitude: markerCoordinate.latitude,
+          longitude: markerCoordinate.longitude,
+          latitudeDelta: currentDeltas?.latitudeDelta || 0.01,
+          longitudeDelta: currentDeltas?.longitudeDelta || 0.01,
         }}
         onRegionChange={onRegionChange}>
         <Marker
-          coordinate={currentLocation}
+          coordinate={markerCoordinate}
           title="Current Location"
           description="here"
         />
@@ -75,3 +51,5 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
+
+export default FindBusScreen;

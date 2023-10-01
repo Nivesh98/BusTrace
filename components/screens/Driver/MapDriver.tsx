@@ -16,7 +16,7 @@ export const MapDriver = () => {
   });
 
   useEffect(() => {
-    getCurrentLocation();
+    //getCurrentLocation();
     const interval = setInterval(() => {
       getCurrentLocation();
     }, 5000);
