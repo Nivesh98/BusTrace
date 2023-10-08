@@ -1,7 +1,7 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
-import FindBusScreen from '../screens/Passenger/FindBusScreen';
+import {FindBusScreen} from '../screens/Passenger/FindBusScreen';
 
 import {HomeScreen} from '../screens/Passenger/HomeScreen';
 import {QRScreen} from '../screens/Passenger/QRScreen';

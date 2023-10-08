@@ -26,7 +26,7 @@ export const TabNavigatorDriver = () => {
         tabBarActiveTintColor: 'yellow',
       }}>
       <Tab.Screen
-        name="DriverHome"
+        name="DriverHome2"
         component={HomeScreenDriver}
         options={{
           tabBarIcon: ({color, size}) => (

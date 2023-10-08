@@ -30,6 +30,7 @@ export const MapDriver = () => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
+        console.log('currennt location', position.coords);
         setCurrentLocation({
           latitude,
           longitude,

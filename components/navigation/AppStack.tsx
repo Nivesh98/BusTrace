@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
 
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import FirebaseAuthService from '../Services/FirebaseAuthService';
 import firebaseConfig from '../Services/firebaseConfig';
 import {LoginScreen} from '../screens/Auth/LoginScreen';
@@ -15,10 +15,15 @@ const Stack = createNativeStackNavigator();
 export const AppStack = () => {
   const [currentUserX, setCurrentUser] = useState(null);
   const [checkCurrentUser, setCheckCurrentUser] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  firebaseService.initAuthStateListener().then(() => {
-    fetchData();
-  });
+  useEffect(() => {
+    // Fetch the current user asynchronously
+
+    firebaseService.initAuthStateListener().then(() => {
+      fetchData();
+    });
+  }, []);
 
   const fetchData = async () => {
     const currentUser = await firebaseService.getCurrentUserId();
@@ -26,6 +31,7 @@ export const AppStack = () => {
     console.log('appstack currentUser', currentUser);
     if (currentUser !== null) {
       setCheckCurrentUser(currentUser);
+      setLoading(false);
       const userData = await firebaseService.getUserData();
       if (userData !== null) {
         const user = userData.find(user => user.data.userUid === currentUser);
@@ -37,6 +43,14 @@ export const AppStack = () => {
       console.log('appstack not user');
     }
   };
+
+  // if (loading) {
+  //   return (
+  //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+  //       <ActivityIndicator size="large" />
+  //     </View>
+  //   );
+  // }
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
