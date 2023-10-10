@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as React from 'react';
-
 import {useEffect, useState} from 'react';
+import {ActivityIndicator, View} from 'react-native';
 import FirebaseAuthService from '../Services/FirebaseAuthService';
 import firebaseConfig from '../Services/firebaseConfig';
 import {LoginScreen} from '../screens/Auth/LoginScreen';
@@ -19,50 +19,69 @@ export const AppStack = () => {
 
   useEffect(() => {
     // Fetch the current user asynchronously
-
     firebaseService.initAuthStateListener().then(() => {
       fetchData();
     });
   }, []);
 
   const fetchData = async () => {
-    const currentUser = await firebaseService.getCurrentUserId();
+    try {
+      const currentUser = await firebaseService.getCurrentUserId();
+      console.log('appstack currentUser', currentUser);
 
-    console.log('appstack currentUser', currentUser);
-    if (currentUser !== null) {
-      setCheckCurrentUser(currentUser);
-      setLoading(false);
-      const userData = await firebaseService.getUserData();
-      if (userData !== null) {
-        const user = userData.find(user => user.data.userUid === currentUser);
-        setCurrentUser(user?.data.userType);
-        console.log('appstack userData', user?.data.userType);
-        console.log('appstack user available');
+      if (currentUser !== null) {
+        setCheckCurrentUser(currentUser);
+        const userData = await firebaseService.getUserData();
+        if (userData !== null) {
+          const user = userData.find(user => user.data.userUid === currentUser);
+          setCurrentUser(user?.data.userType);
+          console.log('appstack userData', user?.data.userType);
+          console.log('appstack user available');
+        }
+      } else {
+        console.log('appstack not user');
       }
-    } else {
-      console.log('appstack not user');
+
+      setLoading(false);
+    } catch (error) {
+      // Handle any errors here
+      console.error('Error fetching user data:', error);
+      setLoading(false);
     }
   };
 
-  // if (loading) {
-  //   return (
-  //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   );
-  // }
+  if (loading) {
+    return (
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Loading">
+          {() => (
+            <View
+              style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+              <ActivityIndicator size="large" />
+            </View>
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    );
+  }
+
+  let ScreenComponent;
+
+  if (checkCurrentUser) {
+    if (currentUserX === 'Passenger') {
+      ScreenComponent = <Stack.Screen name="Home" component={TabNavigator} />;
+    } else {
+      ScreenComponent = (
+        <Stack.Screen name="DriverHome" component={TabNavigatorDriver} />
+      );
+    }
+  } else {
+    ScreenComponent = <Stack.Screen name="Login" component={LoginScreen} />;
+  }
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      {checkCurrentUser ? (
-        currentUserX === 'Passenger' ? (
-          <Stack.Screen name="Home" component={TabNavigator} />
-        ) : (
-          <Stack.Screen name="DriverHome" component={TabNavigatorDriver} />
-        )
-      ) : (
-        <Stack.Screen name="Login" component={LoginScreen} />
-      )}
+      {ScreenComponent}
     </Stack.Navigator>
   );
 };
