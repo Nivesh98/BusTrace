@@ -1,0 +1,557 @@
+[
+  {
+    "route_number": "EX 1-1",
+    "destination1": "Makumbara Bus Stand",
+    "destination2": "Matara"
+  },
+  {
+    "route_number": "EX001",
+    "destination1": "Makumbara Bus Stand",
+    "destination2": "Galle Central Bus Station"
+  },
+  {
+    "route_number": "EX 1-2",
+    "destination1": "Kaduwela",
+    "destination2": "Matara"
+  },
+  {
+    "route_number": "EX 1-21",
+    "destination1": "Kadawatha",
+    "destination2": "Galle Central Bus Station"
+  },
+  {
+    "route_number": "EX 1-22",
+    "destination1": "Kadawatha",
+    "destination2": "Matara"
+  },
+  {
+    "route_number": "EX 1-23",
+    "destination1": "Kaduwela",
+    "destination2": "Galle Central Bus Station"
+  },
+  {
+    "route_number": "02",
+    "destination1": "Central Bus Stop - Fort",
+    "destination2": "Galle Central Bus Station"
+  },
+  {
+    "route_number": "A-Bay",
+    "destination1": "Maradana Police Bus Stop",
+    "destination2": "Akkaraipattu"
+  },
+  {
+    "route_number": "01",
+    "destination1": "Central Bus Stop - Fort",
+    "destination2": "Kandy - Colombo Intercity"
+  },
+  {
+    "route_number": "03",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Kataragama"
+  },
+  {
+    "route_number": "04",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Anuradhapura CTB"
+  },
+  {
+    "route_number": "05",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Kurunegala"
+  },
+  {
+    "route_number": "06",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Kurunegala"
+  },
+  {
+    "route_number": "07",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Kalpitiya"
+  },
+  {
+    "route_number": "08",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Matale (Colombo)"
+  },
+  {
+    "route_number": "09",
+    "destination1": "Central Bus Stop - Fort",
+    "destination2": "Teldeniya"
+  },
+  {
+    "route_number": "09/1",
+    "destination1": "Central Bus Stop - Fort",
+    "destination2": "Wattegama"
+  },
+  {
+    "route_number": "09/2",
+    "destination1": "Central Bus Stop - Fort",
+    "destination2": "Digana"
+  },
+  {
+    "route_number": "10",
+    "destination1": "Kataragama",
+    "destination2": "Kandy - Colombo Intercity"
+  },
+  {
+    "route_number": "11",
+    "destination1": "Matara",
+    "destination2": "Ratnapura"
+  },
+  {
+    "route_number": "13",
+    "destination1": "Central Bus Stop - Fort",
+    "destination2": "Dayagama"
+  },
+  {
+    "route_number": "14",
+    "destination1": "Kandy - Good Shed",
+    "destination2": "Monaragala"
+  },
+  {
+    "route_number": "15",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Anuradhapura"
+  },
+  {
+    "route_number": "16",
+    "destination1": "Central Bus Stop - Fort",
+    "destination2": "Nawalapitiya"
+  },
+  {
+    "route_number": "17",
+    "destination1": "Kandy - Colombo Intercity",
+    "destination2": "Panadura Bus Stop (private buses)"
+  },
+  {
+    "route_number": "18",
+    "destination1": "Fort",
+    "destination2": "Hatton"
+  },
+  {
+    "route_number": "21",
+    "destination1": "Kandy - Good Shed",
+    "destination2": "Badulla Bus Station"
+  },
+  {
+    "route_number": "22",
+    "destination1": "Kandy - Good Shed",
+    "destination2": "Ampara"
+  },
+  {
+    "route_number": "31",
+    "destination1": "Matara",
+    "destination2": "Bandarawela"
+  },
+  {
+    "route_number": "32",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Kataragama"
+  },
+  {
+    "route_number": "32/4",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Tangalle"
+  },
+  {
+    "route_number": "41",
+    "destination1": "Kandy - Good Shed",
+    "destination2": "Kaduruwela"
+  },
+  {
+    "route_number": "45",
+    "destination1": "Kandy - Good Shed",
+    "destination2": "Trincomalee"
+  },
+  {
+    "route_number": "48",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Kalmunai"
+  },
+  {
+    "route_number": "48/3",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Kaduruwela"
+  },
+  {
+    "route_number": "49",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Trincomalee"
+  },
+  {
+    "route_number": "57",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Anuradhapura"
+  },
+  {
+    "route_number": "60",
+    "destination1": "Deniyaya",
+    "destination2": "Bastian Mawatha - Fort"
+  },
+  {
+    "route_number": "64",
+    "destination1": "Aluthgama",
+    "destination2": "Badulla Bus Station"
+  },
+  {
+    "route_number": "79",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Nuwara Eliya"
+  },
+  {
+    "route_number": "87",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Jaffna"
+  },
+  {
+    "route_number": "98",
+    "destination1": "Arugam Bay Pick Up",
+    "destination2": "Ampara"
+  },
+  {
+    "route_number": "99",
+    "destination1": "Fort",
+    "destination2": "Badulla Bus Station"
+  },
+  {
+    "route_number": "100 U",
+    "destination1": "Panadura SLBT",
+    "destination2": "Colombo Fort"
+  },
+  {
+    "route_number": "100 D",
+    "destination1": "Pettah",
+    "destination2": "Panadura SLBT"
+  },
+  {
+    "route_number": "101 U",
+    "destination1": "Moratuwa",
+    "destination2": "Colombo Fort"
+  },
+  {
+    "route_number": "101 D",
+    "destination1": "Pettah",
+    "destination2": "Moratuwa"
+  },
+  {
+    "route_number": "102U",
+    "destination1": "Moratuwa",
+    "destination2": "Kotahena Bus Stop"
+  },
+  {
+    "route_number": "103",
+    "destination1": "Colombo Fort",
+    "destination2": "Park Road - Park Avenue"
+  },
+  {
+    "route_number": "104",
+    "destination1": "Ja Ela",
+    "destination2": "Bambalapitiya"
+  },
+  {
+    "route_number": "112",
+    "destination1": "Maharagama",
+    "destination2": "Kotahena Bus Stop"
+  },
+  {
+    "route_number": "113",
+    "destination1": "Fort",
+    "destination2": "Udahamulla"
+  },
+  {
+    "route_number": "117",
+    "destination1": "Ratmalana Airport",
+    "destination2": "Nugegoda Supermarket"
+  },
+  {
+    "route_number": "119",
+    "destination1": "Maharagama-Dehiwela Road",
+    "destination2": "Dehiwala Main Bus Stop"
+  },
+  {
+    "route_number": "120",
+    "destination1": "Pettah",
+    "destination2": "Piliyandala"
+  },
+  {
+    "route_number": "122",
+    "destination1": "Pettah",
+    "destination2": "Avissawella"
+  },
+  {
+    "route_number": "125",
+    "destination1": "Pettah",
+    "destination2": "Padukka"
+  },
+  {
+    "route_number": "135",
+    "destination1": "Kohuwala",
+    "destination2": "Kelaniya"
+  },
+  {
+    "route_number": "138",
+    "destination1": "Pettah",
+    "destination2": "Homagama"
+  },
+  {
+    "route_number": "138/1",
+    "destination1": "Kirillawala",
+    "destination2": "Fort"
+  },
+  {
+    "route_number": "138/2",
+    "destination1": "Mattegoda",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "138/3",
+    "destination1": "Rukmalgama",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "138-E01",
+    "destination1": "Pettah",
+    "destination2": "Matara"
+  },
+  {
+    "route_number": "140",
+    "destination1": "Kollupitiya",
+    "destination2": "Wellampitiya"
+  },
+  {
+    "route_number": "143",
+    "destination1": "Hanwella",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "144",
+    "destination1": "Rajagiriya",
+    "destination2": "Fort"
+  },
+  {
+    "route_number": "145",
+    "destination1": "Gangarama - Slave Island",
+    "destination2": "Mattakkuliya"
+  },
+  {
+    "route_number": "152",
+    "destination1": "Central Bus Stop - Fort",
+    "destination2": "Angoda"
+  },
+  {
+    "route_number": "153",
+    "destination1": "Borella",
+    "destination2": "Sri J\u2019pura Hospital (Nawarohala)"
+  },
+  {
+    "route_number": "154",
+    "destination1": "Angulana",
+    "destination2": "Kiribathgoda"
+  },
+  {
+    "route_number": "155",
+    "destination1": "Mattakkuliya",
+    "destination2": "Soysapura"
+  },
+  {
+    "route_number": "156",
+    "destination1": "Dehiwala Main Bus Stop",
+    "destination2": "Nugegoda Supermarket"
+  },
+  {
+    "route_number": "163",
+    "destination1": "Dehiwala Main Bus Stop",
+    "destination2": "Battaramulla"
+  },
+  {
+    "route_number": "164",
+    "destination1": "Town Hall Bus Stand",
+    "destination2": "Salmal Uyana Bus Stand"
+  },
+  {
+    "route_number": "166",
+    "destination1": "Gangarama - Slave Island",
+    "destination2": "Mulleriyawa"
+  },
+  {
+    "route_number": "168",
+    "destination1": "Kotahena Bus Stop",
+    "destination2": "Nugegoda Supermarket"
+  },
+  {
+    "route_number": "170",
+    "destination1": "Athurugiriya",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "171",
+    "destination1": "Bastian Mawatha - Fort",
+    "destination2": "Koswatta"
+  },
+  {
+    "route_number": "174",
+    "destination1": "Borella",
+    "destination2": "Kottawa"
+  },
+  {
+    "route_number": "175",
+    "destination1": "Kohilawatta",
+    "destination2": "Kollupitiya Bus Stop"
+  },
+  {
+    "route_number": "176",
+    "destination1": "Kotahena Bus Stop",
+    "destination2": "Dehiwala Main Bus Stop"
+  },
+  {
+    "route_number": "177",
+    "destination1": "Kollupitiya",
+    "destination2": "Kaduwela"
+  },
+  {
+    "route_number": "178",
+    "destination1": "Narahenpita",
+    "destination2": "Mattakkuliya"
+  },
+  {
+    "route_number": "179",
+    "destination1": "Battaramulla",
+    "destination2": "Bambalapitiya Junction"
+  },
+  {
+    "route_number": "180",
+    "destination1": "Nittambuwa",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "183",
+    "destination1": "Nugegoda Supermarket",
+    "destination2": "Panadura Bus Stop (private buses)"
+  },
+  {
+    "route_number": "187 E-03",
+    "destination1": "Katunayake Airport Bus Station",
+    "destination2": "Central Bus Stop - Fort"
+  },
+  {
+    "route_number": "187U",
+    "destination1": "Colombo Fort",
+    "destination2": "Katunayake Airport Bus Station"
+  },
+  {
+    "route_number": "187D",
+    "destination1": "Katunayake Airport Bus Station",
+    "destination2": "Fort"
+  },
+  {
+    "route_number": "187/1",
+    "destination1": "Ekala",
+    "destination2": "Fort"
+  },
+  {
+    "route_number": "188",
+    "destination1": "Raddolugama",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "190",
+    "destination1": "Central Bus Stop - Fort",
+    "destination2": "Godagama"
+  },
+  {
+    "route_number": "192",
+    "destination1": "Moratuwa",
+    "destination2": "Maharagama-Dehiwela Road"
+  },
+  {
+    "route_number": "193",
+    "destination1": "Town Hall Bus Stand",
+    "destination2": "Kadawatha"
+  },
+  {
+    "route_number": "200",
+    "destination1": "Gampaha",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "224",
+    "destination1": "Pugoda",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "225",
+    "destination1": "Kirindiwala",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "226",
+    "destination1": "Malwana",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "234",
+    "destination1": "Delgoda",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "240",
+    "destination1": "Pettah",
+    "destination2": "Negombo"
+  },
+  {
+    "route_number": "255",
+    "destination1": "Mount Lavinia",
+    "destination2": "Kottawa"
+  },
+  {
+    "route_number": "400",
+    "destination1": "Pettah",
+    "destination2": "Aluthgama"
+  },
+  {
+    "route_number": "400/1",
+    "destination1": "Kaluthara",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "401",
+    "destination1": "Elpitiya",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "401/1",
+    "destination1": "Elpitiya",
+    "destination2": "Aluthgama"
+  },
+  {
+    "route_number": "401/2",
+    "destination1": "Elpitiya",
+    "destination2": "Goluwamulla"
+  },
+  {
+    "route_number": "401/3",
+    "destination1": "Aluthgama",
+    "destination2": "Uragasmanhandiya"
+  },
+  {
+    "route_number": "401/4",
+    "destination1": "Elpitiya",
+    "destination2": "Aluthgama"
+  },
+  {
+    "route_number": "430",
+    "destination1": "Mathugama",
+    "destination2": "Pettah"
+  },
+  {
+    "route_number": "450",
+    "destination1": "Panadura SLBT",
+    "destination2": "Ratnapura"
+  },
+  {
+    "route_number": "602",
+    "destination1": "Kandy - Good Shed",
+    "destination2": "Kurunegala"
+  }
+]

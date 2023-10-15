@@ -14,8 +14,10 @@ import {
   Firestore,
   addDoc,
   collection,
+  doc,
   getDocs,
   getFirestore,
+  setDoc,
 } from 'firebase/firestore';
 import {useEffect} from 'react';
 
@@ -144,6 +146,53 @@ class FirebaseAuthService {
   }
 
   /*****************************************************************************************************/
+
+  // getIntercityBusData(jsonData) {
+  //   // Add user data to Firestore
+  //   // addDoc(collection(this.db, 'IntercityBusRoute'), {
+  //   //   name,
+  //   //   email,
+  //   //   dob,
+  //   //   userType,
+  //   //   userUid: user.uid,
+  //   // });
+
+  //   if (jsonData) {
+  //     const collectionName = 'your_collection_name'; // Replace with your Firestore collection name
+  //     const docId = await FirebaseService.addDocument(collectionName, jsonData);
+  //     if (docId) {
+  //       console.log('Data imported with ID: ', docId);
+  //     }
+  //   }
+  // }
+
+  // async getIntercityBusData(data) {
+  //   try {
+  //     for (const item of data) {
+  //       // Add each item to the Firestore collection
+  //       await addDoc(collection(this.db, 'IntercityBusRoute'), item);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error adding document: ', error);
+  //     return null;
+  //   }
+  // }
+
+  async getIntercityBusData(data) {
+    try {
+      const busRouteCollection = collection(this.db, 'IntercityBusRoute');
+      for (let i = 0; i < data.length; i++) {
+        // Create a reference with an incremental document ID (starting from 1)
+        const busRouteDoc = doc(busRouteCollection, (i + 1).toString());
+
+        // Add data to the Firestore document
+        await setDoc(busRouteDoc, data[i]);
+      }
+      console.log('Data added to Firestore successfully.');
+    } catch (error) {
+      console.error('Error adding document: ', error);
+    }
+  }
 
   getCurrentUserId() {
     const user = this.auth.currentUser;
