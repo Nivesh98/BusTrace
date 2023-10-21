@@ -1,6 +1,5 @@
 import React, {useContext} from 'react';
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import JsonData from '../../JsonData/IntercityBusRoute.json';
+import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import FirebaseAuthService from '../../Services/FirebaseAuthService';
 import firebaseConfig from '../../Services/firebaseConfig';
 import {AuthContext} from '../../context/AuthContext';
@@ -10,32 +9,32 @@ export const HomeScreen: React.FC = () => {
   const {userToken, isLoading} = useContext(AuthContext);
   console.log('user token inside home ', {userToken}, {isLoading});
 
-  const upJson = async () => {
-    // Assuming your JSON file contains an array of objects
-    const data = JsonData;
+  // const upJson = async () => {
+  //   // Assuming your JSON file contains an array of objects
+  //   const data = JsonData;
 
-    // Example: Log the first object's properties
-    if (data.length > 0) {
-      const firstObject = data[0];
-      console.log('First Object:', firstObject);
-    }
+  //   // Example: Log the first object's properties
+  //   if (data.length > 0) {
+  //     const firstObject = data[0];
+  //     console.log('First Object:', firstObject);
+  //   }
 
-    if (data) {
-      const docId = await firebaseService.getIntercityBusData(data);
-      if (docId) {
-        console.log('Data imported with ID: ', docId);
-      }
-    }
-  };
+  //   if (data) {
+  //     const docId = await firebaseService.getIntercityBusData(data);
+  //     if (docId) {
+  //       console.log('Data imported with ID: ', docId);
+  //     }
+  //   }
+  // };
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {
           upJson();
         }}
         style={styles.shutdownButton1}>
         <Text>Press Me</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <TouchableOpacity
         onPress={() => {
           logout();
