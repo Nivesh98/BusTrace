@@ -5,7 +5,7 @@ import {FindBusScreen} from '../screens/Passenger/FindBusScreen';
 
 import {HomeScreen} from '../screens/Passenger/HomeScreen';
 import {QRScreen} from '../screens/Passenger/QRScreen';
-import {SeatReservationScreen} from '../screens/Passenger/SeatReservationScreen';
+import TimeTable from '../screens/Passenger/TimeTable';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,7 +39,7 @@ export const TabNavigator = () => {
       />
       <Tab.Screen
         name="Reservation"
-        component={SeatReservationScreen}
+        component={TimeTable}
         options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name="book-online" color={color} size={size} />

@@ -14,10 +14,8 @@ import {
   Firestore,
   addDoc,
   collection,
-  doc,
   getDocs,
   getFirestore,
-  setDoc,
 } from 'firebase/firestore';
 import {useEffect} from 'react';
 
@@ -147,21 +145,21 @@ class FirebaseAuthService {
 
   /*****************************************************************************************************/
 
-  async getIntercityBusData(data) {
-    try {
-      const busRouteCollection = collection(this.db, 'IntercityBusRoute');
-      for (let i = 0; i < data.length; i++) {
-        // Create a reference with an incremental document ID (starting from 1)
-        const busRouteDoc = doc(busRouteCollection, (i + 1).toString());
+  // async getIntercityBusData(data) {
+  //   try {
+  //     const busRouteCollection = collection(this.db, 'IntercityBusRoute');
+  //     for (let i = 0; i < data.length; i++) {
+  //       // Create a reference with an incremental document ID (starting from 1)
+  //       const busRouteDoc = doc(busRouteCollection, (i + 1).toString());
 
-        // Add data to the Firestore document
-        await setDoc(busRouteDoc, data[i]);
-      }
-      console.log('Data added to Firestore successfully.');
-    } catch (error) {
-      console.error('Error adding document: ', error);
-    }
-  }
+  //       // Add data to the Firestore document
+  //       await setDoc(busRouteDoc, data[i]);
+  //     }
+  //     console.log('Data added to Firestore successfully.');
+  //   } catch (error) {
+  //     console.error('Error adding document: ', error);
+  //   }
+  // }
 
   getCurrentUserId() {
     const user = this.auth.currentUser;
