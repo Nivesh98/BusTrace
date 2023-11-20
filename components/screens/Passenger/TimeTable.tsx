@@ -1,156 +1,14 @@
-// import {Text} from '@react-native-material/core';
-// import React, {useState} from 'react';
-// import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
-// import DropDown from '../../CustomComponent/DropDown';
-// import FirebaseAuthService from '../../Services/FirebaseAuthService';
-// import firebaseConfig from '../../Services/firebaseConfig';
-
-// const authService = new FirebaseAuthService(firebaseConfig);
-
-// const countries = [
-//   {value: 'Benin', key: '229'},
-//   {value: 'Bermuda', key: '1-441'},
-//   {value: 'Bhutan', key: '975'},
-//   {value: 'Bolivia', key: '591'},
-//   {value: 'Bosnia and Herzegovina', key: '387'},
-//   {value: 'Botswana', key: '267'},
-// ];
-
-// const TimeTable: React.FC = () => {
-//   const [selectedCountry1, setSelectedCountry1] = useState<string>('');
-//   const [selectedCountry2, setSelectedCountry2] = useState<string>('');
-//   const [filterdata, setSFilterData] = useState<
-//     {destinations: string; routeNo: string}[]
-//   >([]);
-
-//   const handleSelection1 = (selectedItem: string) => {
-//     setSelectedCountry1(selectedItem);
-//   };
-
-//   const handleSelection2 = (selectedItem: string) => {
-//     setSelectedCountry2(selectedItem);
-//   };
-//   //const extractedDataArray: {destinations: string; routeNo: string}[] = [];
-//   const swapSelections = (country1: string, country2: string) => {
-//     // Implement your logic to swap selections here
-//     console.log(`Swapping selections: ${country1} and ${country2}`);
-//     setSelectedCountry1(country2);
-//     setSelectedCountry2(country1);
-//     console.log(`Swapping selections: ${country1} and ${country2}`);
-//     console.log('Retrieved data:', storedData);
-//     //const extractedDataArray = [];
-
-//     authService.getStoredIntercityBusData().then(data => {
-//       if (data && data.length > 0) {
-//         data.forEach(item => {
-//           const extractedData = {
-//             destinations: item.destinations,
-//             routeNo: item.routeNo,
-//           };
-
-//           setSFilterData(extractedData);
-//         });
-
-//         // Now extractedDataArray contains the desired data
-//         console.log('Extracted Data Array:', filterdata);
-//       } else {
-//         console.log('No data found.');
-//       }
-//     });
-//   };
-
-//   //   const busRoutes = authService.getBusRoute().then(() => {});
-//   //   const userData: {value: string; key: string}[] = [];
-
-//   const storedData = authService.getStoredIntercityBusData();
-//   //   const extractedData = storedData._j.map(item => {
-//   //     if (item.destination1) {
-//   //       return {
-//   //         value: item.destination1,
-//   //       };
-//   //     }
-//   //     // Handle cases where "destination1" is missing
-//   //     return {
-//   //       value: 'N/A', // Not available
-//   //     };
-//   //   });
-
-//   //   console.log('Extracted data:', extractedData);
-//   return (
-//     <View style={styles.container}>
-//       <View style={styles.dropdownContainer}>
-//         <DropDown
-//           onSelectionChange={handleSelection1}
-//           data={countries}
-//           selectedValue={selectedCountry1} // Pass the selected value
-//         />
-//       </View>
-//       <TouchableOpacity
-//         style={styles.swapBtn}
-//         onPress={() => swapSelections(selectedCountry1, selectedCountry2)}>
-//         <View style={{flexDirection: 'row'}}>
-//           <Text style={styles.swaptext}>Swap</Text>
-//           <Image
-//             source={require('./../../assets/images/swap_icon.png')}
-//             style={{width: 20, height: 20}}
-//           />
-//         </View>
-//       </TouchableOpacity>
-
-//       <View style={styles.dropdownContainer2}>
-//         <DropDown
-//           onSelectionChange={handleSelection2}
-//           data={countries}
-//           selectedValue={selectedCountry2} // Pass the selected value
-//         />
-//       </View>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     alignItems: 'center',
-//   },
-//   dropdownContainer: {
-//     width: '100%',
-//     zIndex: 2,
-//     marginTop: 10,
-//     position: 'absolute',
-//   },
-//   dropdownContainer2: {
-//     width: '100%',
-//     zIndex: 1,
-//     position: 'absolute',
-//     marginTop: 95,
-//   },
-//   swapBtn: {
-//     alignSelf: 'flex-end',
-//     marginRight: 20,
-//     borderRadius: 10,
-//     borderWidth: 0.5,
-//     marginBottom: 4,
-//     marginTop: 65,
-//     padding: 1,
-//   },
-//   swaptext: {
-//     fontSize: 14,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//   },
-// });
-
-// export default TimeTable;
-
 //---------------
 import {Text} from '@react-native-material/core';
-import React, {useState} from 'react';
+import moment from 'moment';
+import React, {useEffect, useState} from 'react';
 import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import CalendarPicker, {
+  DateChangedCallback,
+} from 'react-native-calendar-picker';
 import DropDown from '../../CustomComponent/DropDown';
 import FirebaseAuthService from '../../Services/FirebaseAuthService';
 import firebaseConfig from '../../Services/firebaseConfig';
-
 const authService = new FirebaseAuthService(firebaseConfig);
 
 const countries = [
@@ -261,10 +119,48 @@ const countries = [
 const TimeTable: React.FC = () => {
   const [selectedCountry1, setSelectedCountry1] = useState<string>('');
   const [selectedCountry2, setSelectedCountry2] = useState<string>('');
-  const [filterdata, setSFilterData] = useState<{value: string; key: string}[]>(
-    [],
-  );
+  const [getDate, setDate] = useState<string>('');
+  const [getCurrentDate, setCurrentDate] = useState<string>('');
+  const [showCalendar, setShowCalendar] = useState<boolean>(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
+  useEffect(() => {
+    // Fetch the current user asynchronously
+    const fetchCurrentUser = () => {
+      setCurrentDate(new Date().toLocaleDateString());
+    };
+
+    fetchCurrentUser();
+  }, []);
+  const calculateDisabledDates = () => {
+    const disabledDates: Date[] = [];
+    const currentDate = moment();
+    for (let i = 1; i <= 7; i++) {
+      const disabledDate = currentDate.clone().add(i, 'days').toDate();
+      disabledDates.push(disabledDate);
+    }
+    return disabledDates;
+  };
+
+  const onDateChange: DateChangedCallback = date => {
+    // Handle date change
+    setSelectedDate(date.toDate());
+    console.log('selectedDate', selectedDate?.toLocaleDateString());
+    setCurrentDate(date.toDate().toLocaleDateString());
+  };
+
+  // const minDate = moment();
+  // const maxDate = moment().add(7, 'days');
+  // const disabledDates = calculateDisabledDates();
+  const today = moment();
+  const minDate = today.toDate();
+  const maxDate = today.clone().add(7, 'days').toDate();
+  console.log('minDatev', minDate);
+  console.log('maxDate', maxDate);
+  const disabledDates = calculateDisabledDates();
+  console.log('disabledDates', disabledDates);
+
+  //setCurrentDate(fullDate);
   // useEffect(() => {
   //   const fetchData = async () => {
   //     const data = await authService.getStoredIntercityBusData();
@@ -282,6 +178,15 @@ const TimeTable: React.FC = () => {
 
   //   fetchData();
   // }, [filterdata]); // The empty dependency array ensures that this effect runs once after the initial render
+  const toggleCalendar = () => {
+    setShowCalendar(!showCalendar);
+    console.log(
+      'selectedCountry1',
+      selectedCountry1,
+      'selectedCountry2',
+      selectedCountry2,
+    );
+  };
 
   const handleSelection1 = (selectedItem: string) => {
     setSelectedCountry1(selectedItem);
@@ -297,7 +202,7 @@ const TimeTable: React.FC = () => {
     setSelectedCountry1(country2);
     setSelectedCountry2(country1);
     console.log(`Swapping selections: ${country1} and ${country2}`);
-    console.log('ex data sssssss', filterdata);
+    // console.log('ex data sssssss', filterdata);
   };
 
   return (
@@ -328,6 +233,46 @@ const TimeTable: React.FC = () => {
           selectedValue={selectedCountry2}
         />
       </View>
+      <View style={styles.dateSearch}>
+        <TouchableOpacity
+          onPress={toggleCalendar}
+          style={{width: '60%'}}
+          disabled={selectedCountry1 === '' || selectedCountry2 === ''}>
+          <Text style={styles.searchtext}>{getCurrentDate}</Text>
+        </TouchableOpacity>
+
+        <View style={{alignSelf: 'auto', marginLeft: 5}}>
+          <TouchableOpacity
+            style={{
+              flexDirection: 'row',
+              backgroundColor: '#e83a05',
+              borderRadius: 10,
+              alignContent: 'center',
+              alignItems: 'center',
+              padding: 4,
+            }}
+            disabled={selectedCountry1 === '' || selectedCountry2 === ''}>
+            <Text style={{color: '#fff', fontWeight: '100', padding: 4}}>
+              Search
+            </Text>
+            <Image
+              source={require('./../../assets/images/search.png')}
+              style={{width: 25, height: 25}}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+      {showCalendar && (
+        <View style={styles.calender}>
+          <CalendarPicker
+            width={300}
+            minDate={minDate}
+            maxDate={maxDate}
+            selectedStartDate={selectedDate}
+            onDateChange={onDateChange}
+          />
+        </View>
+      )}
     </View>
   );
 };
@@ -362,6 +307,24 @@ const styles = StyleSheet.create({
     fontSize: 14,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  calender: {
+    marginTop: 10,
+    position: 'relative',
+  },
+  dateSearch: {
+    marginTop: 70,
+    position: 'relative',
+    flexDirection: 'row',
+    alignContent: 'space-around',
+    alignItems: 'center',
+  },
+  searchtext: {
+    borderRadius: 10,
+    borderColor: '#e83a05',
+    borderWidth: 2,
+    padding: 4,
+    paddingLeft: 15,
   },
 });
 

@@ -6,7 +6,6 @@ import {FindBusScreen} from '../screens/Passenger/FindBusScreen';
 import {HomeScreen} from '../screens/Passenger/HomeScreen';
 import {QRScreen} from '../screens/Passenger/QRScreen';
 import TimeTable from '../screens/Passenger/TimeTable';
-
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
