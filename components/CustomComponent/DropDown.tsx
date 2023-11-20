@@ -96,13 +96,12 @@ const DropDown: React.FC<DropDownProps> = ({
         <View
           style={{
             elevation: 5,
-            marginTop: 50,
+            marginTop: 4,
             height: 200,
             alignSelf: 'center',
             width: '90%',
             backgroundColor: '#fff',
             borderRadius: 10,
-            position: 'absolute',
           }}>
           <TextInput
             placeholder="Search.."

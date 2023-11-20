@@ -184,6 +184,68 @@ class FirebaseAuthService {
       return null;
     }
   }
+
+  /***************************get bus routes*********************************************/
+  // async getBusRoute() {
+  //   const querySnapshot = await getDocs(
+  //     collection(this.db, 'IntercityBusRoute'),
+  //   );
+  //   querySnapshot.forEach(doc => {
+  //     console.log(`${doc.id} => ${doc.data()}`);
+  //   });
+  // }
+  // async getStoredIntercityBusData() {
+  //   try {
+  //     const busRouteCollection = collection(this.db, 'IntercityBusRoute'); // Replace 'db' with your Firestore instance
+  //     const querySnapshot = await getDocs(busRouteCollection);
+  //     const addressdata: {value: string; key: string}[] = [];
+  //     const data: any = [];
+  //     querySnapshot.forEach(doc => {
+  //       // Assuming your data is stored as a map in each document
+  //       data.push(doc.data());
+  //     });
+
+  //     // data.forEach((e: any, i: any) => {
+  //     //   addressdata.push({value: e.data.destination1, key: i.toString()});
+  //     //   addressdata.push({value: e.data.destination2, key: (i + 1).toString()});
+  //     // });
+  //     // addressdata.push({value: 'kkkk', key: 'lllllllllll'});
+
+  //     return data;
+  //   } catch (error) {
+  //     console.error('Error retrieving documents: ', error);
+  //     return [];
+  //   }
+  // }
+  async getStoredIntercityBusData() {
+    try {
+      const busRouteCollection = collection(this.db, 'IntercityBusRoute');
+      const querySnapshot = await getDocs(busRouteCollection);
+      const data: {destinations: string; routeNo: string}[] = [];
+
+      querySnapshot.forEach(doc => {
+        const docData = doc.data();
+        const routeNo1 = docData.route_number + '_1';
+        const routeNo2 = docData.route_number + '_2';
+        const destination1 = docData.destination1;
+        const destination2 = docData.destination2;
+
+        if (routeNo1 && routeNo2 && destination1 && destination2) {
+          const entry1 = {destinations: destination1, routeNo: routeNo1};
+          const entry2 = {destinations: destination2, routeNo: routeNo2};
+
+          data.push(entry1, entry2);
+        }
+      });
+
+      return data;
+    } catch (error) {
+      console.error('Error retrieving documents: ', error);
+      return [];
+    }
+  }
+
+  /**************************************************************************************/
 }
 
 export default FirebaseAuthService;
