@@ -6,6 +6,7 @@ import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
 import CalendarPicker, {
   DateChangedCallback,
 } from 'react-native-calendar-picker';
+import Toast from 'react-native-toast-message';
 import DropDown from '../../CustomComponent/DropDown';
 import FirebaseAuthService from '../../Services/FirebaseAuthService';
 import firebaseConfig from '../../Services/firebaseConfig';
@@ -119,7 +120,7 @@ const countries = [
 const TimeTable: React.FC = () => {
   const [selectedCountry1, setSelectedCountry1] = useState<string>('');
   const [selectedCountry2, setSelectedCountry2] = useState<string>('');
-  const [getDate, setDate] = useState<string>('');
+  const [getDate, setDate] = useState<number>(0);
   const [getCurrentDate, setCurrentDate] = useState<string>('');
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
@@ -147,6 +148,9 @@ const TimeTable: React.FC = () => {
     setSelectedDate(date.toDate());
     console.log('selectedDate', selectedDate?.toLocaleDateString());
     setCurrentDate(date.toDate().toLocaleDateString());
+    console.log('date.toDate.getDay', date.toDate().getDay());
+    setDate(date.toDate().getDay());
+    setShowCalendar(false);
   };
 
   // const minDate = moment();
@@ -205,6 +209,60 @@ const TimeTable: React.FC = () => {
     // console.log('ex data sssssss', filterdata);
   };
 
+  const searchBus = () => {
+    const checkVal = isSearchEnabled(
+      selectedCountry1,
+      selectedCountry2,
+      getDate,
+      getCurrentDate,
+    );
+    if (checkVal === 1) {
+      Toast.show({
+        type: 'error',
+        text1: 'Warning!',
+        text2: 'Please fill all details',
+      });
+    } else if (checkVal === 2) {
+      Toast.show({
+        type: 'error',
+        text1: 'Warning!',
+        text2: 'Locations not equal',
+      });
+    } else if (checkVal === 3) {
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Successfully added',
+      });
+    }
+  };
+  const isSearchEnabled = (
+    selectedC1: string,
+    selectedC2: string,
+    getD: number,
+    getCurD: string,
+  ) => {
+    console.log('selectedCountry1', selectedC1, 'selectedCountry2', selectedC2);
+    console.log('getDate', getD);
+    console.log('getCurrentDate', getCurD);
+    if (
+      selectedC1 === '' ||
+      selectedC1 === undefined ||
+      selectedC2 === '' ||
+      selectedC2 === undefined ||
+      getD === null ||
+      getD === undefined ||
+      getCurD === '' ||
+      getCurD === undefined
+    ) {
+      return 1;
+    } else if (selectedC1 === selectedC2) {
+      return 2;
+    } else {
+      return 3;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.dropdownContainer}>
@@ -251,6 +309,7 @@ const TimeTable: React.FC = () => {
               alignItems: 'center',
               padding: 4,
             }}
+            onPress={searchBus}
             disabled={selectedCountry1 === '' || selectedCountry2 === ''}>
             <Text style={{color: '#fff', fontWeight: '100', padding: 4}}>
               Search
@@ -273,6 +332,9 @@ const TimeTable: React.FC = () => {
           />
         </View>
       )}
+      <View>
+        <Toast position="top" />
+      </View>
     </View>
   );
 };
