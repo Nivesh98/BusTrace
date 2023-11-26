@@ -1,9 +1,9 @@
 import * as React from 'react';
+import {SafeAreaView, StyleSheet, View} from 'react-native';
+import 'react-native-gesture-handler';
 
-import {StyleSheet, View, SafeAreaView} from 'react-native';
-
-import {MainNavigator} from './components/navigation/MainNavigator';
 import {AuthProvider} from './components/context/AuthContext';
+import {MainNavigator} from './components/navigation/MainNavigator';
 
 const App = () => {
   return (
