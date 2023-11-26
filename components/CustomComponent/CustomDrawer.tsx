@@ -31,7 +31,9 @@ const CustomDrawer = props => {
             </View>
           </View>
         </ImageBackground>
-        <DrawerItemList {...props} />
+        <View style={{flex: 1, backgroundColor: '#fff', paddingTop: 10}}>
+          <DrawerItemList {...props} />
+        </View>
       </DrawerContentScrollView>
       <View>
         <Text> Our custom text</Text>

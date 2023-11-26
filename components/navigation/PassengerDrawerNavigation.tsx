@@ -1,4 +1,5 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import CustomDrawer from '../CustomComponent/CustomDrawer';
 import PassengerAboutDrawer from '../screens/Passenger/PassengerAboutDrawer';
 import PassengerMyWalletDrawer from '../screens/Passenger/PassengerMyWalletDrawer';
@@ -11,19 +12,91 @@ import {TabNavigator} from './TabNavigator';
 const PassengerDrawerNavigation = () => {
   const Drawer = createDrawerNavigator();
   return (
-    <Drawer.Navigator
-      drawerContent={props => <CustomDrawer {...props} />}
-      screenOptions={{headerShown: false}}>
-      <Drawer.Screen name="Home3" component={TabNavigator} />
-      <Drawer.Screen name="Profile" component={PassengerProfileDrawer} />
-      <Drawer.Screen name="MyWallet" component={PassengerMyWalletDrawer} />
+    <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
+      <Drawer.Screen
+        name="Home3"
+        component={TabNavigator}
+        options={{
+          drawerIcon: ({color}) => <Icon name="home" size={22} color={color} />,
+          headerTitle: 'Home',
+          headerShown: false,
+          title: 'Home',
+        }}
+      />
+      <Drawer.Screen
+        name="Profile"
+        component={PassengerProfileDrawer}
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon name="person" size={22} color={color} />
+          ),
+          headerStyle: {
+            backgroundColor: '#dc143c', // Set your desired color here
+          },
+          headerTintColor: '#fff',
+        }}
+      />
+      <Drawer.Screen
+        name="MyWallet"
+        component={PassengerMyWalletDrawer}
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon name="payments" size={22} color={color} />
+          ),
+          headerStyle: {
+            backgroundColor: '#dc143c', // Set your desired color here
+          },
+          headerTintColor: '#fff',
+        }}
+      />
       <Drawer.Screen
         name="Notification"
         component={PassengerNotificationDrawer}
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon name="notifications" size={22} color={color} />
+          ),
+          headerStyle: {
+            backgroundColor: '#dc143c', // Set your desired color here
+          },
+          headerTintColor: '#fff',
+        }}
       />
-      <Drawer.Screen name="Setting" component={PassengerSettingDrawer} />
-      <Drawer.Screen name="Support" component={PassengerSupportDrawer} />
-      <Drawer.Screen name="About" component={PassengerAboutDrawer} />
+      <Drawer.Screen
+        name="Setting"
+        component={PassengerSettingDrawer}
+        options={{
+          drawerIcon: ({color}) => <Icon name="tune" size={22} color={color} />,
+          headerStyle: {
+            backgroundColor: '#dc143c', // Set your desired color here
+          },
+          headerTintColor: '#fff',
+        }}
+      />
+      <Drawer.Screen
+        name="Support"
+        component={PassengerSupportDrawer}
+        options={{
+          drawerIcon: ({color}) => (
+            <Icon name="support" size={22} color={color} />
+          ),
+          headerStyle: {
+            backgroundColor: '#dc143c', // Set your desired color here
+          },
+          headerTintColor: '#fff',
+        }}
+      />
+      <Drawer.Screen
+        name="About"
+        component={PassengerAboutDrawer}
+        options={{
+          drawerIcon: ({color}) => <Icon name="info" size={22} color={color} />,
+          headerStyle: {
+            backgroundColor: '#dc143c', // Set your desired color here
+          },
+          headerTintColor: '#fff',
+        }}
+      />
     </Drawer.Navigator>
   );
 };
