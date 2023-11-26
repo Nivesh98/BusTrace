@@ -1,21 +1,29 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import {useContext} from 'react';
-import TimeTable from '../screens/Passenger/TimeTable';
-import {CurrentTabContext, TabNavigator} from './TabNavigator';
+import CustomDrawer from '../CustomComponent/CustomDrawer';
+import PassengerAboutDrawer from '../screens/Passenger/PassengerAboutDrawer';
+import PassengerMyWalletDrawer from '../screens/Passenger/PassengerMyWalletDrawer';
+import PassengerNotificationDrawer from '../screens/Passenger/PassengerNotificationDrawer';
+import PassengerProfileDrawer from '../screens/Passenger/PassengerProfileDrawer';
+import PassengerSettingDrawer from '../screens/Passenger/PassengerSettingDrawer';
+import PassengerSupportDrawer from '../screens/Passenger/PassengerSupportDrawer';
+import {TabNavigator} from './TabNavigator';
 
-const Drawer = createDrawerNavigator();
-
-const PassengerDrawerNavigation: React.FC = () => {
-  const {currentTab} = useContext(CurrentTabContext);
-
+const PassengerDrawerNavigation = () => {
+  const Drawer = createDrawerNavigator();
   return (
     <Drawer.Navigator
-      screenOptions={{
-        headerShown: true,
-        headerTitle: currentTab,
-      }}>
+      drawerContent={props => <CustomDrawer {...props} />}
+      screenOptions={{headerShown: false}}>
       <Drawer.Screen name="Home3" component={TabNavigator} />
-      <Drawer.Screen name="Timetable" component={TimeTable} />
+      <Drawer.Screen name="Profile" component={PassengerProfileDrawer} />
+      <Drawer.Screen name="MyWallet" component={PassengerMyWalletDrawer} />
+      <Drawer.Screen
+        name="Notification"
+        component={PassengerNotificationDrawer}
+      />
+      <Drawer.Screen name="Setting" component={PassengerSettingDrawer} />
+      <Drawer.Screen name="Support" component={PassengerSupportDrawer} />
+      <Drawer.Screen name="About" component={PassengerAboutDrawer} />
     </Drawer.Navigator>
   );
 };
