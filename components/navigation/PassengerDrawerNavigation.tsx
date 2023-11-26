@@ -12,7 +12,18 @@ import {TabNavigator} from './TabNavigator';
 const PassengerDrawerNavigation = () => {
   const Drawer = createDrawerNavigator();
   return (
-    <Drawer.Navigator drawerContent={props => <CustomDrawer {...props} />}>
+    <Drawer.Navigator
+      drawerContent={props => <CustomDrawer {...props} />}
+      screenOptions={{
+        drawerActiveBackgroundColor: '#dc143c',
+        drawerActiveTintColor: '#fff',
+        drawerInactiveTintColor: '#333',
+        drawerLabelStyle: {
+          marginLeft: -25,
+          fontFamily: 'Roboto-Medium',
+          fontSize: 15,
+        },
+      }}>
       <Drawer.Screen
         name="Home3"
         component={TabNavigator}

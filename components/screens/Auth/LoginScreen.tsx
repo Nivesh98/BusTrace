@@ -1,6 +1,5 @@
 import React, {useContext, useState} from 'react';
 import {
-  Alert,
   Image,
   ScrollView,
   StyleSheet,
@@ -8,13 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import {CustomButton} from '../../CustomButton';
 import {InputField} from '../../InputField';
 import FirebaseAuthService from '../../Services/FirebaseAuthService';
 import firebaseConfig from '../../Services/firebaseConfig';
 import {AuthContext} from '../../context/AuthContext';
-
 interface LoginScreenProps {
   navigation: any;
 }
@@ -76,7 +75,13 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
         await authService
           .signInWithEmailAndPassword(email, password)
           .then(() => {
-            Alert.alert('User Logged in successfully!');
+            //Alert.alert('User Logged in successfully!');
+            Toast.show({
+              type: 'success',
+              text1: 'Success',
+              text2: 'User Logged in successfully!',
+              visibilityTime: 2000,
+            });
             console.log('Login Successfully!');
 
             login();
@@ -88,9 +93,19 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({navigation}) => {
         // Handle the sign-in error
         console.log('Login fail!', error);
         if (typeof error === 'string') {
-          Alert.alert(error); // Ensure 'error' is a string before passing it to Alert.alert
+          //Alert.alert(error); // Ensure 'error' is a string before passing it to Alert.alert
+          Toast.show({
+            type: 'error',
+            text1: 'Warning!',
+            text2: 'error',
+          });
         } else {
-          Alert.alert('An error occurred while signing in.');
+          //Alert.alert('An error occurred while signing in.');
+          Toast.show({
+            type: 'error',
+            text1: 'Warning!',
+            text2: 'An error occurred while signing in.',
+          });
         }
       }
     }

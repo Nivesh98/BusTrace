@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {Image, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import FirebaseAuthService from '../../Services/FirebaseAuthService';
 import firebaseConfig from '../../Services/firebaseConfig';
 import {AuthContext} from '../../context/AuthContext';
@@ -35,7 +35,7 @@ export const HomeScreen: React.FC = () => {
         style={styles.shutdownButton1}>
         <Text>Press Me</Text>
       </TouchableOpacity> */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {
           logout();
         }}
@@ -44,7 +44,7 @@ export const HomeScreen: React.FC = () => {
           source={require('../../assets/images/shutdown.png')}
           style={styles.icon}
         />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };

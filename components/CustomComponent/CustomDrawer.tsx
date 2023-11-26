@@ -2,10 +2,18 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from '@react-navigation/drawer';
-import React from 'react';
-import {Image, ImageBackground, Text, View} from 'react-native';
+import React, {useContext} from 'react';
+import {
+  Image,
+  ImageBackground,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {AuthContext} from '../context/AuthContext';
 const CustomDrawer = props => {
+  const {logout} = useContext(AuthContext);
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView
@@ -35,8 +43,32 @@ const CustomDrawer = props => {
           <DrawerItemList {...props} />
         </View>
       </DrawerContentScrollView>
-      <View>
-        <Text> Our custom text</Text>
+      <View
+        style={{
+          paddingTop: 5,
+          paddingBottom: 5,
+          paddingLeft: 20,
+          borderTopWidth: 1,
+          borderTopColor: '#ccc',
+        }}>
+        <TouchableOpacity
+          onPress={() => {
+            logout();
+          }}
+          style={{paddingVertical: 15}}>
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Icon name="logout" size={22} color="#330000" />
+            <Text
+              style={{
+                fontSize: 15,
+                fontFamily: 'Roboto-Medium',
+                marginLeft: 5,
+                color: '#330000',
+              }}>
+              Sign Out
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     </View>
   );
