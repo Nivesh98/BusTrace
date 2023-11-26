@@ -5,8 +5,8 @@ import {ActivityIndicator, View} from 'react-native';
 import FirebaseAuthService from '../Services/FirebaseAuthService';
 import firebaseConfig from '../Services/firebaseConfig';
 import {LoginScreen} from '../screens/Auth/LoginScreen';
+import DriverDrawerNavigation from './DriverDrawerNavigation';
 import PassengerDrawerNavigation from './PassengerDrawerNavigation';
-import {TabNavigatorDriver} from './TabNavigatorDriver';
 
 const firebaseService = new FirebaseAuthService(firebaseConfig);
 
@@ -74,7 +74,7 @@ export const AppStack = () => {
       );
     } else {
       ScreenComponent = (
-        <Stack.Screen name="DriverHome" component={TabNavigatorDriver} />
+        <Stack.Screen name="DriverHome" component={DriverDrawerNavigation} />
       );
     }
   } else {

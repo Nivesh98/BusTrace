@@ -1,5 +1,5 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import React from 'react';
+import React, {useContext, useEffect} from 'react';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
 import {FindBusScreen} from '../screens/Passenger/FindBusScreen';
 
@@ -8,7 +8,35 @@ import {QRScreen} from '../screens/Passenger/QRScreen';
 import TimeTable from '../screens/Passenger/TimeTable';
 const Tab = createBottomTabNavigator();
 
-export const TabNavigator = () => {
+interface CurrentTabContextType {
+  currentTab: string;
+  setCurrentTab: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const CurrentTabContext = React.createContext<CurrentTabContextType>({
+  currentTab: 'Home2',
+  setCurrentTab: () => {},
+});
+
+export const TabNavigator: React.FC<{navigation: any}> = ({navigation}) => {
+  const {setCurrentTab} = useContext(CurrentTabContext);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('tabPress', (e: any) => {
+      // Prevent default behavior
+      e.preventDefault();
+
+      // Extract tab name and update the context
+      const tabName = e.target.split('-')[0];
+      setCurrentTab(tabName);
+
+      // Navigate to the pressed tab
+      navigation.navigate(tabName);
+    });
+
+    return unsubscribe;
+  }, [navigation, setCurrentTab]);
+
   return (
     <Tab.Navigator
       screenOptions={{

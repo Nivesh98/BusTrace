@@ -7,8 +7,8 @@ import firebaseConfig from '../Services/firebaseConfig';
 import {LoginScreen} from '../screens/Auth/LoginScreen';
 import {RegisterScreen} from '../screens/Auth/RegisterScreen';
 import {SplashScreen} from '../screens/Splash/SplashScreen';
+import DriverDrawerNavigation from './DriverDrawerNavigation';
 import PassengerDrawerNavigation from './PassengerDrawerNavigation';
-import {TabNavigatorDriver} from './TabNavigatorDriver';
 
 const firebaseService = new FirebaseAuthService(firebaseConfig);
 
@@ -70,7 +70,7 @@ export const AuthStack = () => {
         <Stack.Screen name="Home" component={PassengerDrawerNavigation} />
       )}
       {currentUserType === 'Driver' && (
-        <Stack.Screen name="DriverHome" component={TabNavigatorDriver} />
+        <Stack.Screen name="DriverHome" component={DriverDrawerNavigation} />
       )}
     </Stack.Navigator>
   );
