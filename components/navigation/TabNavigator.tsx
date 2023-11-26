@@ -3,28 +3,32 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
 import {FindBusScreen} from '../screens/Passenger/FindBusScreen';
 
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {HomeScreen} from '../screens/Passenger/HomeScreen';
 import {QRScreen} from '../screens/Passenger/QRScreen';
 import TimeTable from '../screens/Passenger/TimeTable';
+
 const Tab = createBottomTabNavigator();
 
 export const TabNavigator = () => {
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({navigation}) => ({
         tabBarShowLabel: true,
         headerShown: true,
-        headerStyle: {
-          backgroundColor: '#dc143c',
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          color: '#fff',
-        },
+        headerStyle: {backgroundColor: '#dc143c'},
+        headerTitleStyle: {fontWeight: 'bold', color: '#fff'},
         tabBarStyle: {backgroundColor: '#dc143c'},
         tabBarInactiveTintColor: '#fff',
         tabBarActiveTintColor: 'yellow',
-      }}>
+        headerLeft: () => (
+          // <Button onPress={() => navigation.toggleDrawer()} title="Menu" />
+          <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+            <Icon name="menu" size={24} color={'#fff'} />
+          </TouchableOpacity>
+        ),
+      })}>
       <Tab.Screen
         name="Home2"
         component={HomeScreen}
