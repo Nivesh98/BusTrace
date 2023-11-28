@@ -2,6 +2,26 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "components/assets/fonts/DancingScript-Bold.ttf",
+      "sha1": "40e545d9cdad467a919c2a38c032bc4fdb69c01f"
+    },
+    {
+      "path": "components/assets/fonts/DancingScript-Medium.ttf",
+      "sha1": "575d42d95b4b562cbd91341e61ab754386ffeadd"
+    },
+    {
+      "path": "components/assets/fonts/DancingScript-Regular.ttf",
+      "sha1": "77b7bf804974618d28d7b73c79ea5d34c82cb704"
+    },
+    {
+      "path": "components/assets/fonts/DancingScript-SemiBold.ttf",
+      "sha1": "3d2e9198ccd497e0ccaf29b53cd2e4e9063dc78a"
+    },
+    {
+      "path": "components/assets/fonts/DancingScript-VariableFont_wght.ttf",
+      "sha1": "80f13e7575ec59a51b7fdc42bb0b9d7a34439123"
+    },
+    {
       "path": "components/assets/fonts/Roboto-Black.ttf",
       "sha1": "3f8e401d808f6ce84b542266726514ac8be73171"
     },

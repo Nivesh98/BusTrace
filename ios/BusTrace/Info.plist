@@ -65,6 +65,11 @@
 		<string>Roboto-Regular.ttf</string>
 		<string>Roboto-Thin.ttf</string>
 		<string>Roboto-ThinItalic.ttf</string>
+		<string>DancingScript-Bold.ttf</string>
+		<string>DancingScript-Medium.ttf</string>
+		<string>DancingScript-Regular.ttf</string>
+		<string>DancingScript-SemiBold.ttf</string>
+		<string>DancingScript-VariableFont_wght.ttf</string>
 	</array>
 </dict>
 </plist>

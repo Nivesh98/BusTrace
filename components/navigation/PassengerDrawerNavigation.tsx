@@ -48,7 +48,7 @@ const PassengerDrawerNavigation = () => {
         }}
       />
       <Drawer.Screen
-        name="MyWallet"
+        name="Transaction"
         component={PassengerMyWalletDrawer}
         options={{
           drawerIcon: ({color}) => (

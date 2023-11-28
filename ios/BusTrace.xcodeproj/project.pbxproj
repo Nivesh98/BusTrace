@@ -26,6 +26,11 @@
 		8B6516857EF64C8CB1B4B913 /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CA3AEFC8E97044BBB737CDFA /* Roboto-Regular.ttf */; };
 		67F626CDA3204C25921BBA36 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE421BFCA9D54C069F7C9921 /* Roboto-Thin.ttf */; };
 		21953DA2681C4E0DB17A417A /* Roboto-ThinItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C9B0F03B4E694C09901469EF /* Roboto-ThinItalic.ttf */; };
+		FCABDC20CF484D5AB510A48F /* DancingScript-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20724160352C4BBEB3B280BA /* DancingScript-Bold.ttf */; };
+		6EF4ACA3E75A42E0AC869498 /* DancingScript-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E852E170F5D945E3988E0410 /* DancingScript-Medium.ttf */; };
+		288F9276AFA24340B39CF896 /* DancingScript-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 088F6338C02D4BCDA3AE6AE6 /* DancingScript-Regular.ttf */; };
+		656306E23EF0431B803FB28C /* DancingScript-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B297AE4123E4254843CA2AE /* DancingScript-SemiBold.ttf */; };
+		8A460004D064475E9D731A67 /* DancingScript-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DDD46C27C2A34731A5DE7E20 /* DancingScript-VariableFont_wght.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +73,11 @@
 		CA3AEFC8E97044BBB737CDFA /* Roboto-Regular.ttf */ = {isa = PBXFileReference; name = "Roboto-Regular.ttf"; path = "../components/assets/fonts/Roboto-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		DE421BFCA9D54C069F7C9921 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; name = "Roboto-Thin.ttf"; path = "../components/assets/fonts/Roboto-Thin.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		C9B0F03B4E694C09901469EF /* Roboto-ThinItalic.ttf */ = {isa = PBXFileReference; name = "Roboto-ThinItalic.ttf"; path = "../components/assets/fonts/Roboto-ThinItalic.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		20724160352C4BBEB3B280BA /* DancingScript-Bold.ttf */ = {isa = PBXFileReference; name = "DancingScript-Bold.ttf"; path = "../components/assets/fonts/DancingScript-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		E852E170F5D945E3988E0410 /* DancingScript-Medium.ttf */ = {isa = PBXFileReference; name = "DancingScript-Medium.ttf"; path = "../components/assets/fonts/DancingScript-Medium.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		088F6338C02D4BCDA3AE6AE6 /* DancingScript-Regular.ttf */ = {isa = PBXFileReference; name = "DancingScript-Regular.ttf"; path = "../components/assets/fonts/DancingScript-Regular.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6B297AE4123E4254843CA2AE /* DancingScript-SemiBold.ttf */ = {isa = PBXFileReference; name = "DancingScript-SemiBold.ttf"; path = "../components/assets/fonts/DancingScript-SemiBold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		DDD46C27C2A34731A5DE7E20 /* DancingScript-VariableFont_wght.ttf */ = {isa = PBXFileReference; name = "DancingScript-VariableFont_wght.ttf"; path = "../components/assets/fonts/DancingScript-VariableFont_wght.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +198,11 @@
 				CA3AEFC8E97044BBB737CDFA /* Roboto-Regular.ttf */,
 				DE421BFCA9D54C069F7C9921 /* Roboto-Thin.ttf */,
 				C9B0F03B4E694C09901469EF /* Roboto-ThinItalic.ttf */,
+				20724160352C4BBEB3B280BA /* DancingScript-Bold.ttf */,
+				E852E170F5D945E3988E0410 /* DancingScript-Medium.ttf */,
+				088F6338C02D4BCDA3AE6AE6 /* DancingScript-Regular.ttf */,
+				6B297AE4123E4254843CA2AE /* DancingScript-SemiBold.ttf */,
+				DDD46C27C2A34731A5DE7E20 /* DancingScript-VariableFont_wght.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -301,6 +316,11 @@
 				8B6516857EF64C8CB1B4B913 /* Roboto-Regular.ttf in Resources */,
 				67F626CDA3204C25921BBA36 /* Roboto-Thin.ttf in Resources */,
 				21953DA2681C4E0DB17A417A /* Roboto-ThinItalic.ttf in Resources */,
+				FCABDC20CF484D5AB510A48F /* DancingScript-Bold.ttf in Resources */,
+				6EF4ACA3E75A42E0AC869498 /* DancingScript-Medium.ttf in Resources */,
+				288F9276AFA24340B39CF896 /* DancingScript-Regular.ttf in Resources */,
+				656306E23EF0431B803FB28C /* DancingScript-SemiBold.ttf in Resources */,
+				8A460004D064475E9D731A67 /* DancingScript-VariableFont_wght.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
