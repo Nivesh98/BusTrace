@@ -30,7 +30,7 @@ const PassengerSettingDrawer = () => {
   useEffect(() => {
     // Fetch the current user asynchronously
     const fetchCurrentUser = () => {
-      setCurrentDate(new Date().toLocaleDateString());
+      setCurrentDate(moment(new Date()).format('MM/DD/YYYY'));
     };
 
     fetchCurrentUser();
@@ -64,7 +64,7 @@ const PassengerSettingDrawer = () => {
     // Handle date change
     setSelectedDate(date.toDate());
     console.log('selectedDate', selectedDate?.toLocaleDateString());
-    setCurrentDate(date.toDate().toLocaleDateString());
+    setCurrentDate(date.format('MM/DD/YYYY'));
     console.log('date.toDate.getDay', date.toDate().getDay());
     setBirthday(false);
   };
