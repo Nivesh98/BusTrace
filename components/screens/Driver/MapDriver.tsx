@@ -4,6 +4,8 @@ import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MapView, {Marker, Region} from 'react-native-maps';
+import Toast from 'react-native-toast-message';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import DropDown from '../../CustomComponent/DropDown';
 
 const countries = [
@@ -127,17 +129,40 @@ export const MapDriver = () => {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   });
+  const [isStarted, setIsStarted] = useState<boolean>(false);
 
+  // useEffect(() => {
+  //   //getCurrentLocation();
+  //   const interval = setInterval(() => {
+  //     if (isStarted) {
+  //       getCurrentLocation();
+  //       console.log('isStarted', isStarted);
+  //     }
+  //   }, 5000);
+
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
   useEffect(() => {
-    //getCurrentLocation();
-    const interval = setInterval(() => {
-      // getCurrentLocation();
-    }, 5000);
-
-    return () => {
+    let interval;
+    if (isStarted) {
+      // If isStarted is true, start the interval to get the current location
+      interval = setInterval(() => {
+        getCurrentLocation();
+      }, 1000);
+    } else if (interval) {
+      // If isStarted is false and the interval is set, clear it
       clearInterval(interval);
+    }
+
+    // Clean up the interval when the component is unmounted or isStarted changes
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
     };
-  }, []);
+  }, [isStarted]);
 
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
@@ -177,21 +202,76 @@ export const MapDriver = () => {
     // console.log('ex data sssssss', filterdata);
   };
 
+  const startBus = () => {
+    const checkVal = isSearchEnabled(selectedCountry1, selectedCountry2);
+    if (checkVal === 1) {
+      Toast.show({
+        type: 'error',
+        text1: 'Warning!',
+        text2: 'Please fill all details',
+      });
+    } else if (checkVal === 2) {
+      Toast.show({
+        type: 'error',
+        text1: 'Warning!',
+        text2: 'Locations not equal',
+      });
+    } else if (checkVal === 3) {
+      if (isStarted === false) {
+        Toast.show({
+          type: 'success',
+          text1: 'Bus status',
+          text2: 'Bus Started',
+        });
+        setIsStarted(true);
+      } else {
+        Toast.show({
+          type: 'error',
+          text1: 'Bus status',
+          text2: 'Bus Stoped',
+        });
+        setIsStarted(false);
+      }
+    }
+  };
+  const isSearchEnabled = (selectedC1: string, selectedC2: string) => {
+    console.log('selectedCountry1', selectedC1, 'selectedCountry2', selectedC2);
+    if (
+      selectedC1 === '' ||
+      selectedC1 === 'Select Start Location' ||
+      selectedC2 === '' ||
+      selectedC2 === 'Select End Location'
+    ) {
+      return 1;
+    } else if (selectedC1 === selectedC2) {
+      return 2;
+    } else {
+      return 3;
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={{flex: 0.3, zIndex: 9999}}>
         <View style={styles.dropdownContainer}>
+          <Text style={{fontSize: 12, color: '#000', marginLeft: 15}}>
+            Start Location
+          </Text>
           <DropDown
             onSelectionChange={handleSelection1}
             data={countries}
             selectedValue={selectedCountry1}
+            disabled={isStarted}
           />
         </View>
         <View style={styles.dropdownContainer2}>
+          <Text style={{fontSize: 12, color: '#000', marginLeft: 15}}>
+            End Location
+          </Text>
           <DropDown
             onSelectionChange={handleSelection2}
             data={countries}
             selectedValue={selectedCountry2}
+            disabled={isStarted}
           />
         </View>
       </View>
@@ -199,13 +279,15 @@ export const MapDriver = () => {
         style={{
           flexDirection: 'row',
           marginBottom: 5,
-          marginTop: -35,
+          marginTop: 4,
           justifyContent: 'space-between',
+          zIndex: 1,
         }}>
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
             style={styles.swapBtn}
-            onPress={() => swapSelections(selectedCountry1, selectedCountry2)}>
+            onPress={() => swapSelections(selectedCountry1, selectedCountry2)}
+            disabled={isStarted}>
             <View style={{flexDirection: 'row'}}>
               <Text style={styles.swaptext}>Swap</Text>
               <Image
@@ -216,18 +298,41 @@ export const MapDriver = () => {
           </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
-            style={styles.swapBtn1}
-            onPress={() => swapSelections(selectedCountry1, selectedCountry2)}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{color: '#fff', fontWeight: '100', padding: 4}}>
-                Search
-              </Text>
-              <Image
+          <TouchableOpacity style={styles.swapBtn1} onPress={() => startBus()}>
+            {!isStarted && (
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{color: '#fff', fontWeight: '100', padding: 4}}>
+                  Start
+                </Text>
+                {/* <Image
                 source={require('./../../assets/images/search.png')}
                 style={{width: 25, height: 25}}
-              />
-            </View>
+              /> */}
+                <Icon
+                  name="not-started"
+                  size={22}
+                  color={'#fff'}
+                  style={{alignSelf: 'center'}}
+                />
+              </View>
+            )}
+            {isStarted && (
+              <View style={{flexDirection: 'row'}}>
+                <Text style={{color: '#fff', fontWeight: '100', padding: 4}}>
+                  Stop
+                </Text>
+                {/* <Image
+                source={require('./../../assets/images/search.png')}
+                style={{width: 25, height: 25}}
+              /> */}
+                <Icon
+                  name="stop"
+                  size={22}
+                  color={'#fff'}
+                  style={{alignSelf: 'center'}}
+                />
+              </View>
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -256,6 +361,9 @@ export const MapDriver = () => {
           description="here"
         />
       </MapView>
+      <View style={{zIndex: 9999}}>
+        <Toast position="bottom" />
+      </View>
     </View>
   );
 };
@@ -278,7 +386,7 @@ const styles = StyleSheet.create({
     width: '100%',
     zIndex: 1,
     position: 'absolute',
-    marginTop: 65,
+    marginTop: 75,
   },
   swapBtn: {
     borderRadius: 10,

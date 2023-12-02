@@ -17,12 +17,14 @@ interface DropDownProps {
   onSelectionChange?: ((selectedItem: string) => void) | undefined;
   data: Item[];
   selectedValue: string | undefined; // New prop for selected value
+  disabled?: boolean; // New prop for disabling the dropdown
 }
 
 const DropDown: React.FC<DropDownProps> = ({
   onSelectionChange,
   data,
   selectedValue,
+  disabled = false,
 }) => {
   const [search, setSearch] = useState<string>('');
   const [clicked, setClicked] = useState<boolean>(false);
@@ -62,6 +64,7 @@ const DropDown: React.FC<DropDownProps> = ({
   return (
     <View>
       <TouchableOpacity
+        disabled={disabled}
         style={{
           width: '90%',
           height: 50,
