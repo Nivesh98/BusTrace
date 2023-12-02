@@ -14,6 +14,7 @@ import CalendarPicker, {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import ImagePicker from 'react-native-image-crop-picker';
 import Modal from 'react-native-modal';
+import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const PassengerSettingDrawer = () => {
   const [selectedImage, setSelectedImage] = useState('');
@@ -75,9 +76,41 @@ const PassengerSettingDrawer = () => {
   const maxDate = today.toDate();
   console.log('maxDate', maxDate);
 
+  const updateProfileData = () => {
+    if (!isValidateData()) {
+      return;
+    }
+  };
+
+  const isValidateData = () => {
+    if (
+      firstName === '' ||
+      lastName === '' ||
+      phoneNumber === '' ||
+      address === ''
+    ) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please Fill all details',
+      });
+      return false;
+    } else {
+      Toast.show({
+        type: 'success',
+        text1: 'Success',
+        text2: 'Successfully updated',
+      });
+      return true;
+    }
+  };
+
   return (
     <View style={{flex: 1}}>
       <ScrollView>
+        <View style={{zIndex: 9999}}>
+          <Toast position="top" />
+        </View>
         <View style={{alignItems: 'center', marginVertical: 22}}>
           <TouchableOpacity onPress={handleImageSelection}>
             <View style={styles.circleOverlay} />
@@ -107,6 +140,7 @@ const PassengerSettingDrawer = () => {
             </View>
           </TouchableOpacity>
         </View>
+
         <View style={{paddingLeft: 20, paddingRight: 20}}>
           <View style={{flexDirection: 'column', marginBottom: 6}}>
             <Text
@@ -245,7 +279,30 @@ const PassengerSettingDrawer = () => {
             </TouchableOpacity>
           </View>
         </View>
-
+        <View style={{paddingLeft: 20, paddingRight: 20}}>
+          <TouchableOpacity
+            onPress={updateProfileData}
+            style={{
+              height: 38,
+              width: '100%',
+              backgroundColor: '#cc2f2f',
+              borderWidth: 1,
+              borderRadius: 10,
+              marginVertical: 6,
+              justifyContent: 'center',
+              paddingLeft: 8,
+            }}>
+            <Text
+              style={{
+                alignSelf: 'center',
+                color: '#fff',
+                fontWeight: 'bold',
+                fontSize: 20,
+              }}>
+              UPDATE
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Modal
           isVisible={birthday}
           hasBackdrop={true}
