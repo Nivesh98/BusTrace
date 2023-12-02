@@ -1,6 +1,10 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
-import Ionicons from 'react-native-vector-icons/MaterialIcons';
+import {TouchableOpacity} from 'react-native';
+import {
+  default as Icon,
+  default as Ionicons,
+} from 'react-native-vector-icons/MaterialIcons';
 import {ChargeDriver} from '../screens/Driver/ChargeDriver';
 import {HomeScreenDriver} from '../screens/Driver/HomeScreenDriver';
 import {MapDriver} from '../screens/Driver/MapDriver';
@@ -11,20 +15,21 @@ const Tab = createBottomTabNavigator();
 export const TabNavigatorDriver = () => {
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({navigation}) => ({
         tabBarShowLabel: true,
         headerShown: true,
-        headerStyle: {
-          backgroundColor: '#dc143c',
-        },
-        headerTitleStyle: {
-          fontWeight: 'bold',
-          color: '#fff',
-        },
+        headerStyle: {backgroundColor: '#dc143c'},
+        headerTitleStyle: {fontWeight: 'bold', color: '#fff'},
         tabBarStyle: {backgroundColor: '#dc143c'},
         tabBarInactiveTintColor: '#fff',
         tabBarActiveTintColor: 'yellow',
-      }}>
+        headerLeft: () => (
+          // <Button onPress={() => navigation.toggleDrawer()} title="Menu" />
+          <TouchableOpacity onPress={() => navigation.toggleDrawer()}>
+            <Icon name="menu" size={24} color={'#fff'} />
+          </TouchableOpacity>
+        ),
+      })}>
       <Tab.Screen
         name="DriverHome2"
         component={HomeScreenDriver}

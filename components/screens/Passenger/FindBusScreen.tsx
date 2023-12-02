@@ -217,7 +217,6 @@ export const FindBusScreen = () => {
           longitude: currentLocation.longitude,
           ...currentDeltas,
         }}
-        onRegionChange={onRegionChange}
         onLayout={() =>
           mapRef.current.animateToRegion(
             {

@@ -1,11 +1,33 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomDrawer from '../CustomComponent/CustomDrawer';
 import {TabNavigatorDriver} from './TabNavigatorDriver';
 
 const DriverDrawerNavigation = () => {
   const Drawer = createDrawerNavigator();
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name="Home3" component={TabNavigatorDriver} />
+    <Drawer.Navigator
+      drawerContent={props => <CustomDrawer {...props} />}
+      screenOptions={{
+        drawerActiveBackgroundColor: '#dc143c',
+        drawerActiveTintColor: '#fff',
+        drawerInactiveTintColor: '#333',
+        drawerLabelStyle: {
+          marginLeft: -25,
+          fontFamily: 'Roboto-Medium',
+          fontSize: 15,
+        },
+      }}>
+      <Drawer.Screen
+        name="Home3"
+        component={TabNavigatorDriver}
+        options={{
+          drawerIcon: ({color}) => <Icon name="home" size={22} color={color} />,
+          headerTitle: 'Home',
+          headerShown: false,
+          title: 'Home',
+        }}
+      />
     </Drawer.Navigator>
   );
 };

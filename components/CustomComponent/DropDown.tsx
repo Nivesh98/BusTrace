@@ -78,7 +78,7 @@ const DropDown: React.FC<DropDownProps> = ({
           setClicked(!clicked);
         }}>
         <Text style={{fontWeight: '600'}}>
-          {selectedCountry == '' ? 'Select Country' : selectedCountry}
+          {selectedCountry == '' ? 'Select Location' : selectedCountry}
         </Text>
         {clicked ? (
           <Image
