@@ -195,7 +195,7 @@ export const MapDriver = () => {
 
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
-      position => {
+      async position => {
         const {latitude, longitude} = position.coords;
         setLatitude(latitude);
         setLongitude(longitude);
@@ -208,13 +208,25 @@ export const MapDriver = () => {
         setBusAngle(angle);
 
         // Update previous location
-        authService.setBusLocation(
+        await authService.setBusLocation(
           latitude,
           longitude,
           angle,
           selectedCountry2,
           isStarted,
         );
+        if (!isStarted) {
+          setLatitude(null);
+          setLongitude(null);
+          setBusAngle(null);
+          await authService.setBusLocation(
+            latitude,
+            longitude,
+            busAngle,
+            selectedCountry2,
+            false,
+          );
+        }
         previousLocation.current = {latitude, longitude};
 
         console.log('currennt location', position.coords);

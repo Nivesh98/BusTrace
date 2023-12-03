@@ -17,7 +17,9 @@ import {
   doc,
   getDocs,
   getFirestore,
+  query,
   setDoc,
+  where,
 } from 'firebase/firestore';
 import {useEffect} from 'react';
 
@@ -209,6 +211,29 @@ class FirebaseAuthService {
         busID: user.uid,
       });
     } else {
+    }
+  }
+
+  async getBusesToLocation(toLocation: string) {
+    const busesQuery = query(
+      collection(this.db, 'busLocation'),
+      where('toLocation', '==', toLocation),
+      where('isStarted', '==', true),
+    );
+
+    try {
+      const querySnapshot = await getDocs(busesQuery);
+      const buses = [];
+      querySnapshot.forEach(doc => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, ' => ', doc.data());
+        buses.push({id: doc.id, ...doc.data()});
+      });
+      return buses;
+    } catch (error) {
+      console.error('Error getting documents: ', error);
+      // Handle the error
+      return [];
     }
   }
 

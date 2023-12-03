@@ -3,7 +3,11 @@ import * as React from 'react';
 import {useEffect, useRef, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import MapView, {Marker, Region} from 'react-native-maps';
+import Toast from 'react-native-toast-message';
 import DropDown from '../../CustomComponent/DropDown';
+import FirebaseAuthService from '../../Services/FirebaseAuthService';
+import firebaseConfig from '../../Services/firebaseConfig';
+const authService = new FirebaseAuthService(firebaseConfig);
 
 const countries = [
   {key: 'EX 1-1_1', value: 'Makumbara Bus Stand'},
@@ -110,8 +114,12 @@ const countries = [
   {key: '234_1', value: 'Delgoda'},
 ];
 export const FindBusScreen = () => {
-  const [selectedCountry1, setSelectedCountry1] = useState<string>('');
-  const [selectedCountry2, setSelectedCountry2] = useState<string>('');
+  const [selectedCountry1, setSelectedCountry1] = useState<string>(
+    'Select Start Location',
+  );
+  const [selectedCountry2, setSelectedCountry2] = useState<string>(
+    'Select End Location',
+  );
   const [currentLocation, setCurrentLocation] = useState({
     latitude: 0,
     longitude: 0,
@@ -120,6 +128,7 @@ export const FindBusScreen = () => {
     latitudeDelta: 0.01,
     longitudeDelta: 0.01,
   });
+  const [busesToLocation, setBusesToLocation] = useState([]);
 
   useEffect(() => {
     //getCurrentLocation();
@@ -133,8 +142,8 @@ export const FindBusScreen = () => {
   }, []);
   const mapRef = useRef(null);
   const getCurrentLocation = () => {
-    const latitude = 7.8731;
-    const longitude = 80.7718;
+    const latitude = 6.818496;
+    const longitude = 79.8937;
     setCurrentLocation({
       latitude,
       longitude,
@@ -176,9 +185,53 @@ export const FindBusScreen = () => {
     console.log(`Swapping selections: ${country1} and ${country2}`);
     // console.log('ex data sssssss', filterdata);
   };
+
+  const startBus = async () => {
+    const checkVal = isSearchEnabled(selectedCountry1, selectedCountry2);
+    if (checkVal === 1) {
+      Toast.show({
+        type: 'error',
+        text1: 'Warning!',
+        text2: 'Please fill all details',
+      });
+    } else if (checkVal === 2) {
+      Toast.show({
+        type: 'error',
+        text1: 'Warning!',
+        text2: 'Locations not equal',
+      });
+    } else if (checkVal === 3) {
+      Toast.show({
+        type: 'success',
+        text1: 'Bus status',
+        text2: 'Serching Bus',
+      });
+      const busesToLocation = await authService.getBusesToLocation(
+        selectedCountry2,
+      );
+      setBusesToLocation(busesToLocation);
+      console.log(busesToLocation);
+    }
+  };
+  const isSearchEnabled = (selectedC1: string, selectedC2: string) => {
+    console.log('selectedCountry1', selectedC1, 'selectedCountry2', selectedC2);
+    if (
+      selectedC1 === '' ||
+      selectedC1 === 'Select Start Location' ||
+      selectedC2 === '' ||
+      selectedC2 === 'Select End Location'
+    ) {
+      return 1;
+    } else if (selectedC1 === selectedC2) {
+      return 2;
+    } else {
+      return 3;
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <View style={{flex: 0.3, zIndex: 9999}}>
+      {/* <View style={{flex: 0.3, zIndex: 9999}}>
         <View style={styles.dropdownContainer}>
           <DropDown
             onSelectionChange={handleSelection1}
@@ -207,8 +260,64 @@ export const FindBusScreen = () => {
             selectedValue={selectedCountry2}
           />
         </View>
+      </View> */}
+      <View style={{flex: 0.3, zIndex: 9999}}>
+        <View style={styles.dropdownContainer}>
+          <Text style={{fontSize: 12, color: '#000', marginLeft: 15}}>
+            Start Location
+          </Text>
+          <DropDown
+            onSelectionChange={handleSelection1}
+            data={countries}
+            selectedValue={selectedCountry1}
+          />
+        </View>
+        <View style={styles.dropdownContainer2}>
+          <Text style={{fontSize: 12, color: '#000', marginLeft: 15}}>
+            End Location
+          </Text>
+          <DropDown
+            onSelectionChange={handleSelection2}
+            data={countries}
+            selectedValue={selectedCountry2}
+          />
+        </View>
       </View>
-
+      <View
+        style={{
+          flexDirection: 'row',
+          marginBottom: 5,
+          marginTop: 4,
+          justifyContent: 'space-between',
+          zIndex: 1,
+        }}>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity
+            style={styles.swapBtn}
+            onPress={() => swapSelections(selectedCountry1, selectedCountry2)}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={styles.swaptext}>Swap</Text>
+              <Image
+                source={require('./../../assets/images/swap_icon.png')}
+                style={{width: 20, height: 20}}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={styles.swapBtn1} onPress={() => startBus()}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{color: '#fff', fontWeight: '100', padding: 4}}>
+                Find
+              </Text>
+              <Image
+                source={require('./../../assets/images/search.png')}
+                style={{width: 25, height: 25}}
+              />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
       <MapView
         ref={mapRef}
         style={styles.map}
@@ -227,14 +336,33 @@ export const FindBusScreen = () => {
             1500,
           )
         }>
-        <Marker
+        {busesToLocation.map(bus => (
+          <Marker
+            key={bus.busID} // It's important to have a unique key for each item
+            coordinate={{
+              latitude: bus.latitude,
+              longitude: bus.longitude,
+            }}
+            title={bus.busID} // Assuming you want to use the bus ID as the title
+            description={`To: ${bus.toLocation}`}
+            anchor={{x: 0.5, y: 0.5}}>
+            <Image
+              source={require('../../assets/images/bus_top_icon.png')}
+              style={{width: 20, height: 20}}
+            />
+          </Marker>
+        ))}
+        {/* <Marker
           coordinate={currentLocation}
           title="Current Location"
           description="here"
           image={require('../../assets/images/bus_top_icon.png')}
           style={{width: 20, height: 20}}
-        />
+        /> */}
       </MapView>
+      <View style={{zIndex: 9999}}>
+        <Toast position="bottom" />
+      </View>
     </View>
   );
 };
@@ -242,36 +370,44 @@ export const FindBusScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
   },
   map: {
     flex: 0.7,
-    width: '90%',
+    width: '100%',
   },
   dropdownContainer: {
     width: '100%',
     zIndex: 2,
     marginTop: 10,
-    marginLeft: -140,
     position: 'absolute',
   },
   dropdownContainer2: {
     width: '100%',
-    marginLeft: -140,
     zIndex: 1,
     position: 'absolute',
-    marginTop: 95,
+    marginTop: 75,
   },
   swapBtn: {
-    alignSelf: 'flex-end',
-    marginRight: 20,
+    marginLeft: 20,
     borderRadius: 10,
     borderWidth: 0.5,
     marginBottom: 4,
-    marginTop: 65,
     padding: 1,
   },
   swaptext: {
+    fontSize: 14,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  swapBtn1: {
+    marginRight: 20,
+    borderRadius: 10,
+    borderWidth: 0.5,
+    backgroundColor: '#e83a05',
+    padding: 2,
+  },
+  swaptext1: {
     fontSize: 14,
     justifyContent: 'center',
     alignItems: 'center',
