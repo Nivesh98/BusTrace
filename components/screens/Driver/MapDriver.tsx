@@ -179,19 +179,19 @@ export const MapDriver = () => {
   const [latitude, setLatitude] = useState<number>(null);
   const [longitude, setLongitude] = useState<number>(null);
 
-  // useEffect(() => {
-  //   //getCurrentLocation();
-  //   const interval = setInterval(() => {
-  //     if (isStarted) {
-  //       getCurrentLocation();
-  //       console.log('isStarted', isStarted);
-  //     }
-  //   }, 5000);
+  useEffect(() => {
+    //getCurrentLocation();
+    const interval = setInterval(() => {
+      if (isStarted) {
+        getCurrentLocation();
+        console.log('isStarted', isStarted);
+      }
+    }, 5000);
 
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
   useEffect(() => {
     let interval;
 
@@ -200,31 +200,9 @@ export const MapDriver = () => {
       interval = setInterval(() => {
         getCurrentLocation();
       }, 1000);
-    } else if (!isStarted) {
-      setLatitude(null);
-      setLongitude(null);
-      setBusAngle(null);
-      authService.setBusLocation(
-        latitude,
-        longitude,
-        busAngle,
-        selectedCountry2,
-        false,
-      );
     } else if (interval) {
       // If isStarted is false and the interval is set, clear it
-      if (!isStarted) {
-        setLatitude(null);
-        setLongitude(null);
-        setBusAngle(null);
-        authService.setBusLocation(
-          latitude,
-          longitude,
-          busAngle,
-          selectedCountry2,
-          false,
-        );
-      }
+
       clearInterval(interval);
     }
 
@@ -235,6 +213,47 @@ export const MapDriver = () => {
       }
     };
   }, [isStarted]);
+
+  // useEffect to handle isStarted state changes
+  useEffect(() => {
+    // Here, we know for sure that isStarted has been updated.
+    // So we can safely call the database update function.
+    const updateDatabase = async () => {
+      // Perform the database update with the new value of isStarted
+      await authService.setBusLocation(
+        latitude,
+        longitude,
+        busAngle,
+        selectedCountry2,
+        isStarted,
+      );
+    };
+
+    updateDatabase().catch(console.error);
+
+    // Clean up interval or any other resources if needed
+    return () => {
+      // Your clean-up code here
+    };
+  }, [isStarted]); // Only re-run the effect if isStarted changes
+
+  const startBus = () => {
+    const checkVal = isSearchEnabled(selectedCountry1, selectedCountry2);
+    if (checkVal !== 3) {
+      // Show appropriate toast based on the checkVal
+      const toastType =
+        checkVal === 1 ? 'Please fill all details' : 'Locations not equal';
+      Toast.show({
+        type: 'error',
+        text1: 'Warning!',
+        text2: toastType,
+      });
+      return;
+    }
+
+    setIsStarted(prevIsStarted => !prevIsStarted);
+    // The actual state update will happen after this function exits.
+  };
 
   const getCurrentLocation = () => {
     Geolocation.getCurrentPosition(
@@ -306,38 +325,38 @@ export const MapDriver = () => {
     // console.log('ex data sssssss', filterdata);
   };
 
-  const startBus = () => {
-    const checkVal = isSearchEnabled(selectedCountry1, selectedCountry2);
-    if (checkVal === 1) {
-      Toast.show({
-        type: 'error',
-        text1: 'Warning!',
-        text2: 'Please fill all details',
-      });
-    } else if (checkVal === 2) {
-      Toast.show({
-        type: 'error',
-        text1: 'Warning!',
-        text2: 'Locations not equal',
-      });
-    } else if (checkVal === 3) {
-      if (isStarted === false) {
-        Toast.show({
-          type: 'success',
-          text1: 'Bus status',
-          text2: 'Bus Started',
-        });
-        setIsStarted(true);
-      } else {
-        Toast.show({
-          type: 'error',
-          text1: 'Bus status',
-          text2: 'Bus Stoped',
-        });
-        setIsStarted(false);
-      }
-    }
-  };
+  // const startBus = () => {
+  //   const checkVal = isSearchEnabled(selectedCountry1, selectedCountry2);
+  //   if (checkVal === 1) {
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Warning!',
+  //       text2: 'Please fill all details',
+  //     });
+  //   } else if (checkVal === 2) {
+  //     Toast.show({
+  //       type: 'error',
+  //       text1: 'Warning!',
+  //       text2: 'Locations not equal',
+  //     });
+  //   } else if (checkVal === 3) {
+  //     if (isStarted === false) {
+  //       Toast.show({
+  //         type: 'success',
+  //         text1: 'Bus status',
+  //         text2: 'Bus Started',
+  //       });
+  //       setIsStarted(true);
+  //     } else {
+  //       Toast.show({
+  //         type: 'error',
+  //         text1: 'Bus status',
+  //         text2: 'Bus Stoped',
+  //       });
+  //       setIsStarted(false);
+  //     }
+  //   }
+  // };
   const isSearchEnabled = (selectedC1: string, selectedC2: string) => {
     console.log('selectedCountry1', selectedC1, 'selectedCountry2', selectedC2);
     if (

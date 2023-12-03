@@ -315,11 +315,15 @@ export const FindBusScreen = () => {
             }}
             title={bus.busID} // Assuming you want to use the bus ID as the title
             description={`To: ${bus.toLocation}`}
-            anchor={{x: 0.5, y: 0.5}}>
-            <Image
-              source={require('../../assets/images/bus_top_icon.png')}
-              style={{width: 20, height: 20, zIndex: 9999}}
-            />
+            anchor={{x: 0.5, y: 0.5}}
+            rotation={bus.direction}>
+            <View style={{width: 22, height: 22}}>
+              <Image
+                source={require('../../assets/images/bus_top_icon.png')}
+                style={{width: '100%', height: '100%'}}
+                resizeMode="contain"
+              />
+            </View>
           </Marker>
         ))}
         {/* <Marker
