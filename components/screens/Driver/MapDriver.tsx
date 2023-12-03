@@ -116,6 +116,49 @@ const countries = [
   {key: '234_1', value: 'Delgoda'},
 ];
 
+const CustomMarker = ({coordinate, busAngle, isStarted}) => {
+  const [imageSize, setImageSize] = useState({width: 0, height: 0});
+
+  const onImageLayout = event => {
+    const {width, height} = event.nativeEvent.layout;
+    setImageSize({width, height});
+    console.log('Image dimensions on screen:', width, height);
+  };
+  return (
+    <Marker
+      coordinate={coordinate}
+      title="Current Location"
+      description="here"
+      flat={true}
+      rotation={busAngle}
+      anchor={{x: 0.5, y: 0.5}}>
+      <View
+        style={{
+          width: 40, // Set your desired width
+          height: 40, // Set your desired height
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        {isStarted ? (
+          <Image
+            onLayout={onImageLayout}
+            source={require('../../assets/images/bus_top_icon.png')}
+            style={{width: '100%', height: '100%'}}
+            resizeMode="contain" // Adjust resizeMode as needed
+          />
+        ) : (
+          <Image
+            onLayout={onImageLayout}
+            source={require('../../assets/images/bus_top_icon_disabled.png')}
+            style={{width: '100%', height: '100%'}}
+            resizeMode="contain" // Adjust resizeMode as needed
+          />
+        )}
+      </View>
+    </Marker>
+  );
+};
+
 export const MapDriver = () => {
   const [selectedCountry1, setSelectedCountry1] = useState<string>(
     'Select Start Location',
@@ -439,16 +482,27 @@ export const MapDriver = () => {
             1500,
           )
         }>
-        <Marker
+        <CustomMarker
+          coordinate={currentLocation}
+          busAngle={busAngle}
+          isStarted={isStarted}
+        />
+        {/* <Marker
           coordinate={currentLocation}
           title="Current Location"
           description="here"
-          image={require('../../assets/images/bus_top_icon.png')}
-          style={{width: 20, height: 20}}
           flat={true}
+          style={{width: 30, height: 30}}
           rotation={busAngle}
-          anchor={{x: 0.5, y: 0.5}}
-        />
+          anchor={{x: 5, y: 5}}>
+          <View style={{width: 22, height: 22}}>
+            <Image
+              source={require('../../assets/images/bus_top_icon.png')}
+              style={{width: '100%', height: '100%'}}
+              resizeMode="contain"
+            />
+          </View>
+        </Marker> */}
       </MapView>
       <View style={{zIndex: 9999}}>
         <Toast position="bottom" />

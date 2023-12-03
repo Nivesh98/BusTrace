@@ -231,36 +231,6 @@ export const FindBusScreen = () => {
 
   return (
     <View style={styles.container}>
-      {/* <View style={{flex: 0.3, zIndex: 9999}}>
-        <View style={styles.dropdownContainer}>
-          <DropDown
-            onSelectionChange={handleSelection1}
-            data={countries}
-            selectedValue={selectedCountry1}
-          />
-        </View>
-        <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity
-            style={styles.swapBtn}
-            onPress={() => swapSelections(selectedCountry1, selectedCountry2)}>
-            <View style={{flexDirection: 'row'}}>
-              <Text style={styles.swaptext}>Swap</Text>
-              <Image
-                source={require('./../../assets/images/swap_icon.png')}
-                style={{width: 20, height: 20}}
-              />
-            </View>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.dropdownContainer2}>
-          <DropDown
-            onSelectionChange={handleSelection2}
-            data={countries}
-            selectedValue={selectedCountry2}
-          />
-        </View>
-      </View> */}
       <View style={{flex: 0.3, zIndex: 9999}}>
         <View style={styles.dropdownContainer}>
           <Text style={{fontSize: 12, color: '#000', marginLeft: 15}}>
@@ -348,7 +318,7 @@ export const FindBusScreen = () => {
             anchor={{x: 0.5, y: 0.5}}>
             <Image
               source={require('../../assets/images/bus_top_icon.png')}
-              style={{width: 20, height: 20}}
+              style={{width: 20, height: 20, zIndex: 9999}}
             />
           </Marker>
         ))}
