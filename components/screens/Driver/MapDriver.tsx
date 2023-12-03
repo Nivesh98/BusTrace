@@ -7,6 +7,9 @@ import MapView, {Marker, Region} from 'react-native-maps';
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import DropDown from '../../CustomComponent/DropDown';
+import FirebaseAuthService from '../../Services/FirebaseAuthService';
+import firebaseConfig from '../../Services/firebaseConfig';
+const authService = new FirebaseAuthService(firebaseConfig);
 
 const countries = [
   {key: 'EX 1-1_1', value: 'Makumbara Bus Stand'},
@@ -126,10 +129,12 @@ export const MapDriver = () => {
     longitude: 0,
   });
   const [currentDeltas, setCurrentDeltas] = useState({
-    latitudeDelta: 0.01,
-    longitudeDelta: 0.01,
+    latitudeDelta: 0.001,
+    longitudeDelta: 0.001,
   });
   const [isStarted, setIsStarted] = useState<boolean>(false);
+  const [latitude, setLatitude] = useState<number>(null);
+  const [longitude, setLongitude] = useState<number>(null);
 
   // useEffect(() => {
   //   //getCurrentLocation();
@@ -146,13 +151,37 @@ export const MapDriver = () => {
   // }, []);
   useEffect(() => {
     let interval;
+
     if (isStarted) {
       // If isStarted is true, start the interval to get the current location
       interval = setInterval(() => {
         getCurrentLocation();
       }, 1000);
+    } else if (!isStarted) {
+      setLatitude(null);
+      setLongitude(null);
+      setBusAngle(null);
+      authService.setBusLocation(
+        latitude,
+        longitude,
+        busAngle,
+        selectedCountry2,
+        false,
+      );
     } else if (interval) {
       // If isStarted is false and the interval is set, clear it
+      if (!isStarted) {
+        setLatitude(null);
+        setLongitude(null);
+        setBusAngle(null);
+        authService.setBusLocation(
+          latitude,
+          longitude,
+          busAngle,
+          selectedCountry2,
+          false,
+        );
+      }
       clearInterval(interval);
     }
 
@@ -168,6 +197,26 @@ export const MapDriver = () => {
     Geolocation.getCurrentPosition(
       position => {
         const {latitude, longitude} = position.coords;
+        setLatitude(latitude);
+        setLongitude(longitude);
+        const angle = calculateBearing(
+          previousLocation.current.latitude,
+          previousLocation.current.longitude,
+          latitude,
+          longitude,
+        );
+        setBusAngle(angle);
+
+        // Update previous location
+        authService.setBusLocation(
+          latitude,
+          longitude,
+          angle,
+          selectedCountry2,
+          isStarted,
+        );
+        previousLocation.current = {latitude, longitude};
+
         console.log('currennt location', position.coords);
         setCurrentLocation({
           latitude,
@@ -249,6 +298,29 @@ export const MapDriver = () => {
       return 3;
     }
   };
+  const [busAngle, setBusAngle] = useState(0);
+  const previousLocation = useRef({latitude: 0, longitude: 0});
+  function calculateBearing(startLat, startLng, destLat, destLng) {
+    startLat = radians(startLat);
+    startLng = radians(startLng);
+    destLat = radians(destLat);
+    destLng = radians(destLng);
+
+    const y = Math.sin(destLng - startLng) * Math.cos(destLat);
+    const x =
+      Math.cos(startLat) * Math.sin(destLat) -
+      Math.sin(startLat) * Math.cos(destLat) * Math.cos(destLng - startLng);
+    const bearing = Math.atan2(y, x);
+    return (degrees(bearing) + 360) % 360;
+  }
+
+  function radians(degrees) {
+    return (degrees * Math.PI) / 180;
+  }
+
+  function degrees(radians) {
+    return (radians * 180) / Math.PI;
+  }
   return (
     <View style={styles.container}>
       <View style={{flex: 0.3, zIndex: 9999}}>
@@ -359,6 +431,11 @@ export const MapDriver = () => {
           coordinate={currentLocation}
           title="Current Location"
           description="here"
+          image={require('../../assets/images/bus_top_icon.png')}
+          style={{width: 20, height: 20}}
+          flat={true}
+          rotation={busAngle}
+          anchor={{x: 0.5, y: 0.5}}
         />
       </MapView>
       <View style={{zIndex: 9999}}>

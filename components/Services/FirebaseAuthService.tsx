@@ -14,8 +14,10 @@ import {
   Firestore,
   addDoc,
   collection,
+  doc,
   getDocs,
   getFirestore,
+  setDoc,
 } from 'firebase/firestore';
 import {useEffect} from 'react';
 
@@ -182,6 +184,31 @@ class FirebaseAuthService {
       // User is not authenticated
       console.log('FirebaseAuthService user.uid nullllllllllllllll');
       return null;
+    }
+  }
+
+  setBusLocation(
+    latitude: number,
+    longitude: number,
+    direction: number,
+    toLocation: string,
+    isStarted: boolean,
+  ) {
+    const user = this.auth.currentUser;
+    if (user) {
+      // Add user data to Firestore
+      const busLocationRef = doc(this.db, 'busLocation', user.uid);
+
+      // Set data in Firestore
+      setDoc(busLocationRef, {
+        latitude,
+        longitude,
+        direction,
+        toLocation,
+        isStarted,
+        busID: user.uid,
+      });
+    } else {
     }
   }
 
