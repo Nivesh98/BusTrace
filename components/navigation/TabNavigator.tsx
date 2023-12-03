@@ -1,16 +1,26 @@
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/MaterialIcons';
 import {FindBusScreen} from '../screens/Passenger/FindBusScreen';
 
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import BusDetails from '../screens/Passenger/BusDetails';
 import {HomeScreen} from '../screens/Passenger/HomeScreen';
 import {QRScreen} from '../screens/Passenger/QRScreen';
 import TimeTable from '../screens/Passenger/TimeTable';
 
+function StackScreen() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Find Bus" component={FindBusScreen} />
+      <Stack.Screen name="BusDetails" component={BusDetails} />
+    </Stack.Navigator>
+  );
+}
 const Tab = createBottomTabNavigator();
-
+const Stack = createNativeStackNavigator();
 export const TabNavigator = () => {
   return (
     <Tab.Navigator
@@ -50,12 +60,14 @@ export const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="Find Bus"
-        component={FindBusScreen}
+        name="BusDetailsStack"
+        component={StackScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name="location-searching" color={color} size={size} />
           ),
+          headerTitle: 'Find Bus',
+          title: 'Find Bus',
         }}
       />
       <Tab.Screen

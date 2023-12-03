@@ -113,7 +113,7 @@ const countries = [
   {key: '226_1', value: 'Malwana'},
   {key: '234_1', value: 'Delgoda'},
 ];
-export const FindBusScreen = () => {
+export const FindBusScreen = ({navigation}) => {
   const [selectedCountry1, setSelectedCountry1] = useState<string>(
     'Select Start Location',
   );
@@ -316,7 +316,22 @@ export const FindBusScreen = () => {
             title={bus.busID} // Assuming you want to use the bus ID as the title
             description={`To: ${bus.toLocation}`}
             anchor={{x: 0.5, y: 0.5}}
-            rotation={bus.direction}>
+            rotation={bus.direction}
+            onPress={
+              () => {
+                navigation.navigate('BusDetails', {busID: bus.busID});
+              }
+              //   // navigation.navigate('Home', 'Home3', {
+              //   //   screen: 'BusDetails',
+              //   //   params: {busID: bus.busID},
+              //   // })
+              //   navigation.navigate('Home', {
+              //     screen: 'BusDetails',
+              //     params: {busID: bus.busID},
+              //   });
+              // }
+              // navigateToBusDetails(bus.busID)
+            }>
             <View style={{width: 22, height: 22}}>
               <Image
                 source={require('../../assets/images/bus_top_icon.png')}
