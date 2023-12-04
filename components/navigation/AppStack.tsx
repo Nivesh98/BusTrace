@@ -5,6 +5,7 @@ import {ActivityIndicator, View} from 'react-native';
 import FirebaseAuthService from '../Services/FirebaseAuthService';
 import firebaseConfig from '../Services/firebaseConfig';
 import {LoginScreen} from '../screens/Auth/LoginScreen';
+import {RegisterScreen} from '../screens/Auth/RegisterScreen';
 import DriverDrawerNavigation from './DriverDrawerNavigation';
 import PassengerDrawerNavigation from './PassengerDrawerNavigation';
 
@@ -65,25 +66,42 @@ export const AppStack = () => {
     );
   }
 
-  let ScreenComponent;
+  // let ScreenComponent;
 
-  if (checkCurrentUser) {
-    if (currentUserX === 'Passenger') {
-      ScreenComponent = (
-        <Stack.Screen name="Home" component={PassengerDrawerNavigation} />
-      );
-    } else {
-      ScreenComponent = (
-        <Stack.Screen name="DriverHome" component={DriverDrawerNavigation} />
-      );
-    }
-  } else {
-    ScreenComponent = <Stack.Screen name="Login" component={LoginScreen} />;
-  }
+  // if (checkCurrentUser) {
+  //   if (currentUserX === 'Passenger') {
+  //     ScreenComponent = (
+  //       <Stack.Screen name="Home" component={PassengerDrawerNavigation} />
+  //     );
+  //   } else {
+  //     ScreenComponent = (
+  //       <Stack.Screen name="DriverHome" component={DriverDrawerNavigation} />
+  //     );
+  //   }
+  // } else {
+  //   ScreenComponent = <Stack.Screen name="Login" component={LoginScreen} /><Stack.Screen name="Register" component={RegisterScreen} />;
+  // }
+
+  // return (
+  //   <Stack.Navigator screenOptions={{headerShown: false}}>
+  //     {ScreenComponent}
+  //   </Stack.Navigator>
+  // );
 
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
-      {ScreenComponent}
+      {checkCurrentUser ? (
+        currentUserX === 'Passenger' ? (
+          <Stack.Screen name="Home" component={PassengerDrawerNavigation} />
+        ) : (
+          <Stack.Screen name="DriverHome" component={DriverDrawerNavigation} />
+        )
+      ) : (
+        <>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+        </>
+      )}
     </Stack.Navigator>
   );
 };
