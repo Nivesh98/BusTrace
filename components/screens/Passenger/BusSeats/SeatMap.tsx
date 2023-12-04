@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   FlatList,
   Image,
@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
+import FirebaseAuthService from '../../../Services/FirebaseAuthService';
+import firebaseConfig from '../../../Services/firebaseConfig';
+const authService = new FirebaseAuthService(firebaseConfig);
 // Define your types
 type SeatStatus = 'available' | 'booked' | 'selected' | 'processing';
 
@@ -41,12 +43,24 @@ const Seat = ({number, status, onPress}) => {
 };
 
 // Define your seat map component
-const SeatMap = () => {
-  const initialSeats = new Array(41).fill({status: 'available', userId: null});
-  const [seats, setSeats] = useState(initialSeats);
+const SeatMap = ({busID}) => {
+  // const initialSeats = new Array(41).fill({status: 'available', userId: null});
+  // const [seats, setSeats] = useState(initialSeats);
+  //const initialSeats = new Array(41).fill({status: 'available', userId: null});
+  const [seats, setSeats] = useState([]);
+
   const [tempSeats, setTempSeats] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
-
+  useEffect(() => {
+    const fetchSeats = async () => {
+      const driverId = busID.busID; // Replace with actual driver ID
+      const fetchedSeats = await authService.getSeatsForDriver(driverId);
+      setSeats(fetchedSeats);
+    };
+    console.log('busID.busID aaaaaaa', busID.busID);
+    console.log('busID mmmmmmm', busID);
+    fetchSeats();
+  }, []);
   const handlePress = index => {
     const newSeats = seats.map((seat, i) => {
       if (i === index) {
@@ -55,18 +69,14 @@ const SeatMap = () => {
           setTempSeats(currentTempSeats =>
             currentTempSeats.filter(seatIndex => seatIndex - 1 !== index),
           );
-          // tempSeats.map((seat, i) => {
-          //   if (seat === index) {
-          //     tempSeats.splice(1, i);
-          //   }
-          // });
           return {...seat, status: 'available'};
         } else if (selectedCount < 6) {
           //setTempSeats(index)
           setTempSeats(currentTempSeats => [...currentTempSeats, index + 1]);
           //tempSeats.push(index);
           setSelectedCount(selectedCount + 1);
-          return {...seat, status: 'selected', userId: 'currentUser'}; // Replace 'currentUser' with actual user ID
+          const curAuth = authService.getCurrentUser()?.uid;
+          return {...seat, status: 'selected', userId: curAuth}; // Replace 'currentUser' with actual user ID
         }
       }
       return seat;

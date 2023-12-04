@@ -319,7 +319,7 @@ export const FindBusScreen = ({navigation}) => {
             rotation={bus.direction}
             onPress={
               () => {
-                navigation.navigate('BusDetails', {busID: bus.busID});
+                navigation.navigate('BusDetails', {busID: bus});
               }
               //   // navigation.navigate('Home', 'Home3', {
               //   //   screen: 'BusDetails',

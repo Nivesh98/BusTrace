@@ -237,7 +237,7 @@ export const MapDriver = () => {
     };
   }, [isStarted]); // Only re-run the effect if isStarted changes
 
-  const startBus = () => {
+  const startBus = async () => {
     const checkVal = isSearchEnabled(selectedCountry1, selectedCountry2);
     if (checkVal !== 3) {
       // Show appropriate toast based on the checkVal
@@ -252,6 +252,12 @@ export const MapDriver = () => {
     }
 
     setIsStarted(prevIsStarted => !prevIsStarted);
+    const initialSeats = new Array(41).fill({
+      status: 'available',
+      userId: null,
+    });
+    console.log('isStarted mmmmmmmmmmmmmm', isStarted);
+    await authService.setDriverSeats(initialSeats, isStarted);
     // The actual state update will happen after this function exits.
   };
 

@@ -15,6 +15,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   getFirestore,
   query,
@@ -296,6 +297,100 @@ class FirebaseAuthService {
       return [];
     }
   }
+
+  async setDriverSeats(seats: Array<{status: string; userId: string | null}>) {
+    console.log('inside auth mmmmmmmmmmmmmm');
+    const user = this.auth.currentUser?.uid;
+    console.log('user', user);
+    try {
+      if (user != null) {
+        const driverSeatsRef = doc(this.db, 'driverSeats', user);
+        await setDoc(driverSeatsRef, {
+          seats: seats,
+        });
+      }
+
+      console.log(
+        'Driver seats data uploaded successfully for driverId:',
+        user,
+      );
+    } catch (error) {
+      console.error('Error uploading driver seats data:', error);
+    }
+  }
+  // In FirebaseAuthService
+
+  async getSeatsForDriver(driverId: string) {
+    try {
+      console.log('auth driverId aaaaaaaaa', driverId);
+      const driverSeatDocRef = doc(this.db, 'driverSeats', driverId);
+      const docSnapshot = await getDoc(driverSeatDocRef);
+
+      if (docSnapshot.exists()) {
+        console.log('auth doc data', docSnapshot.data());
+        const seats = docSnapshot.data().seats; // Assuming 'seats' is the array field
+        console.log('auth seats aaaaaaaaaaaaaaaaaaaaaaa', seats);
+        return seats.map((seat, index) => ({
+          status: seat.status,
+          userId: seat.userId,
+        }));
+      } else {
+        console.log('No such document!');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching seats:', error);
+      return [];
+    }
+  }
+
+  // async getSeatsForDriver(driverId: string) {
+  //   try {
+  //     console.log('auth driverId aaaaaaaaa', driverId);
+  //     const seatsCollection = collection(
+  //       this.db,
+  //       'driverSeats',
+  //       driverId,
+  //       'seats',
+  //     );
+  //     const querySnapshot = await getDocs(seatsCollection);
+  //     console.log('auth querySnapshot', querySnapshot);
+  //     const seats = [];
+  //     querySnapshot.forEach(doc => {
+  //       const seatData = doc.data();
+  //       // Assume each document contains 'status' and 'userId' fields
+  //       seats.push({
+  //         status: seatData.status,
+  //         userId: seatData.userId,
+  //       });
+  //     });
+  //     console.log('auth seats aaaaaaaaaaaaaaaaaaaaaaa', seats);
+  //     return seats;
+  //   } catch (error) {
+  //     console.error('Error fetching seats:', error);
+  //     return [];
+  //   }
+  // }
+
+  // async getSeatsForDriver(driverId: string) {
+  //   try {
+  //     const seatsCollection = collection(
+  //       this.db,
+  //       'driverSeats',
+  //       driverId,
+  //       'seats',
+  //     );
+  //     const querySnapshot = await getDocs(seatsCollection);
+  //     const seats = [];
+  //     querySnapshot.forEach(doc => {
+  //       seats.push({id: doc.id, ...doc.data()});
+  //     });
+  //     return seats;
+  //   } catch (error) {
+  //     console.error('Error fetching seats:', error);
+  //     return [];
+  //   }
+  // }
 
   /**************************************************************************************/
 }

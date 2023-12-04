@@ -7,7 +7,7 @@ const BusDetails = ({navigation, route}) => {
   return (
     <View style={{flex: 1}}>
       {/* <Text>BusDetails {busID}</Text> */}
-      <SeatMap />
+      <SeatMap busID={busID} />
     </View>
   );
 };
