@@ -1,41 +1,3 @@
-// import React, { useState } from 'react';
-// import { StyleSheet, View } from 'react-native';
-// import Seat from './Seat'; // Import the Seat component you created
-
-// type SeatStatus = 'booked' | 'available' | 'selected';
-
-// const SeatMap: React.FC = () => {
-//   const [seats, setSeats] = useState<Array<SeatStatus>>(
-//     new Array(37).fill('available'),
-//   );
-
-//   const handleSelectSeat = (index: number) => {
-//     setSeats(seats.map((seat, i) => (i === index ? 'selected' : seat)));
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       {seats.map((status, index) => (
-//         <Seat
-//           key={index}
-//           status={status}
-//           onSelect={() => handleSelectSeat(index)}
-//         />
-//       ))}
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flexDirection: 'row',
-//     flexWrap: 'wrap',
-//     justifyContent: 'center',
-//     padding: 10,
-//   },
-// });
-
-// export default SeatMap;
 import React, {useState} from 'react';
 import {
   FlatList,
@@ -45,6 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
 // Define your types
 type SeatStatus = 'available' | 'booked' | 'selected' | 'processing';
 
@@ -79,140 +42,88 @@ const Seat = ({number, status, onPress}) => {
 
 // Define your seat map component
 const SeatMap = () => {
-  const [seats, setSeats] = useState(new Array(41).fill('available'));
+  const initialSeats = new Array(41).fill({status: 'available', userId: null});
+  const [seats, setSeats] = useState(initialSeats);
+  const [selectedCount, setSelectedCount] = useState(0);
 
-  const handlePress = (index: number) => {
-    // Logic to handle seat selection
-    setSeats(seats.map((seat, i) => (i === index ? 'selected' : seat)));
+  const handlePress = index => {
+    const newSeats = seats.map((seat, i) => {
+      if (i === index) {
+        if (seat.status === 'selected') {
+          setSelectedCount(selectedCount - 1);
+          return {...seat, status: 'available'};
+        } else if (selectedCount < 6) {
+          setSelectedCount(selectedCount + 1);
+          return {...seat, status: 'selected', userId: 'currentUser'}; // Replace 'currentUser' with actual user ID
+        }
+      }
+      return seat;
+    });
+
+    setSeats(newSeats);
   };
 
-  // Assuming 'seats' is an array with a length of at least 20
-  const row1 = seats
-    .map((seat, index) => ({seat, index})) // map to an array of objects with seat and index
-    .filter(item => item.index >= 0 && item.index <= 13); // filter based on index
+  // Function to create rows
+  const createRow = (start, end) => {
+    return seats.slice(start, end).map((seat, i) => ({
+      ...seat,
+      index: start + i,
+    }));
+  };
 
-  const row2 = seats
-    .map((seat, index) => ({seat, index})) // map to an array of objects with seat and index
-    .filter(item => item.index >= 14 && item.index <= 34); // filter based on index
-  console.log('row1', row1);
+  const row1 = createRow(0, 14);
+  const row2 = createRow(14, 35);
+  const row3 = createRow(35, 41);
 
-  const row3 = seats
-    .map((seat, index) => ({seat, index})) // map to an array of objects with seat and index
-    .filter(item => item.index >= 35 && item.index <= 40); // filter based on index
-  console.log('row1', row1);
   return (
-    // <ScrollView style={styles.scrollView}>
-    //   <View style={styles.container}>
-    //     {seats.map((status, index) => {
-    //       // Directly before returning your seat JSX, you can include any logic you want to run
-    //       const isRow1 = index >= 0 && index <= 19;
-    //       const isRow2 = index >= 20 && index <= 49;
-    //       return (
-    //         <>
-    //           {isRow1 && (
-    //             <Seat
-    //               number={index + 1}
-    //               status={status}
-    //               onPress={() => handlePress(index)}
-    //             />
-    //           )}
-    //           {isRow2 && (
-    //             <Seat
-    //               number={index + 1}
-    //               status={status}
-    //               onPress={() => handlePress(index)}
-    //             />
-    //           )}
-    //         </>
-    //       );
-    //     })}
-    //   </View>
-    // </ScrollView>
-    //
-    // <ScrollView style={styles.scrollView}>
-    //   <View style={styles.container}>
-    //     <FlatList
-    //       data={row1}
-    //       numColumns={2}
-    //       renderItem={({status, index}) => {
-    //         return (
-    //           <>
-    //             <Seat
-    //               number={index + 1}
-    //               status={status}
-    //               onPress={() => handlePress(index)}
-    //             />
-    //           </>
-    //         );
-    //       }}
-    //     />
-    //     {/* {row1.map((status, index) => {
-    //       // Directly before returning your seat JSX, you can include any logic you want to run
-
-    //       return (
-    //         <>
-    //           <Seat
-    //             number={index + 1}
-    //             status={status}
-    //             onPress={() => handlePress(index)}
-    //           />
-    //         </>
-    //       );
-    //     })} */}
-    //   </View>
-    // </ScrollView>
-    //
-
     <View style={styles.mainContainer}>
       <View style={styles.container}>
         <View
           style={{
+            width: '100%',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexDirection: 'row',
           }}>
           <View>
             <FlatList
-              data={row1} // your seats array
-              numColumns={2} // number of columns you want
-              keyExtractor={item => item.index.toString()} // Convert index to string for key
+              data={row1}
+              numColumns={2}
+              keyExtractor={item => item.index.toString()}
               renderItem={({item}) => (
                 <Seat
                   number={item.index + 1}
-                  status={item.seat}
+                  status={item.status}
                   onPress={() => handlePress(item.index)}
                 />
               )}
             />
           </View>
+
           <View>
             <FlatList
-              data={row2} // your seats array
-              numColumns={3} // number of columns you want
-              keyExtractor={item => item.index.toString()} // Convert index to string for key
+              data={row2}
+              numColumns={3}
+              keyExtractor={item => item.index.toString()}
               renderItem={({item}) => (
                 <Seat
                   number={item.index + 1}
-                  status={item.seat}
+                  status={item.status}
                   onPress={() => handlePress(item.index)}
                 />
               )}
             />
           </View>
         </View>
-        <View
-          style={{
-            width: '100%',
-            justifyContent: 'space-between',
-          }}>
+        <View style={{justifyContent: 'space-between'}}>
           <FlatList
-            data={row3} // your seats array
-            horizontal // number of columns you want
-            keyExtractor={item => item.index.toString()} // Convert index to string for key
+            data={row3}
+            horizontal
+            keyExtractor={item => item.index.toString()}
             renderItem={({item}) => (
               <Seat
                 number={item.index + 1}
-                status={item.seat}
+                status={item.status}
                 onPress={() => handlePress(item.index)}
               />
             )}
@@ -231,31 +142,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {
-    width: '57%',
+    width: '56%',
     height: '75%',
     backgroundColor: 'white',
     margin: 5,
     borderRadius: 6,
     padding: 5,
   },
-  //   seat: {
-  //     width: '14.6%', // Adjust width accordingly
-  //     aspectRatio: 1, // To make the seats square
-  //     margin: '0.55%',
-  //     justifyContent: 'center',
-  //     alignItems: 'center',
-  //     borderRadius: 4,
-  //   },
   seat: {
     margin: 7,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-  },
-  seat1: {
-    width: '15.6%', // Adjust width accordingly
-    aspectRatio: 1, // To make the seats square
-    margin: '0.5%',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 4,
