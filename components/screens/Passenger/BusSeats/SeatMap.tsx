@@ -44,6 +44,7 @@ const Seat = ({number, status, onPress}) => {
 const SeatMap = () => {
   const initialSeats = new Array(41).fill({status: 'available', userId: null});
   const [seats, setSeats] = useState(initialSeats);
+  const [tempSeats, setTempSeats] = useState([]);
   const [selectedCount, setSelectedCount] = useState(0);
 
   const handlePress = index => {
@@ -51,8 +52,19 @@ const SeatMap = () => {
       if (i === index) {
         if (seat.status === 'selected') {
           setSelectedCount(selectedCount - 1);
+          setTempSeats(currentTempSeats =>
+            currentTempSeats.filter(seatIndex => seatIndex - 1 !== index),
+          );
+          // tempSeats.map((seat, i) => {
+          //   if (seat === index) {
+          //     tempSeats.splice(1, i);
+          //   }
+          // });
           return {...seat, status: 'available'};
         } else if (selectedCount < 6) {
+          //setTempSeats(index)
+          setTempSeats(currentTempSeats => [...currentTempSeats, index + 1]);
+          //tempSeats.push(index);
           setSelectedCount(selectedCount + 1);
           return {...seat, status: 'selected', userId: 'currentUser'}; // Replace 'currentUser' with actual user ID
         }
@@ -60,6 +72,8 @@ const SeatMap = () => {
       return seat;
     });
 
+    console.log('newSeats', newSeats);
+    console.log('tempseat', tempSeats);
     setSeats(newSeats);
   };
 
@@ -129,6 +143,108 @@ const SeatMap = () => {
             )}
           />
         </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginTop: 5,
+          }}>
+          <Text style={styles.seatNo}>Seat No: </Text>
+          {tempSeats.map((seat, i) => (
+            <Text style={styles.seatNo}>[{seat}], </Text>
+          ))}
+        </View>
+        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <Text style={{fontWeight: 'bold', fontSize: 15, color: '#000'}}>
+            Fare Break:
+          </Text>
+        </View>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: -5,
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: 5,
+              }}>
+              <View
+                style={{width: 10, height: 10, backgroundColor: '#f5d7d7'}}
+              />
+              <Text style={{fontSize: 12}}>Available Seats</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: 5,
+              }}>
+              <View
+                style={{width: 10, height: 10, backgroundColor: 'yellow'}}
+              />
+              <Text style={{fontSize: 12}}>Processing Seats</Text>
+            </View>
+          </View>
+          <View
+            style={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: -5,
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: 5,
+              }}>
+              <View
+                style={{width: 10, height: 10, backgroundColor: 'orange'}}
+              />
+              <Text style={{fontSize: 12}}>Counter Seats</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: 5,
+              }}>
+              <View style={{width: 10, height: 10, backgroundColor: 'red'}} />
+              <Text style={{fontSize: 12}}>Booked Seats</Text>
+            </View>
+          </View>
+        </View>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#f00',
+              paddingLeft: 15,
+              paddingRight: 15,
+              borderRadius: 7.5,
+            }}>
+            <Text style={{fontSize: 18, fontWeight: 'bold', color: '#FFF'}}>
+              PROCEED
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -138,9 +254,10 @@ const SeatMap = () => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
+  seatNo: {fontWeight: 'bold', fontSize: 12},
   container: {
     width: '56%',
     height: '75%',
