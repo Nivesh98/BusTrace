@@ -7,6 +7,7 @@ import {FindBusScreen} from '../screens/Passenger/FindBusScreen';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BusDetails from '../screens/Passenger/BusDetails';
+import BusDetailsQR from '../screens/Passenger/BusDetailsQR';
 import BusDetailsReservation from '../screens/Passenger/BusDetailsReservation';
 import {HomeScreen} from '../screens/Passenger/HomeScreen';
 import PassengerSearchReservation from '../screens/Passenger/PassengerSearchReservation';
@@ -34,6 +35,15 @@ function ReservationStackScreen() {
         name="BusDetailsReservation"
         component={BusDetailsReservation}
       />
+    </Stack.Navigator>
+  );
+}
+
+function QRStackScreen() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="QR" component={QRScreen} />
+      <Stack.Screen name="BusDetailsQR" component={BusDetailsQR} />
     </Stack.Navigator>
   );
 }
@@ -89,8 +99,8 @@ export const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="QR"
-        component={QRScreen}
+        name="QRStackScreen"
+        component={QRStackScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name="qr-code-scanner" color={color} size={size} />
