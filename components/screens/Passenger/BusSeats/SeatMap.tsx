@@ -62,7 +62,7 @@ const SeatMap = ({busID}) => {
     fetchSeats();
   }, []);
   const handlePress = index => {
-    const newSeats = seats.map(async (seat, i) => {
+    const newSeats = seats.map((seat, i) => {
       if (i === index) {
         console.log('index sssssss', index);
         console.log('seat.status sssssss', seat.status);
@@ -72,12 +72,7 @@ const SeatMap = ({busID}) => {
           setTempSeats(currentTempSeats =>
             currentTempSeats.filter(seatIndex => seatIndex - 1 !== index),
           );
-          // await authService.updateSeatStatus(
-          //   busID.busID,
-          //   index,
-          //   'available',
-          //   null,
-          // );
+          authService.updateSeatStatus(busID.busID, index, 'available', null);
           return {...seat, status: 'available', userId: null};
         } else if (selectedCount < 6) {
           //setTempSeats(index)
@@ -85,12 +80,12 @@ const SeatMap = ({busID}) => {
           //tempSeats.push(index);
           setSelectedCount(selectedCount + 1);
           const curAuth = authService.getCurrentUser()?.uid;
-          // await authService.updateSeatStatus(
-          //   busID.busID,
-          //   index,
-          //   'selected',
-          //   curAuth || null,
-          // );
+          authService.updateSeatStatus(
+            busID.busID,
+            index,
+            'selected',
+            curAuth || null,
+          );
           return {...seat, status: 'selected', userId: curAuth}; // Replace 'currentUser' with actual user ID
         }
       }
