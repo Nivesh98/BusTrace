@@ -30,11 +30,59 @@
 
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, Text, View} from 'react-native';
 import FirebaseAuthService from '../../Services/FirebaseAuthService';
 import firebaseConfig from '../../Services/firebaseConfig';
 
 const authService = new FirebaseAuthService(firebaseConfig);
+
+type ItemProps = {busID: string; from: string; to: string; busStatus: boolean};
+
+const Item = ({busID, from, to, busStatus}: ItemProps) => (
+  <View style={styles.item}>
+    <View style={{padding: 5}}>
+      <View style={{flexDirection: 'row'}}>
+        <Text style={styles.text}>Bus ID: </Text>
+        <Text style={styles.text}>{busID}</Text>
+      </View>
+      <View style={{flexDirection: 'row'}}>
+        <Text
+          style={{
+            marginRight: 10,
+            color: '#fff',
+            fontSize: 15,
+            fontWeight: 'bold',
+          }}>
+          From:{' '}
+        </Text>
+        <Text style={styles.text}>{from}</Text>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text
+          style={{
+            marginRight: 10,
+            color: '#fff',
+            fontSize: 15,
+            fontWeight: 'bold',
+          }}>
+          To :
+        </Text>
+        <Text style={styles.text1}>{to}</Text>
+      </View>
+    </View>
+    <View style={{padding: 5, marginLeft: 60}}>
+      <View style={{flexDirection: 'row', marginLeft: -110}}>
+        <Text style={styles.text}>bus Status : </Text>
+        <Text style={styles.text}>{busStatus}</Text>
+      </View>
+    </View>
+  </View>
+);
 
 const PassengerSearchReservation = ({route}) => {
   const {startLocation, endLocation, selectedDate, currentDate} = route.params;
@@ -75,13 +123,15 @@ const PassengerSearchReservation = ({route}) => {
         const details = await Promise.all(
           busesToLocation.map(bus => authService.getBusesDetails(bus.id)),
         );
-        setBusDetails(details);
+        const d = details.flat();
+        setBusDetails(d);
         console.log('details lll', details);
       } else {
         const details = await Promise.all(
           busesToLocation.map(bus => authService.getBusesDetails(bus.busID)),
         );
-        setBusDetails(details);
+        const d = details.flat();
+        setBusDetails(d);
         console.log('details lll', details);
       }
 
@@ -147,27 +197,50 @@ const PassengerSearchReservation = ({route}) => {
     //     : null}
     // </View>
     <View style={styles.container}>
-      {/* <FlatList
-        data={DATA}
+      <FlatList
+        data={getBusDetails}
         renderItem={({item}) => (
           <Item
-            busNo={item.busNo}
-            date={item.date}
-            route={item.route}
-            charge={item.charge}
+            busID={trimString(item.busID, 10)}
+            from={startLocation}
+            to={endLocation}
+            busStatus={item.isStarted.toString()}
           />
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.busID}
         style={{marginTop: 10, marginBottom: 10}}
-      /> */}
+      />
     </View>
   );
 };
-
+function trimString(str: string, length: number): string {
+  return str.length > length ? str.substring(0, length) + '...' : str;
+}
 export default PassengerSearchReservation;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  item: {
+    backgroundColor: '#ff9e66',
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    borderRadius: 20,
+    flexDirection: 'row',
+  },
+  title: {
+    fontSize: 32,
+  },
+  text: {
+    color: '#fff',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+  text1: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });
