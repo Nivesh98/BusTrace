@@ -31,14 +31,21 @@
 import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import FirebaseAuthService from '../../Services/FirebaseAuthService';
 import firebaseConfig from '../../Services/firebaseConfig';
 
 const authService = new FirebaseAuthService(firebaseConfig);
 
-type ItemProps = {busID: string; from: string; to: string; busStatus: boolean};
+type ItemProps = {
+  busID: string;
+  from: string;
+  to: string;
+  busStatus: boolean;
+  onPress: () => void;
+};
 
-const Item = ({busID, from, to, busStatus}: ItemProps) => (
+const Item = ({busID, from, to, busStatus, onPress}: ItemProps) => (
   <View style={styles.item}>
     <View style={{padding: 5}}>
       <View style={{flexDirection: 'row'}}>
@@ -57,22 +64,36 @@ const Item = ({busID, from, to, busStatus}: ItemProps) => (
         </Text>
         <Text style={styles.text}>{from}</Text>
       </View>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Text
+      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View
           style={{
-            marginRight: 10,
-            color: '#fff',
-            fontSize: 15,
-            fontWeight: 'bold',
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}>
-          To :
-        </Text>
-        <Text style={styles.text1}>{to}</Text>
+          <Text
+            style={{
+              marginRight: 10,
+              color: '#fff',
+              fontSize: 15,
+              fontWeight: 'bold',
+            }}>
+            To :
+          </Text>
+          <Text style={styles.text1}>{to}</Text>
+        </View>
+        <View style={{alignItems: 'flex-end', justifyContent: 'center'}}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#F00',
+              paddingLeft: 10,
+              paddingRight: 10,
+              borderRadius: 5,
+            }}
+            onPress={onPress}>
+            <Text style={{color: '#fff'}}>RESERVE</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
     <View style={{padding: 5, marginLeft: 60}}>
@@ -84,7 +105,7 @@ const Item = ({busID, from, to, busStatus}: ItemProps) => (
   </View>
 );
 
-const PassengerSearchReservation = ({route}) => {
+const PassengerSearchReservation = ({route, navigation}) => {
   const {startLocation, endLocation, selectedDate, currentDate} = route.params;
   const [busesToLocation, setBusesToLocation] = useState([]);
   const [getBusDetails, setBusDetails] = useState([]);
@@ -178,7 +199,9 @@ const PassengerSearchReservation = ({route}) => {
   //       console.log('getBusDetails hh', getBusDetails);
   //     }
   //   }, [busesToLocation]);
-
+  const handleReservePress = busID => {
+    navigation.navigate('BusDetails', {busID});
+  };
   return (
     // <View>
     //   <Text>PassengerSearchReservation</Text>
@@ -205,6 +228,7 @@ const PassengerSearchReservation = ({route}) => {
             from={startLocation}
             to={endLocation}
             busStatus={item.isStarted.toString()}
+            onPress={() => handleReservePress(item)}
           />
         )}
         keyExtractor={item => item.busID}
@@ -229,6 +253,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     borderRadius: 20,
     flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   title: {
     fontSize: 32,
