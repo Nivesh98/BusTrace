@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import SeatMapQR from './BusSeats/SeatMapQR';
 
 const BusDetailsQR = ({navigation, route}) => {
@@ -15,10 +15,13 @@ const BusDetailsQR = ({navigation, route}) => {
   console.log(modifiedString);
   return (
     <View style={{flex: 1}}>
-      <Text>BusDetailsQR {busID}</Text>
+      {/* <Text>BusDetailsQR {busID}</Text>
       <Text>{modifiedString.toString()}</Text>
-      <Text>{lastTwoDigits}</Text>
-      <SeatMapQR busID={modifiedString.toString()} />
+      <Text>{lastTwoDigits}</Text> */}
+      <SeatMapQR
+        busID={modifiedString.toString()}
+        seatNo={lastTwoDigits.toString()}
+      />
     </View>
   );
 };
