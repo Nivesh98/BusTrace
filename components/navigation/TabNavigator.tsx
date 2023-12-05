@@ -8,6 +8,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BusDetails from '../screens/Passenger/BusDetails';
 import {HomeScreen} from '../screens/Passenger/HomeScreen';
+import PassengerSearchReservation from '../screens/Passenger/PassengerSearchReservation';
 import {QRScreen} from '../screens/Passenger/QRScreen';
 import TimeTable from '../screens/Passenger/TimeTable';
 
@@ -15,6 +16,19 @@ function StackScreen() {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="Find Bus" component={FindBusScreen} />
+      <Stack.Screen name="BusDetails" component={BusDetails} />
+    </Stack.Navigator>
+  );
+}
+
+function ReservationStackScreen() {
+  return (
+    <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="Timetable" component={TimeTable} />
+      <Stack.Screen
+        name="PassengerSearchReservation"
+        component={PassengerSearchReservation}
+      />
       <Stack.Screen name="BusDetails" component={BusDetails} />
     </Stack.Navigator>
   );
@@ -52,7 +66,7 @@ export const TabNavigator = () => {
       />
       <Tab.Screen
         name="Reservation"
-        component={TimeTable}
+        component={ReservationStackScreen}
         options={{
           tabBarIcon: ({color, size}) => (
             <Ionicons name="book-online" color={color} size={size} />

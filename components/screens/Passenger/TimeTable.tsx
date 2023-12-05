@@ -117,7 +117,7 @@ const countries = [
   {key: '234_1', value: 'Delgoda'},
 ];
 
-const TimeTable: React.FC = () => {
+const TimeTable: React.FC = ({navigation}) => {
   const [selectedCountry1, setSelectedCountry1] = useState<string>('');
   const [selectedCountry2, setSelectedCountry2] = useState<string>('');
   const [getDate, setDate] = useState<number>(0);
@@ -229,6 +229,12 @@ const TimeTable: React.FC = () => {
         text2: 'Locations not equal',
       });
     } else if (checkVal === 3) {
+      navigation.navigate('PassengerSearchReservation', {
+        startLocation: selectedCountry1,
+        endLocation: selectedCountry2,
+        selectedDate: getDate,
+        currentDate: getCurrentDate,
+      });
       Toast.show({
         type: 'success',
         text1: 'Success',
