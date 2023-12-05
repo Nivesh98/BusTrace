@@ -179,26 +179,28 @@ export const MapDriver = () => {
   const [latitude, setLatitude] = useState<number>(null);
   const [longitude, setLongitude] = useState<number>(null);
 
-  useEffect(() => {
-    //getCurrentLocation();
-    const interval = setInterval(() => {
-      if (isStarted) {
-        getCurrentLocation();
-        console.log('isStarted', isStarted);
-      }
-    }, 5000);
+  // useEffect(() => {
+  //   //getCurrentLocation();
+  //   const interval = setInterval(() => {
+  //     if (isStarted) {
+  //       getCurrentLocation();
+  //       console.log('isStarted', isStarted);
+  //     }
+  //   }, 1000);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
+
   useEffect(() => {
     let interval;
 
+    console.log('isStarted mmmmmm 1', isStarted);
     if (isStarted) {
       // If isStarted is true, start the interval to get the current location
       interval = setInterval(() => {
-        getCurrentLocation();
+        getCurrentLocation(isStarted);
       }, 1000);
     } else if (interval) {
       // If isStarted is false and the interval is set, clear it
@@ -218,6 +220,7 @@ export const MapDriver = () => {
   useEffect(() => {
     // Here, we know for sure that isStarted has been updated.
     // So we can safely call the database update function.
+    console.log('before isStarted nnnnnnnnnn', isStarted);
     const updateDatabase = async () => {
       // Perform the database update with the new value of isStarted
       await authService.setBusLocation(
@@ -228,6 +231,7 @@ export const MapDriver = () => {
         isStarted,
       );
     };
+    console.log('isStarted nnnnnnnnnn', isStarted);
 
     updateDatabase().catch(console.error);
 
@@ -237,7 +241,7 @@ export const MapDriver = () => {
     };
   }, [isStarted]); // Only re-run the effect if isStarted changes
 
-  const startBus = async () => {
+  const startBus = () => {
     const checkVal = isSearchEnabled(selectedCountry1, selectedCountry2);
     if (checkVal !== 3) {
       // Show appropriate toast based on the checkVal
@@ -251,17 +255,18 @@ export const MapDriver = () => {
       return;
     }
 
-    setIsStarted(prevIsStarted => !prevIsStarted);
     const initialSeats = new Array(41).fill({
       status: 'available',
       userId: null,
     });
     console.log('isStarted mmmmmmmmmmmmmm', isStarted);
-    await authService.setDriverSeats(initialSeats, isStarted);
+    authService.setDriverSeats(initialSeats);
+
+    setIsStarted(prevIsStarted => !prevIsStarted);
     // The actual state update will happen after this function exits.
   };
 
-  const getCurrentLocation = () => {
+  const getCurrentLocation = isStart => {
     Geolocation.getCurrentPosition(
       async position => {
         const {latitude, longitude} = position.coords;
@@ -281,7 +286,7 @@ export const MapDriver = () => {
           longitude,
           angle,
           selectedCountry2,
-          isStarted,
+          isStart,
         );
         if (!isStarted) {
           setLatitude(null);
@@ -313,7 +318,7 @@ export const MapDriver = () => {
       latitudeDelta: region.latitudeDelta,
       longitudeDelta: region.longitudeDelta,
     });
-  }, 300); // Adjust the debounce delay
+  }, 1000); // Adjust the debounce delay
   const handleSelection1 = (selectedItem: string) => {
     setSelectedCountry1(selectedItem);
   };

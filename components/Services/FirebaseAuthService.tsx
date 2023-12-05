@@ -20,6 +20,7 @@ import {
   getFirestore,
   query,
   setDoc,
+  updateDoc,
   where,
 } from 'firebase/firestore';
 import {useEffect} from 'react';
@@ -341,6 +342,47 @@ class FirebaseAuthService {
     } catch (error) {
       console.error('Error fetching seats:', error);
       return [];
+    }
+  }
+
+  async updateSeatStatus(
+    driverId: string,
+    seatIndex: number,
+    newStatus: string,
+    userId: string | null,
+  ) {
+    try {
+      // Get a reference to the driver's seats document
+      const driverSeatDocRef = doc(this.db, 'driverSeats', driverId);
+
+      // Retrieve the document
+      const docSnapshot = await getDoc(driverSeatDocRef);
+
+      if (docSnapshot.exists()) {
+        // Extract the seats array from the document
+        const seats = docSnapshot.data().seats;
+
+        // Update the specific seat's status and userId if needed
+        if (seats && seatIndex < seats.length) {
+          seats[seatIndex] = {
+            ...seats[seatIndex],
+            status: newStatus,
+            userId: userId,
+          };
+
+          // Update the document with the new seats array
+          await updateDoc(driverSeatDocRef, {seats});
+          console.log(
+            `Seat number ${seatIndex} updated to status: ${newStatus}`,
+          );
+        } else {
+          console.error('Seat index is out of range or seats are undefined');
+        }
+      } else {
+        console.error('No such document!');
+      }
+    } catch (error) {
+      console.error('Error updating seat:', error);
     }
   }
 

@@ -62,20 +62,35 @@ const SeatMap = ({busID}) => {
     fetchSeats();
   }, []);
   const handlePress = index => {
-    const newSeats = seats.map((seat, i) => {
+    const newSeats = seats.map(async (seat, i) => {
       if (i === index) {
+        console.log('index sssssss', index);
+        console.log('seat.status sssssss', seat.status);
+        console.log('seats ssssssssss', seats);
         if (seat.status === 'selected') {
           setSelectedCount(selectedCount - 1);
           setTempSeats(currentTempSeats =>
             currentTempSeats.filter(seatIndex => seatIndex - 1 !== index),
           );
-          return {...seat, status: 'available'};
+          // await authService.updateSeatStatus(
+          //   busID.busID,
+          //   index,
+          //   'available',
+          //   null,
+          // );
+          return {...seat, status: 'available', userId: null};
         } else if (selectedCount < 6) {
           //setTempSeats(index)
           setTempSeats(currentTempSeats => [...currentTempSeats, index + 1]);
           //tempSeats.push(index);
           setSelectedCount(selectedCount + 1);
           const curAuth = authService.getCurrentUser()?.uid;
+          // await authService.updateSeatStatus(
+          //   busID.busID,
+          //   index,
+          //   'selected',
+          //   curAuth || null,
+          // );
           return {...seat, status: 'selected', userId: curAuth}; // Replace 'currentUser' with actual user ID
         }
       }
