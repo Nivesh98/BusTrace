@@ -385,6 +385,40 @@ class FirebaseAuthService {
       console.error('Error updating seat:', error);
     }
   }
+  async updateSeatStatusProceed(
+    driverId: string,
+    newStatus: string,
+    currentUserId: string,
+  ) {
+    try {
+      // Get a reference to the driver's seats document
+      const driverSeatDocRef = doc(this.db, 'driverSeats', driverId);
+
+      // Retrieve the document
+      const docSnapshot = await getDoc(driverSeatDocRef);
+
+      if (docSnapshot.exists()) {
+        // Extract the seats array from the document
+        const seats = docSnapshot.data().seats;
+
+        // Update the status of all seats where userId matches the currentUserId
+        const updatedSeats = seats.map(seat => {
+          if (seat.userId === currentUserId) {
+            return {...seat, status: newStatus}; // Set status to 'booked' or any other status
+          }
+          return seat;
+        });
+
+        // Update the document with the new seats array
+        await updateDoc(driverSeatDocRef, {seats: updatedSeats});
+        console.log(`Seats updated for user ID: ${currentUserId}`);
+      } else {
+        console.error('No such document!');
+      }
+    } catch (error) {
+      console.error('Error updating seats:', error);
+    }
+  }
 
   // async getSeatsForDriver(driverId: string) {
   //   try {

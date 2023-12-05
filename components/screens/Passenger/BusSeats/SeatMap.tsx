@@ -61,20 +61,59 @@ const SeatMap = ({busID}) => {
     console.log('busID mmmmmmm', busID);
     fetchSeats();
   }, []);
+
+  useEffect(() => {
+    const currentUserId = authService.getCurrentUser()?.uid;
+    // Only proceed if we have a valid user ID and seats are loaded
+    if (currentUserId && seats && seats.length > 0) {
+      const selectedSeats = seats
+        .map((seat, index) =>
+          seat.userId === currentUserId && seat.status === 'selected'
+            ? index + 1
+            : null,
+        )
+        .filter(index => index !== null); // Filter out null values
+      setTempSeats(selectedSeats);
+      console.log('selected seats', selectedSeats);
+    }
+  }, [seats]); // Add seats as a dependency so it re-runs when seats changes
+
+  // useEffect(() => {
+  //   const currentUserId = authService.getCurrentUser()?.uid;
+  //   if (seats && seats.length > 0) {
+  //     seats.map((seat, i) => {
+  //       if (seat.userId === currentUserId && seat.status === 'selected') {
+  //         // Set status to 'booked' or any other status
+  //         setTempSeats(currentTempSeats => [...currentTempSeats, i + 1]);
+  //         console.log('selectedCount kkk', selectedCount);
+  //       }
+  //       return selectedCount;
+  //     });
+  //   }
+  // }, []);
   const handlePress = index => {
+    const currentUserId = authService.getCurrentUser()?.uid;
     const newSeats = seats.map((seat, i) => {
       if (i === index) {
         console.log('index sssssss', index);
         console.log('seat.status sssssss', seat.status);
         console.log('seats ssssssssss', seats);
-        if (seat.status === 'selected') {
+        if (
+          seat.status === 'selected' &&
+          seat.status !== 'booked' &&
+          seat.userId === currentUserId
+        ) {
           setSelectedCount(selectedCount - 1);
           setTempSeats(currentTempSeats =>
             currentTempSeats.filter(seatIndex => seatIndex - 1 !== index),
           );
           authService.updateSeatStatus(busID.busID, index, 'available', null);
           return {...seat, status: 'available', userId: null};
-        } else if (selectedCount < 6) {
+        } else if (
+          selectedCount < 6 &&
+          seat.status !== 'booked' &&
+          (seat.userId === currentUserId || seat.userId === null)
+        ) {
           //setTempSeats(index)
           setTempSeats(currentTempSeats => [...currentTempSeats, index + 1]);
           //tempSeats.push(index);
@@ -97,8 +136,19 @@ const SeatMap = ({busID}) => {
     setSeats(newSeats);
   };
 
+  const proceedPayment = () => {
+    const userId: string | undefined = authService.getCurrentUser()?.uid;
+    if (userId !== undefined) {
+      authService.updateSeatStatusProceed(busID.busID, 'booked', userId);
+    } else {
+      // Handle the undefined case, e.g., by not calling the function or by setting a default value
+    }
+  };
+
   // Function to create rows
+
   const createRow = (start, end) => {
+    console.log('seat bbbbbbbbbbbbb', seats);
     return seats.slice(start, end).map((seat, i) => ({
       ...seat,
       index: start + i,
@@ -259,7 +309,8 @@ const SeatMap = ({busID}) => {
               paddingLeft: 15,
               paddingRight: 15,
               borderRadius: 7.5,
-            }}>
+            }}
+            onPress={proceedPayment}>
             <Text style={{fontSize: 18, fontWeight: 'bold', color: '#FFF'}}>
               PROCEED
             </Text>
