@@ -239,6 +239,27 @@ class FirebaseAuthService {
     }
   }
 
+  async getBusesDetails(busID: string) {
+    const busesQuery = query(
+      collection(this.db, 'busLocation'),
+      where('busID', '==', busID),
+    );
+
+    try {
+      const querySnapshot = await getDocs(busesQuery);
+      const buses = [];
+      querySnapshot.forEach(doc => {
+        buses.push({...doc.data()});
+      });
+      console.log('a getBusesDetails', buses);
+      return buses;
+    } catch (error) {
+      console.error('Error getting documents: ', error);
+      // Handle the error
+      return [];
+    }
+  }
+
   /***************************get bus routes*********************************************/
   // async getBusRoute() {
   //   const querySnapshot = await getDocs(
