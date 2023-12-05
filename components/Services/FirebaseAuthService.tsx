@@ -340,6 +340,44 @@ class FirebaseAuthService {
       console.error('Error uploading driver seats data:', error);
     }
   }
+  async setDriverSeatsReservation(
+    seats: Array<{status: string; userId: string | null}>,
+    date: string,
+    driverId: string,
+  ) {
+    const initialSeats = new Array(41).fill({
+      status: 'available',
+      userId: null,
+    });
+
+    console.log('date', date, 'driverId', driverId);
+
+    const seatsToUpload = seats || initialSeats;
+    console.log('inside auth mmmmmmmmmmmmmm');
+    const user = this.auth.currentUser?.uid;
+    console.log('user', user);
+    try {
+      if (user != null) {
+        const driverSeatsRef = doc(
+          this.db,
+          'TimeTable',
+          'EX 1-1',
+          date,
+          driverId,
+        );
+        await setDoc(driverSeatsRef, {
+          seats: seatsToUpload,
+        });
+      }
+
+      console.log(
+        'Driver seats data uploaded successfully for driverId:',
+        user,
+      );
+    } catch (error) {
+      console.error('Error uploading driver seats data:', error);
+    }
+  }
   // In FirebaseAuthService
 
   async getSeatsForDriver(driverId: string) {
@@ -366,6 +404,82 @@ class FirebaseAuthService {
     }
   }
 
+  async getSeatsForDriverReservation(driverId: string, dateNo: string) {
+    try {
+      console.log('auth driverId aaaaaaaaa', driverId);
+      const driverSeatDocRef = doc(
+        this.db,
+        'TimeTable',
+        'EX 1-1',
+        dateNo,
+        driverId,
+      );
+      const docSnapshot = await getDoc(driverSeatDocRef);
+
+      if (docSnapshot.exists()) {
+        console.log('auth doc data', docSnapshot.data());
+        const seats = docSnapshot.data().seats; // Assuming 'seats' is the array field
+        console.log('auth seats aaaaaaaaaaaaaaaaaaaaaaa', seats);
+        return seats.map((seat, index) => ({
+          status: seat.status,
+          userId: seat.userId,
+        }));
+      } else {
+        console.log('No such document!');
+        return [];
+      }
+    } catch (error) {
+      console.error('Error fetching seats:', error);
+      return [];
+    }
+  }
+  async updateSeatStatusReservation(
+    driverId: string,
+    seatIndex: number,
+    newStatus: string,
+    userId: string | null,
+    dateNo: string,
+  ) {
+    try {
+      // Get a reference to the driver's seats document
+      const driverSeatDocRef = doc(
+        this.db,
+        'TimeTable',
+        'EX 1-1',
+        dateNo,
+        driverId,
+      );
+
+      // Retrieve the document
+      const docSnapshot = await getDoc(driverSeatDocRef);
+
+      if (docSnapshot.exists()) {
+        // Extract the seats array from the document
+        const seats = docSnapshot.data().seats;
+
+        // Update the specific seat's status and userId if needed
+        if (seats && seatIndex < seats.length) {
+          seats[seatIndex] = {
+            ...seats[seatIndex],
+            status: newStatus,
+            userId: userId,
+          };
+
+          // Update the document with the new seats array
+          await updateDoc(driverSeatDocRef, {seats});
+          console.log(
+            `Seat number ${seatIndex} updated to status: ${newStatus}`,
+          );
+        } else {
+          console.error('Seat index is out of range or seats are undefined');
+        }
+      } else {
+        console.error('No such document!');
+      }
+    } catch (error) {
+      console.error('Error updating seat:', error);
+    }
+  }
   async updateSeatStatus(
     driverId: string,
     seatIndex: number,
@@ -414,6 +528,48 @@ class FirebaseAuthService {
     try {
       // Get a reference to the driver's seats document
       const driverSeatDocRef = doc(this.db, 'driverSeats', driverId);
+
+      // Retrieve the document
+      const docSnapshot = await getDoc(driverSeatDocRef);
+
+      if (docSnapshot.exists()) {
+        // Extract the seats array from the document
+        const seats = docSnapshot.data().seats;
+
+        // Update the status of all seats where userId matches the currentUserId
+        const updatedSeats = seats.map(seat => {
+          if (seat.userId === currentUserId) {
+            return {...seat, status: newStatus}; // Set status to 'booked' or any other status
+          }
+          return seat;
+        });
+
+        // Update the document with the new seats array
+        await updateDoc(driverSeatDocRef, {seats: updatedSeats});
+        console.log(`Seats updated for user ID: ${currentUserId}`);
+      } else {
+        console.error('No such document!');
+      }
+    } catch (error) {
+      console.error('Error updating seats:', error);
+    }
+  }
+
+  async updateSeatStatusReservationProceed(
+    driverId: string,
+    newStatus: string,
+    currentUserId: string,
+    dateNo: string,
+  ) {
+    try {
+      // Get a reference to the driver's seats document
+      const driverSeatDocRef = doc(
+        this.db,
+        'TimeTable',
+        'EX 1-1',
+        dateNo,
+        driverId,
+      );
 
       // Retrieve the document
       const docSnapshot = await getDoc(driverSeatDocRef);

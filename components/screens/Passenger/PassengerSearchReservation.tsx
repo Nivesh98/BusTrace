@@ -200,7 +200,7 @@ const PassengerSearchReservation = ({route, navigation}) => {
   //     }
   //   }, [busesToLocation]);
   const handleReservePress = busID => {
-    navigation.navigate('BusDetails', {busID});
+    navigation.navigate('BusDetailsReservation', {busID, selectedDate});
   };
   return (
     // <View>

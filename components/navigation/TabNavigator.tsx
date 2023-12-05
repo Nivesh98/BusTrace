@@ -7,6 +7,7 @@ import {FindBusScreen} from '../screens/Passenger/FindBusScreen';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import BusDetails from '../screens/Passenger/BusDetails';
+import BusDetailsReservation from '../screens/Passenger/BusDetailsReservation';
 import {HomeScreen} from '../screens/Passenger/HomeScreen';
 import PassengerSearchReservation from '../screens/Passenger/PassengerSearchReservation';
 import {QRScreen} from '../screens/Passenger/QRScreen';
@@ -29,7 +30,10 @@ function ReservationStackScreen() {
         name="PassengerSearchReservation"
         component={PassengerSearchReservation}
       />
-      <Stack.Screen name="BusDetails" component={BusDetails} />
+      <Stack.Screen
+        name="BusDetailsReservation"
+        component={BusDetailsReservation}
+      />
     </Stack.Navigator>
   );
 }
