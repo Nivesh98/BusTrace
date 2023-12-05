@@ -44,6 +44,9 @@ const PassengerSearchReservation = ({route}) => {
       const buses = await authService.getBusesToLocation(endLocation);
       setBusesToLocation(buses);
       console.log(buses);
+
+      const dates = await authService.getTimeTable(selectedDate.toString());
+      console.log('dates ggggggggg', dates);
     };
 
     fetchBuses();

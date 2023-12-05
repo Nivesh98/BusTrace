@@ -420,6 +420,67 @@ class FirebaseAuthService {
     }
   }
 
+  async getTimeTable(dateNo: string) {
+    // try {
+    //   // console.log('inside datae method');
+    //   // const driverSeatDocRef = doc(this.db, 'TimeTable', 'EX 1-1', dateNo);
+    //   // const docSnapshot = await getDoc(driverSeatDocRef);
+    //   // console.log('docSnapshot kkk', docSnapshot);
+    //   // if (docSnapshot.exists()) {
+    //   //   console.log('auth driverIDs data', docSnapshot.data());
+    //   //   const driverIDs = docSnapshot.data(); // Assuming 'seats' is the array field
+    //   //   console.log('auth driverIDs aaaaaaaaaaaaaaaaaaaaaaa', driverIDs);
+    //   //   // return driverIDs.map((seat, index) => ({
+    //   //   //   status: seat.status,
+    //   //   //   driverID: seat.userId,
+    //   //   // }));
+    //   //   return driverIDs;
+    //   // } else {
+    //   //   console.log('No such document!');
+    //   //   return [];
+    //   // }
+    //   const timetableCollectionRef = collection(
+    //     this.db,
+    //     'TimeTable',
+    //     'EX 1-1',
+    //     dateNo,
+    //   );
+
+    //   // Fetch the documents within the subcollection
+    //   getDocs(timetableCollectionRef)
+    //     .then(querySnapshot => {
+    //       const subDocs = querySnapshot.docs.map(doc => ({
+    //         id: doc.id,
+    //         ...doc.data(),
+    //       }));
+
+    //       console.log('subDoc llll', subDocs);
+    //     })
+    //     .catch(error => {
+    //       console.error('Error getting documents from subcollection: ', error);
+    //     });
+    // } catch (error) {}
+
+    try {
+      const timetableCollectionRef = collection(
+        this.db,
+        'TimeTable',
+        'EX 1-1',
+        dateNo,
+      );
+      const querySnapshot = await getDocs(timetableCollectionRef);
+      const subDocs = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      console.log('subDocs lll', subDocs);
+      return subDocs; // This will be an array of documents
+    } catch (error) {
+      console.error('Error getting documents from subcollection: ', error);
+      throw new Error(error); // Rethrow the error to be handled where the function is called
+    }
+  }
+
   // async getSeatsForDriver(driverId: string) {
   //   try {
   //     console.log('auth driverId aaaaaaaaa', driverId);
