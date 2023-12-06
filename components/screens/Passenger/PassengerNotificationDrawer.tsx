@@ -4,65 +4,63 @@ import {FlatList, StyleSheet, Text, View} from 'react-native';
 const DATA = [
   {
     id: '1',
-    busNo: 'First Item',
-    date: '2023-01-02',
-    route: 'Kandy- Colombo',
+    busNo: 'OI8cRKl6vYf...',
+    date: '2023-12-02',
+    route: 'Makubur-Matara',
     charge: 400,
+    time: '12:25:23',
   },
   {
     id: '2',
-    busNo: 'First Item',
-    date: '2023-01-02',
-    route: 'Kandy- Colombo',
+    busNo: 'WAAdj3bjLrf...',
+    date: '2023-12-02',
+    route: 'Makubur-Matara',
     charge: 400,
+    time: '12:35:23',
   },
   {
     id: '3',
-    busNo: 'First Item',
-    date: '2023-01-02',
-    route: 'Kandy- Colombo',
+    busNo: 'WAAdj3bjLrf...',
+    date: '2023-12-02',
+    route: 'Makubur-Matara',
     charge: 400,
+    time: '18:25:23',
   },
   {
     id: '4',
-    busNo: 'First Item',
-    date: '2023-01-02',
-    route: 'Kandy- Colombo',
+    busNo: 'OI8cRKl6vYf...',
+    date: '2023-12-02',
+    route: 'Makubur-Matara',
     charge: 400,
+    time: '18:55:28',
   },
   {
     id: '5',
-    busNo: 'First Item',
-    date: '2023-01-02',
-    route: 'Kandy- Colombo',
+    busNo: 'WAAdj3bjLrf...',
+    date: '2023-12-02',
+    route: 'Makubur-Matara',
     charge: 400,
+    time: '19:25:55',
   },
   {
     id: '6',
-    busNo: 'First Item',
-    date: '2023-01-02',
-    route: 'Kandy- Colombo',
+    busNo: 'OI8cRKl6vYf...',
+    date: '2023-12-02',
+    route: 'Makubur-Matara',
     charge: 400,
-  },
-  {
-    id: '7',
-    busNo: 'First Item',
-    date: '2023-01-02',
-    route: 'Kandy- Colombo',
-    charge: 400,
-  },
-  {
-    id: '8',
-    busNo: 'First Item',
-    date: '2023-01-02',
-    route: 'Kandy- Colombo',
-    charge: 400,
+    time: '19:55:53',
   },
 ];
 
-type ItemProps = {busNo: string; date: string; route: string; charge: number};
+type ItemProps = {
+  busNo: string;
+  date: string;
+  route: string;
+  charge: number;
+  time: string;
+};
 
-const Item = ({busNo, date, route, charge}: ItemProps) => (
+const Item = ({busNo, date, route, time}: ItemProps) => (
   <View style={styles.item}>
     <View style={{padding: 5}}>
       <View style={{flexDirection: 'row'}}>
@@ -106,7 +104,7 @@ const Item = ({busNo, date, route, charge}: ItemProps) => (
       </View>
       <View style={{flexDirection: 'row', marginLeft: -110}}>
         <Text style={styles.text}>Time: </Text>
-        <Text style={styles.text}>{date}</Text>
+        <Text style={styles.text}>{time}</Text>
       </View>
     </View>
   </View>
@@ -123,6 +121,7 @@ const PassengerNotificationDrawer = () => {
             date={item.date}
             route={item.route}
             charge={item.charge}
+            time={item.time}
           />
         )}
         keyExtractor={item => item.id}

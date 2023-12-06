@@ -165,7 +165,10 @@ const SeatMapQR = ({busID, seatNo}) => {
 
     setSeats(updatedSeats);
     setTempSeats([...tempSeats, seatNo]);
-    setSelectedCount(selectedCount + 1);
+    if (selectedCount < 6) {
+      setSelectedCount(selectedCount + 1);
+    }
+
     authService.updateSeatStatus(busID, seatNo - 1, 'selected', currentUserId);
   };
 

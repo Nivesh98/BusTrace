@@ -1,13 +1,13 @@
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import CustomDrawer from '../CustomComponent/CustomDrawer';
+import CustomDrawerDriver from '../CustomComponent/CustomDrawerDriver';
 import {TabNavigatorDriver} from './TabNavigatorDriver';
 
 const DriverDrawerNavigation = () => {
   const Drawer = createDrawerNavigator();
   return (
     <Drawer.Navigator
-      drawerContent={props => <CustomDrawer {...props} />}
+      drawerContent={props => <CustomDrawerDriver {...props} />}
       screenOptions={{
         drawerActiveBackgroundColor: '#dc143c',
         drawerActiveTintColor: '#fff',
